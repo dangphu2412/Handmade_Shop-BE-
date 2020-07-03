@@ -1,0 +1,57 @@
+{
+  "name": "base-express-sequelize",
+  "version": "1.0.0",
+  "description": "This is a base for express es6 and building with sequelize ORM",
+  "main": "main.js",
+  "keywords": [
+    "nodejs",
+    "express",
+    "rest",
+    "api",
+    "sequelize",
+    "mysql"
+  ],
+  "author": "Đặng Phú",
+  "license": "MIT",
+  "scripts": {
+    "lint": "eslint --fix --ext .js .",
+    "dev": "nodemon --exec babel-node ./src/bin/www.js",
+    "start": "node ./dist/bin/www.js",
+    "build": "babel ./src --out-dir dist --copy-files",
+    "model": "sequelize-cli model:generate --name",
+    "seed": "sequelize-cli seed:generate --name",
+    "migrate:latest": "sequelize-cli db:migrate",
+    "migrate:rollback": "sequelize-cli db:migrate:undo:all",
+    "seed:run": "sequelize db:seed:all",
+    "seed:down": "sequelize db:seed:undo"
+  },
+  "dependencies": {
+    "bcrypt": "^5.0.0",
+    "cors": "^2.8.5",
+    "debug": "^4.1.1",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "fs": "^0.0.1-security",
+    "http-status": "^1.4.2",
+    "jsonwebtoken": "^8.5.1",
+    "method-override": "^3.0.0",
+    "morgan": "^1.10.0",
+    "path": "^0.12.7",
+    "pg": "^8.2.1",
+    "pg-hstore": "^2.3.3",
+    "sequelize": "^6.2.0"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.10.4",
+    "@babel/core": "^7.10.4",
+    "@babel/node": "^7.10.4",
+    "@babel/plugin-proposal-class-properties": "^7.10.4",
+    "@babel/preset-env": "^7.10.4",
+    "babel-eslint": "^10.1.0",
+    "eslint": "^7.3.1",
+    "eslint-config-airbnb-base": "^14.2.0",
+    "eslint-plugin-import": "^2.21.2",
+    "nodemon": "^2.0.4",
+    "sequelize-cli": "^6.0.0"
+  }
+}
