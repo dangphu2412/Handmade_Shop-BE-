@@ -32,42 +32,47 @@ module.exports = {
         }
       ]);
       await queryInterface.bulkInsert('Permissions', [{
-        code: 'RaU', // Read all users
-        description: "Admin read all users"
+        method: 'GET',
+        module: 'USER',
+        description: 'Admin read all users',
       },
       {
-        code: 'EaU', // Edit all users
-        description: "Admin edit all users"
+        method: 'PUT',
+        module: 'USER',
+        description: 'Admin edit all users'
       },
       {
-        code: 'VuP', // View user product
-        description: "Admin view all user \'s product'"
+        method: 'GET',
+        module: 'USER/PRODUCT',
+        description: 'Admin view all user \'s product\''
       },
       {
-        code: 'CnP', // Must be a shop keeper
-        description: "Shop keeper create new product"
+        method: 'POST',
+        module: 'PRODUCT', // Must be a shop keeper
+        description: 'Shop keeper create new product'
       },
       {
-        code: 'CnS', // Must be a user
-        description: "User create new shop"
-      }
+        method: 'POST',
+        module: 'SHOP', // Must be a user
+        description: 'User create new shop'
+      },
       ]);
       await queryInterface.bulkInsert('Roles', [{
-          roleName: "Admin",
+          roleName: 'Admin',
           status: true,
           createdAt: new Date().toISOString(),
           updatedAt: new Date().toISOString(),
           deleteddAt: new Date().toISOString()
         },
         {
-          roleName: "Shop keeper",
+          roleName: 'Shop keeper',
           status: true,
           createdAt: new Date().toISOString(),
           updatedAt: new Date().toISOString(),
           deleteddAt: new Date().toISOString()
         },
         {
-          roleName: "User",
+          roleName: 'User',
           status: true,
           createdAt: new Date().toISOString(),
           updatedAt: new Date().toISOString(),
