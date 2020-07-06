@@ -1,5 +1,4 @@
-export class ServerError extends Error {
-    status;
+export default class ServerError extends Error {
     constructor(message) {
         super(message);
         this.status = 500

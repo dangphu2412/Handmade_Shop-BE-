@@ -15,7 +15,10 @@ module.exports = (sequelize, DataTypes) => {
       primaryKey: true,
       type: DataTypes.INTEGER
     },
-    code: {
+    method: {
+      type: DataTypes.STRING
+    },
+    module: {
       type: DataTypes.STRING
     },
     description: {

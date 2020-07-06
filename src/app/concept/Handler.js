@@ -1,7 +1,8 @@
 export default class Handler {
-    authen = false;
-
-    authorize = false;
-
-    
+    constructor(Controller, AuthenService, AuthorizeService, Validator) {
+        this.controller = Controller;
+        this.authen = AuthenService;
+        this.authorize = AuthorizeService;
+        this.validator = Validator;
+    }
 }

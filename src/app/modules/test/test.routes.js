@@ -1,9 +1,8 @@
 import express from 'express';
-import TestController from './test.controller';
+import TestHandler from './test.handler';
 
 const router = express.Router();
-const controller = new TestController();
 
-router.get('/test', controller['getMany'].bind(controller));
+router.get('/test', TestHandler['test']());
 
 export default router;
