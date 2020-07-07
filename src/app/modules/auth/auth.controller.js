@@ -22,6 +22,21 @@ class TestController extends CoreController {
             return this.ErrorHandler(response, error);
         }
     }
+
+    async oauthGoogle(request, response) {
+        try {
+            const payload = request.body;
+
+            await this.service.create(payload);
+
+            return response.status(httpStatus.OK).json({
+                status: httpStatus.OK,
+                message: "Sign up success",
+            });
+        } catch (error) {
+            return this.ErrorHandler(response, error);
+        }
+    }
 }
 
 export default new TestController();
