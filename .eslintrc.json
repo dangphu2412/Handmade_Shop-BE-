@@ -16,7 +16,7 @@
         "sourceType": "module"
     },
     "rules": {
-        "quotes": ["error","single"],
+        "quotes": ["error","double"],
         "semi": ["error","always"],
         "linebreak-style": 0,
         "indent": 0,

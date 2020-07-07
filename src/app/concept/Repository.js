@@ -1,4 +1,4 @@
-import LogicError from '../../errors/Logic.error';
+import LogicError from "../../errors/Logic.error";
 
 export default class Repository {
     constructor(model) {
@@ -15,18 +15,23 @@ export default class Repository {
     async getOne(id) {
         const result = await this.model.findByPk(id);
         if (!result) {
-            throw new LogicError('Can\'t get by this id');
+            throw new LogicError("Can't get by this id");
         }
         return result;
     }
 
-    create(payload) {
-        return this.model.create(payload);
+    create(payload, transaction = null, returning = ["*"], include = null) {
+        return this.model.create(payload, {
+            transaction,
+            returning,
+            include,
+        });
     }
 
-    updateOne(payload, id) {
+    updateOne(payload, id, transaction = null) {
         return this.model.update(payload, {
-            where: { id }
+            where: { id },
+            transaction,
         });
     }
 

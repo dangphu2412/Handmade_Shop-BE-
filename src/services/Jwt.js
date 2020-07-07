@@ -1,5 +1,5 @@
-import jwt from 'jsonwebtoken';
-import { JwtConfig } from '../constants/secret';
+import jwt from "jsonwebtoken";
+import { JwtConfig } from "../constants/secret";
 
 export default class JWT {
     constructor() {
