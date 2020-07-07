@@ -1,16 +1,18 @@
 import CoreHandler from "../../concept/Handler";
 import AuthController from "./auth.controller";
+import AuthValidator from "./auth.validator";
 import AuthenService from "../../../middlewares/Authentication";
 import AuthorizeService from "../../../middlewares/Authorization";
 
 class TestHandler extends CoreHandler {
     constructor() {
-        super(AuthController, AuthenService, AuthorizeService, null);
+        super(AuthController, AuthenService, AuthorizeService, AuthValidator);
     }
 
     signup() {
             return [
-                // this.authen.validator,
+                this.validator.checkSignUpData(),
+                this.validator.catchValidateErrors,
                 this.controller.call("signup"),
             ];
     }
