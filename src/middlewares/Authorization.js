@@ -1,6 +1,6 @@
-import { ROLE } from '../constants/role';
-import AuthorizeError from '../errors/Authorize.error';
-import { User, Role, Permission } from '../database/models/index';
+import { ROLE } from "../constants/role";
+import AuthorizeError from "../errors/Authorize.error";
+import { User, Role, Permission } from "../database/models/index";
 
 class Authentication {
     constructor() {
@@ -9,25 +9,28 @@ class Authentication {
 
     async getScopeAfterAuthenticate(request, response, next) {
         if (!request.auth.isAuthenticated) {
-            throw new AuthorizeError('Missing middleware authenticate');
+            throw new AuthorizeError("Missing middleware authenticate");
         }
         const { id } = request.auth.credentials;
-        const scope = await User.findByPk(id, {
+        const scope = await User.findOne({
+            where: { id },
             include: [{
                 model: Role,
-                through: {
-                    attributes: ['roleName'],
-                },
+                as: "role",
+                attributes: ["roleName"],
                 include: [{
                     model: Permission,
-                    through: {
-                        attributes: ['method', 'module'],
-                    },
+                    as: "permissions",
+                    attributes: ["id", "method", "module"],
+                    where: { status: true }
                 }],
             }],
         });
-        console.log(scope);
-        request.auth.credentials.scope = scope;
+
+        request.auth.credentials.scope = {
+            scope: scope.role.roleName,
+            permissions: scope.role.permissions,
+        };
         return next();
     }
 

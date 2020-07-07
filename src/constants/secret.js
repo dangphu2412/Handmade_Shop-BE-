@@ -3,4 +3,4 @@ export const JwtConfig = {
     EXPIRE_DATE: process.env.EXPIRE_DATE,
 };
 
-export const GoogleCreden = '';
+export const GoogleCreden = "";

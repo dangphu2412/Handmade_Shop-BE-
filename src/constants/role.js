@@ -5,15 +5,15 @@ export const ROLE = {
 };
 
 export const METHOD = {
-    GET: 'GET',
-    POST: 'POST',
-    PUT: 'PUT',
-    PATCH: 'PATCH',
-    DELETE: 'DELETE'
+    GET: "GET",
+    POST: "POST",
+    PUT: "PUT",
+    PATCH: "PATCH",
+    DELETE: "DELETE",
 };
 
 export const MODULE = {
-    SHOP: 'SHOP',
-    USER: 'USER',
-    PRODUCT: 'PRODUCT'
+    SHOP: "SHOP",
+    USER: "USER",
+    PRODUCT: "PRODUCT",
 };

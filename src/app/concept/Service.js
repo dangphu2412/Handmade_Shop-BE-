@@ -1,4 +1,4 @@
-import LogicError from '../../errors/Logic.error';
+import LogicError from "../../errors/Logic.error";
 
 export default class Service {
     repository;
@@ -10,7 +10,7 @@ export default class Service {
     async getOne(id) {
         const result = await this.repository.getOne(id);
         if (!result) {
-            throw new LogicError('Can\'t get by this id');
+            throw new LogicError("Can't get by this id");
         }
         return result;
     }
