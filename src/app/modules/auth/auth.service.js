@@ -13,25 +13,35 @@ class AuthService extends CoreService {
     }
 
     async signup(payload) {
-            const { username } = payload;
-            const isExistWithEmail = await this.repository.getOneByUsername(username);
+        const { username } = payload;
+        const isExistWithEmail = await this.repository.getOneByUsername(username);
 
-            if (isExistWithEmail) {
-                throw new LogicError("Your username has already been existed");
-            }
+        if (isExistWithEmail) {
+            throw new LogicError("Your username has already been existed");
+        }
 
-            const salt = bcrypt.genSaltSync(saltRounds);
-            const hashedPassword = bcrypt.hashSync(payload.password, salt);
-            const slug = slugTransfer(payload.username, { uric: true });
+        const hashedPassword = bcrypt.hashSync(payload.password, saltRounds);
+        const slug = slugTransfer(payload.username, { uric: true });
 
-            const payloadFromService = {
-                username,
-                name: payload.name,
-                slug,
-                password: hashedPassword,
-            };
+        const payloadFromService = {
+            username,
+            name: payload.name,
+            slug,
+            password: hashedPassword,
+        };
 
-            return this.repository.create(payloadFromService);
+        return this.repository.create(payloadFromService);
+    }
+
+    async signin(payload) {
+        const { username } = payload;
+        const userInfo = await this.repository.getOneByUsername(username);
+        console.log(userInfo);
+        if (!userInfo || !userInfo.status || payload.password !== bcrypt.compareSync(userInfo.password, saltRounds)) {
+            throw new LogicError("Your account is not valid");
+        }
+
+        return true;
     }
 }
 

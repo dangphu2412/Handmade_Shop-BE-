@@ -17,6 +17,14 @@ class TestHandler extends CoreHandler {
         ];
     }
 
+    signin() {
+        return [
+            this.validator.checkSignInData(),
+            this.validator.catchValidateErrors,
+            this.controller.call("signin"),
+        ];
+    }
+
     oauthGoogle() {
         return [
             this.controller.call("oauthGoogle"),

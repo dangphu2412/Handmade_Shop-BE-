@@ -8,6 +8,7 @@ class AuthRepository extends CoreRepository {
 
     getOneByUsername(field) {
         return this.model.findOne({
+            raw: true,
             where: {
                 username: field,
             },
