@@ -1,39 +1,41 @@
 "use strict";
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable("Roles", {
+    await queryInterface.createTable("Galleries", {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      rolename: {
-        allowNull: false,
+      src: {
         type: Sequelize.STRING,
       },
+      kind: {
+        type: Sequelize.STRING,
+      },
+      productId: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: "Products",
+          key: "id",
+        },
+        onUpdate: "CASCADE",
+      },
       status: {
-        allowNull: false,
-        defaultValue: true,
         type: Sequelize.BOOLEAN,
       },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
-        defaultValue: Sequelize.NOW,
       },
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE,
-        defaultValue: Sequelize.NOW,
-      },
-      deletedAt: {
-        type: Sequelize.DATE,
-        defaultValue: null,
       },
     });
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable("Roles");
+    await queryInterface.dropTable("Galleries");
   },
 };

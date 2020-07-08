@@ -4,3 +4,5 @@ export const JwtConfig = {
 };
 
 export const GoogleCreden = "";
+
+export const saltRounds = parseInt(process.env.SALT_ROUNDS, 10);

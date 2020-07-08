@@ -27,7 +27,6 @@ class Validator {
                 errorMessage: `Password should be at least ${min} chars long and max ${max}`,
                 options: { max, min },
             },
-            isInt: true,
             exists: true,
         };
     }
@@ -47,9 +46,10 @@ class Validator {
             }
             validationResult(request).throw();
         } catch (error) {
+            console.log(error);
             return response.status(422).json({
                 status: 422,
-                errors: error.errors,
+                errors: error.errors[0],
             });
         }
     }

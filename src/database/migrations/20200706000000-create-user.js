@@ -20,8 +20,11 @@ module.exports = {
       name: {
         type: Sequelize.STRING(50),
       },
+      slug: {
+        type: Sequelize.STRING(50),
+      },
       password: {
-        type: Sequelize.STRING(20),
+        type: Sequelize.STRING(100),
       },
       avatar: {
         type: Sequelize.STRING,

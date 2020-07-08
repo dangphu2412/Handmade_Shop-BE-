@@ -1,3 +1,4 @@
+import ServerError from "../../errors/Server.error";
 import LogicError from "../../errors/Logic.error";
 
 export default class Repository {
@@ -12,27 +13,32 @@ export default class Repository {
         });
     }
 
-    async getOne(id) {
-        const result = await this.model.findByPk(id);
-        if (!result) {
-            throw new LogicError("Can't get by this id");
-        }
-        return result;
+    getOne(id) {
+        return this.model.findByPk(id);
     }
 
-    create(payload, transaction = null, returning = ["*"], include = null) {
-        return this.model.create(payload, {
-            transaction,
-            returning,
-            include,
-        });
+    async create(payload, transaction = null, returning = ["*"], include = null) {
+        try {
+            const response = await this.model.create(payload, {
+                transaction,
+                returning,
+                include,
+            });
+            return response;
+        } catch (error) {
+            throw new ServerError("Your data is unexcepted");
+        }
     }
 
     updateOne(payload, id, transaction = null) {
-        return this.model.update(payload, {
-            where: { id },
-            transaction,
-        });
+        try {
+            return this.model.update(payload, {
+                where: { id },
+                transaction,
+            });
+        } catch (error) {
+            throw new ServerError("Your data is unexcepted");
+        }
     }
 
     deleteOne(id) {
