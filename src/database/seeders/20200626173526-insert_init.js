@@ -44,21 +44,21 @@ module.exports = {
       },
       ]);
       await queryInterface.bulkInsert("Roles", [{
-          roleName: "Admin",
+          rolename: "Admin",
           status: true,
           createdAt: new Date().toISOString(),
           updatedAt: new Date().toISOString(),
           deletedAt: null,
         },
         {
-          roleName: "Shop keeper",
+          rolename: "Shop keeper",
           status: true,
           createdAt: new Date().toISOString(),
           updatedAt: new Date().toISOString(),
           deletedAt: null,
         },
         {
-          roleName: "User",
+          rolename: "User",
           status: true,
           createdAt: new Date().toISOString(),
           updatedAt: new Date().toISOString(),
@@ -68,7 +68,8 @@ module.exports = {
       await queryInterface.bulkInsert("Users", [{
         username: "dangphu241299@gmail.com",
         name: "Dang Ngoc Phu",
-        password: "123123",
+        slug: "dang-ngoc-phu",
+        password: "$2y$10$OSVoQgSfVfQoWYm9/nbnG.cKEMjWnUALWrwvrMABhV4ZGw8GV/YgO",
         roleId: 1,
         status: true,
         createdAt: new Date().toISOString(),
@@ -78,7 +79,8 @@ module.exports = {
       {
         username: "trambitch123@gmail.com",
         name: "Le Bich Xuan Tram",
-        password: "123123",
+        slug: "le-bich-xuan-tram",
+        password: "$2y$10$OSVoQgSfVfQoWYm9/nbnG.cKEMjWnUALWrwvrMABhV4ZGw8GV/YgO",
         roleId: 2,
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
@@ -87,7 +89,8 @@ module.exports = {
       {
         username: "haumama@gmail.com",
         name: "Nguyen Tran Hau",
-        password: "123123",
+        slug: "nguyen-tran-hau",
+        password: "$2y$10$OSVoQgSfVfQoWYm9/nbnG.cKEMjWnUALWrwvrMABhV4ZGw8GV/YgO",
         roleId: 3,
         status: true,
         createdAt: new Date().toISOString(),
@@ -97,7 +100,8 @@ module.exports = {
       {
         username: "tramnguyenthi@gmail.com",
         name: "Nguyen Thi Tram",
-        password: "123123",
+        slug: "nguyen-thi-tram",
+        password: "$2y$10$OSVoQgSfVfQoWYm9/nbnG.cKEMjWnUALWrwvrMABhV4ZGw8GV/YgO",
         roleId: 1,
         status: true,
         createdAt: new Date().toISOString(),

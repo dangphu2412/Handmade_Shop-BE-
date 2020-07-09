@@ -1,8 +1,11 @@
 {
-    "presets": ["@babel/preset-env"],
-    "plugins": ["@babel/plugin-proposal-class-properties"],
-    "ignore": [
-      "public",
-      "resources"
+    "presets": [
+      ["@babel/preset-env"]
+    ],
+    "plugins": [
+      "@babel/plugin-transform-runtime",
+      "@babel/plugin-proposal-class-properties",
+      "@babel/syntax-dynamic-import",
+      "@babel/transform-async-to-generator"
     ]
   }

@@ -108,21 +108,7 @@ export default class Controller {
 
     ErrorHandler(response, error) {
         console.log(error);
-        if (error instanceof LogicError) {
-            return response.status(httpStatus.BAD_REQUEST).json({
-                error: error.message,
-                status: error.status,
-            });
-        }
-
-        if (error instanceof ServerError) {
-            return response.status(httpStatus.INTERNAL_SERVER_ERROR).json({
-                error: error.message,
-                status: error.status,
-            });
-        }
-
-        return response.status(httpStatus.BAD_REQUEST).json({
+        return response.status(error.status).json({
             error: error.message,
             status: error.status,
         });

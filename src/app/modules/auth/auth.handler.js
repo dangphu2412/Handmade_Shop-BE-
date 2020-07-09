@@ -10,11 +10,33 @@ class TestHandler extends CoreHandler {
     }
 
     signup() {
-            return [
-                this.validator.checkSignUpData(),
-                this.validator.catchValidateErrors,
-                this.controller.call("signup"),
-            ];
+        return [
+            this.validator.checkSignUpData(),
+            this.validator.catchValidateErrors,
+            this.controller.call("signup"),
+        ];
+    }
+
+    verifyAccount() {
+        return [
+            this.validator.checkQueryVerifyToken(),
+            this.validator.catchValidateErrors,
+            this.controller.call("verifyAccount"),
+        ];
+    }
+
+    signin() {
+        return [
+            this.validator.checkSignInData(),
+            this.validator.catchValidateErrors,
+            this.controller.call("signin"),
+        ];
+    }
+
+    oauthGoogle() {
+        return [
+            this.controller.call("oauthGoogle"),
+        ];
     }
 }
 

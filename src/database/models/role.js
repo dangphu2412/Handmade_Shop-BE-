@@ -19,7 +19,7 @@ module.exports = (sequelize, DataTypes) => {
   }
 
   Role.init({
-    roleName: DataTypes.STRING,
+    rolename: DataTypes.STRING,
     status: DataTypes.BOOLEAN,
     createdAt: DataTypes.DATE,
     updatedAt: DataTypes.DATE,

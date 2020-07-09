@@ -4,7 +4,7 @@ import AuthenError from "../errors/Authen.error";
 
 export default new class Authentication {
     constructor() {
-        this.tokenService = new Jwt();
+        this.tokenService = Jwt;
     }
 
     verify(request, response, next) {
