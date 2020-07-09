@@ -1,8 +1,8 @@
 import express from "express";
-import AuthHandler from "./shop.handler";
+import ShopHandler from "./shop.handler";
 
 const router = express.Router();
 
-router.post("/shop", AuthHandler["createShop"]());
+router.post("/users/shop", ShopHandler["createShop"]());
 
 export default router;

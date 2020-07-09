@@ -13,6 +13,7 @@ class ShoppHandler extends CoreHandler {
         return [
             this.validator.checkCreateShop(),
             this.validator.catchValidateErrors,
+            this.authen.call("verify"),
             this.controller.call("createShop"),
         ];
     }

@@ -11,7 +11,6 @@ class CategoryHandler extends CoreHandler {
 
     getCategories() {
         return [
-            this.validator.checkGetCategories(),
             this.controller.call("getRecursiveCategories"),
         ];
     }
