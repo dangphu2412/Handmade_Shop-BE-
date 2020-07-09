@@ -28,7 +28,7 @@ if (!JwtConfig.EXPIRE_DATE || !JwtConfig.SECRET_KEY) {
     process.exit(1);
 }
 
-if (saltRounds) {
+if (!saltRounds) {
     console.error("You are missing SALT_ROUNDS config in env for using bcrypt! Please check config/secrect.js");
     process.exit(1);
 }
