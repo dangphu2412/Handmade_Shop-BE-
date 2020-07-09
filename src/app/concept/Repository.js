@@ -14,18 +14,22 @@ export default class Repository {
     }
 
     getOne(id) {
-        return this.model.findByPk(id);
+        return this.model.findByPk(id, {
+            raw: true
+        });
     }
 
     async create(payload, transaction = null, returning = ["*"], include = null) {
         try {
             const response = await this.model.create(payload, {
+                raw: true,
                 transaction,
                 returning,
                 include,
             });
             return response;
         } catch (error) {
+            console.log(error);
             throw new ServerError("Your data is unexcepted");
         }
     }

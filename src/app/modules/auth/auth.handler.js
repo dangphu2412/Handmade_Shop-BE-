@@ -17,6 +17,14 @@ class TestHandler extends CoreHandler {
         ];
     }
 
+    verifyAccount() {
+        return [
+            this.validator.checkQueryVerifyToken(),
+            this.validator.catchValidateErrors,
+            this.controller.call("verifyAccount"),
+        ];
+    }
+
     signin() {
         return [
             this.validator.checkSignInData(),

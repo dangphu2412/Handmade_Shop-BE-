@@ -1,9 +1,9 @@
-import jwt from "jsonwebtoken";
+import Jwt from "jsonwebtoken";
 import { JwtConfig } from "../constants/secret";
 
-export default class JWT {
+class JWT {
     constructor() {
-        this.jwt = jwt;
+        this.jwt = Jwt;
         this.secrect = JwtConfig.SECRET_KEY;
         this.expire = JwtConfig.EXPIRE_DATE;
     }
@@ -18,3 +18,5 @@ export default class JWT {
         return this.jwt.decode(token);
     }
 }
+
+export default new JWT();
