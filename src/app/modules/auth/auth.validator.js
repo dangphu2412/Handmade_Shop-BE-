@@ -13,7 +13,7 @@ class AuthValidator extends CoreValidator {
     checkSignInData() {
         return checkSchema({
             username: this.checkEmail(["body"], "Your username is not valid"),
-            password: this.checkWithLength(["body"], "Your password is not valid", { max: 15, min: 10 }),
+            password: this.checkWithLength(["body"], "Your password is not valid", { max: 15, min: 6 }),
         });
     }
 
