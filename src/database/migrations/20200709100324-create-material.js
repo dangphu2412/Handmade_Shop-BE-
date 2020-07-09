@@ -1,7 +1,8 @@
 "use strict";
+
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable("Categories", {
+    await queryInterface.createTable("Materials", {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -9,22 +10,16 @@ module.exports = {
         type: Sequelize.INTEGER,
       },
       name: {
+        unique: true,
+        allowNull: false,
         type: Sequelize.STRING,
       },
       slug: {
+        unique: true,
+        allowNull: false,
         type: Sequelize.STRING,
       },
-      parentId: {
-        defaultValue: null,
-        type: Sequelize.INTEGER,
-        references: {
-          model: "Categories",
-          key: "id",
-        },
-        onUpdate: "CASCADE",
-      },
       status: {
-        allowNull: false,
         defaultValue: true,
         type: Sequelize.BOOLEAN,
       },
@@ -45,6 +40,6 @@ module.exports = {
     });
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable("Categories");
+    await queryInterface.dropTable("Materials");
   },
 };

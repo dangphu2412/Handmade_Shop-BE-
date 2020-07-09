@@ -9,10 +9,6 @@ module.exports = (sequelize, DataTypes) => {
         as: "users",
         foreignKey: "userId",
       });
-      Shop.hasMany(models.Category, {
-        as: "shop",
-        foreignKey: "userId",
-      })
     }
   };
   Shop.init({
