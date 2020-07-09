@@ -1,4 +1,4 @@
-import LogicError from '../../errors/Logic.error';
+import LogicError from "../../errors/Logic.error";
 
 export default class Service {
     repository;
@@ -7,10 +7,14 @@ export default class Service {
         return this.repository.getMany(query);
     }
 
+    getRecursive(alias, attributes) {
+        return this.repository.getRecursive(alias, attributes);
+    }
+
     async getOne(id) {
         const result = await this.repository.getOne(id);
         if (!result) {
-            throw new LogicError('Can\'t get by this id');
+            throw new LogicError("Can't get by this id");
         }
         return result;
     }

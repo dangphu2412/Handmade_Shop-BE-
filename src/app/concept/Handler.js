@@ -1,5 +1,5 @@
 export default class Handler {
-    constructor(Controller, AuthenService, AuthorizeService, Validator) {
+    constructor(Controller, AuthenService = null, AuthorizeService = null, Validator = null) {
         this.controller = Controller;
         this.authen = AuthenService;
         this.authorize = AuthorizeService;

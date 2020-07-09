@@ -1,32 +1,31 @@
-'use strict';
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('UserRoles', {
+    await queryInterface.createTable("ProductTransports", {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
-      roleId: {
+      productId: {
         type: Sequelize.INTEGER,
         references: {
-          model: 'Roles',
-          key: 'id',
+          model: "Products",
+          key: "id",
         },
-        onUpdate: 'CASCADE',
+        onUpdate: "CASCADE",
       },
-      userId: {
+      transportId: {
         type: Sequelize.INTEGER,
         references: {
-          model: 'Users',
-          key: 'id',
+          model: "Transports",
+          key: "id",
         },
-        onUpdate: 'CASCADE',
+        onUpdate: "CASCADE",
       },
     });
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('UserRoles');
-  }
+    await queryInterface.dropTable("ProductTransports");
+  },
 };

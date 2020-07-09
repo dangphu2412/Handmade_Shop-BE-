@@ -1,4 +1,4 @@
-import LogicError from '../../errors/Logic.error';
+import ServerError from "../../errors/Server.error";
 
 export default class Repository {
     constructor(model) {
@@ -7,27 +7,42 @@ export default class Repository {
 
     getMany({ page = 1, amount = 10 }) {
         return this.model.findAll({
-            limit: page,
+            raw: true,
+            limit: amount,
             amount: (page - 1) * amount,
         });
     }
 
-    async getOne(id) {
-        const result = await this.model.findByPk(id);
-        if (!result) {
-            throw new LogicError('Can\'t get by this id');
-        }
-        return result;
-    }
-
-    create(payload) {
-        return this.model.create(payload);
-    }
-
-    updateOne(payload, id) {
-        return this.model.update(payload, {
-            where: { id }
+    getOne(id) {
+        return this.model.findByPk(id, {
+            raw: true
         });
+    }
+
+    async create(payload, transaction = null, returning = ["*"], include = null) {
+        try {
+            const response = await this.model.create(payload, {
+                raw: true,
+                transaction,
+                returning,
+                include,
+            });
+            return response;
+        } catch (error) {
+            console.log(error);
+            throw new ServerError("Your data is unexcepted");
+        }
+    }
+
+    updateOne(payload, id, transaction = null) {
+        try {
+            return this.model.update(payload, {
+                where: { id },
+                transaction,
+            });
+        } catch (error) {
+            throw new ServerError("Your data is unexcepted");
+        }
     }
 
     deleteOne(id) {
@@ -36,5 +51,17 @@ export default class Repository {
 
     deleteMultiple(ids) {
         return this.model.deleteMultiple(ids);
+    }
+
+    getRecursive(alias, attributes) {
+        return this.model.findAll({
+            attributes,
+            include: [{
+                attributes,
+                model: this.model,
+                as: alias,
+                nested: true,
+            }],
+        });
     }
 }

@@ -1,6 +1,6 @@
-import httpStatus from 'http-status';
-import LogicError from '../../errors/Logic.error';
-import ServerError from '../../errors/Server.error';
+import httpStatus from "http-status";
+import LogicError from "../../errors/Logic.error";
+import ServerError from "../../errors/Server.error";
 
 export default class Controller {
     service
@@ -27,8 +27,7 @@ export default class Controller {
                 status: httpStatus.OK,
                 results,
             });
-        }
-        catch (error) {
+        } catch (error) {
             return this.ErrorHandler(response, error);
         }
     }
@@ -41,8 +40,7 @@ export default class Controller {
                 status: httpStatus.OK,
                 result,
             });
-        }
-        catch (error) {
+        } catch (error) {
             return this.ErrorHandler(response, error);
         }
     }
@@ -53,10 +51,9 @@ export default class Controller {
             await this.service.create(payload);
             return response.status(httpStatus.OK).json({
                 status: httpStatus.OK,
-                message: 'Create success',
+                message: "Create success",
             });
-        }
-        catch (error) {
+        } catch (error) {
             return this.ErrorHandler(response, error);
         }
     }
@@ -68,7 +65,7 @@ export default class Controller {
             await this.service.updateOne(payload, id);
             return response.status(httpStatus.OK).json({
                 status: httpStatus.OK,
-                message: 'Update success',
+                message: "Update success",
             });
         } catch (error) {
             return this.ErrorHandler(response, error);
@@ -81,7 +78,7 @@ export default class Controller {
             await this.service.deleteOne(id);
             return response.status(httpStatus.OK).json({
                 status: httpStatus.OK,
-                message: 'Delete success',
+                message: "Delete success",
             });
         } catch (error) {
             return this.ErrorHandler(response, error);
@@ -94,7 +91,7 @@ export default class Controller {
             await this.service.deleteMultiple(ids);
             return response.status(httpStatus.OK).json({
                 status: httpStatus.OK,
-                message: 'Delete mutiple success',
+                message: "Delete mutiple success",
             });
         } catch (error) {
             return this.ErrorHandler(response, error);
@@ -111,23 +108,9 @@ export default class Controller {
 
     ErrorHandler(response, error) {
         console.log(error);
-        if (error instanceof LogicError) {
-            return response.status(httpStatus.BAD_REQUEST).json({
-                error: error.message,
-                status: error.status,
-            });
-        }
-
-        if (error instanceof ServerError) {
-            return response.status(httpStatus.INTERNAL_SERVER_ERROR).json({
-                error: error.message,
-                status: error.status,
-            });
-        }
-
-        return response.status(httpStatus.BAD_REQUEST).json({
-            error: 'Not found',
-            status: httpStatus.BAD_REQUEST,
+        return response.status(error.status).json({
+            error: error.message,
+            status: error.status,
         });
     }
 
