@@ -1,5 +1,4 @@
 import ServerError from "../../errors/Server.error";
-import LogicError from "../../errors/Logic.error";
 
 export default class Repository {
     constructor(model) {
@@ -8,7 +7,8 @@ export default class Repository {
 
     getMany({ page = 1, amount = 10 }) {
         return this.model.findAll({
-            limit: page,
+            raw: true,
+            limit: amount,
             amount: (page - 1) * amount,
         });
     }
@@ -51,5 +51,17 @@ export default class Repository {
 
     deleteMultiple(ids) {
         return this.model.deleteMultiple(ids);
+    }
+
+    getRecursive(alias, attributes) {
+        return this.model.findAll({
+            attributes,
+            include: [{
+                attributes,
+                model: this.model,
+                as: alias,
+                nested: true,
+            }],
+        });
     }
 }

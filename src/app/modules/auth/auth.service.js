@@ -66,7 +66,12 @@ class AuthService extends CoreService {
                 id: userInfo.id,
                 slug: userInfo.slug,
             };
-            return TokenService.sign(signPayload);
+            const signToken = TokenService.sign(signPayload);
+            const dataResponse = {
+                userInfo,
+                token: signToken,
+            };
+            return dataResponse;
         }
 
         throw new LogicError("Your email is not fit to your id");
@@ -85,7 +90,11 @@ class AuthService extends CoreService {
             slug: userInfo.slug,
         };
 
-        return TokenService.sign(signPayload);
+        const signToken = TokenService.sign(signPayload);
+        return {
+            token: signToken,
+            userInfo,
+        };
     }
 }
 

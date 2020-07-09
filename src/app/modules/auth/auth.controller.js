@@ -29,14 +29,12 @@ class TestController extends CoreController {
             const { query } = request;
             const { token } = query;
 
-            const signInToken = await this.service.verify(token);
+            const responseData = await this.service.verify(token);
 
             return response.status(httpStatus.OK).json({
                 status: httpStatus.OK,
                 message: "Verify success",
-                results: {
-                    token: signInToken,
-                },
+                results: responseData,
             });
         } catch (error) {
             return this.ErrorHandler(response, error);
@@ -47,14 +45,12 @@ class TestController extends CoreController {
         try {
             const payload = request.body;
 
-            const token = await this.service.signin(payload);
+            const responseData = await this.service.signin(payload);
 
             return response.status(httpStatus.OK).json({
                 status: httpStatus.OK,
                 message: "Sign in success",
-                results: {
-                    token,
-                },
+                results: responseData,
             });
         } catch (error) {
             return this.ErrorHandler(response, error);
