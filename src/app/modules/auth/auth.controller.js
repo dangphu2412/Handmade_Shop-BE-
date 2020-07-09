@@ -29,9 +29,15 @@ class TestController extends CoreController {
             const { query } = request;
             const { token } = query;
 
-            await this.service.verify(token);
+            const signInToken = await this.service.verify(token);
 
-            return response.redirect(`${ServerConfig.FRONT_HOST}`);
+            return response.status(httpStatus.OK).json({
+                status: httpStatus.OK,
+                message: "Verify success",
+                results: {
+                    token: signInToken,
+                },
+            });
         } catch (error) {
             return this.ErrorHandler(response, error);
         }

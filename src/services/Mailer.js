@@ -20,7 +20,7 @@ class Mailer {
             from: this.auth.user,
             to: toEmail,
             subject: this.subject,
-            html: content(`${ServerConfig.HOST}/api/v1/users/mail/verify?token=${verifyToken}`),
+            html: content(`${ServerConfig.FRONT_HOST}/verify?token=${verifyToken}`),
           };
     }
 

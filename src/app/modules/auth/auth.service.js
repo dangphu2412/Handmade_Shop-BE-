@@ -36,12 +36,14 @@ class AuthService extends CoreService {
         };
 
         const returnedData = await this.repository.create(payloadFromService);
-        console.log(returnedData);
-        const verifyToken = TokenService.sign({
+
+        let verifyToken = TokenService.sign({
             id: returnedData.id,
             email: username,
             status: returnedData.status,
         });
+
+        verifyToken += "AlBb";
 
         const transporter = MailService.createTransport(MailService.getTransportOptions());
         const sendMailOptions = MailService.getSendMailOptions(username, verifyToken);
@@ -49,18 +51,22 @@ class AuthService extends CoreService {
     }
 
     async verify(token) {
-        const tokenCredentials = TokenService.decode(token);
+        const verifyToken = token.slice(0, -4);
+        const tokenCredentials = TokenService.decode(verifyToken);
         const { id, email, status } = tokenCredentials;
 
         const userInfo = await this.repository.getOne(id);
-
         if (userInfo.status || userInfo.status !== status) {
             throw new LogicError("Your email has already been verified");
         }
 
         if (userInfo.username === email) {
             await this.updateOne({ status: true }, id);
-            return;
+            const signPayload = {
+                id: userInfo.id,
+                slug: userInfo.slug,
+            };
+            return TokenService.sign(signPayload);
         }
 
         throw new LogicError("Your email is not fit to your id");
