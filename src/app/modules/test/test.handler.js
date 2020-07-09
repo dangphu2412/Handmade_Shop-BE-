@@ -1,7 +1,7 @@
-import CoreHandler from '../../concept/Handler';
-import TestController from './test.controller';
-import AuthenService from '../../../middlewares/Authentication';
-import AuthorizeService from '../../../middlewares/Authorization';
+import CoreHandler from "../../concept/Handler";
+import TestController from "./test.controller";
+import AuthenService from "../../../middlewares/Authentication";
+import AuthorizeService from "../../../middlewares/Authorization";
 
 class TestHandler extends CoreHandler {
     constructor() {
@@ -11,7 +11,7 @@ class TestHandler extends CoreHandler {
     test() {
             return [
                 // this.authen.verify,
-                this.controller.call('getMany'),
+                this.controller.call("getMany"),
             ];
     }
 }

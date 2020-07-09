@@ -1,5 +1,5 @@
-import CoreController from '../../concept/Controller';
-import Service from './test.service';
+import CoreController from "../../concept/Controller";
+import Service from "./test.service";
 
 class TestController extends CoreController {
     constructor() {
