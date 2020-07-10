@@ -81,7 +81,7 @@ class AuthService extends CoreService {
         const { username } = payload;
         const userInfo = await this.repository.getOneByUsername(username);
 
-        if (!userInfo || !userInfo.status || bcrypt.compareSync(userInfo.password, payload.password)) {
+        if (!userInfo || !userInfo.status || !bcrypt.compareSync(userInfo.password, payload.password)) {
             throw new LogicError("Your account is not valid");
         }
 
