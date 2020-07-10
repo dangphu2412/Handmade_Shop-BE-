@@ -13,10 +13,16 @@ module.exports = (sequelize, DataTypes) => {
         as: "districts",
         foreignKey: "districtId",
       });
+      Shop.belongsTo(models.Bank, {
+        as: "banks",
+        foreignKey: "bankId",
+      });
     }
   };
   Shop.init({
     userId: DataTypes.STRING,
+    districtId: DataTypes.STRING,
+    bankId: DataTypes.STRING,
     name: DataTypes.STRING,
     slug: DataTypes.STRING,
     description: DataTypes.STRING,

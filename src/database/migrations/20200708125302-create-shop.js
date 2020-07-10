@@ -24,6 +24,14 @@ module.exports = {
         },
         onUpdate: "CASCADE",
       },
+      bankId: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: "Banks",
+          key: "id",
+        },
+        onUpdate: "CASCADE",
+      },
       name: {
         unique: true,
         allowNull: false,

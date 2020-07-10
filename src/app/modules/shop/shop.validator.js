@@ -10,8 +10,8 @@ class ShopValidator extends CoreValidator {
             cardNumber: this.checkExistsOnly(["body"], "Your cardNumber is missing"),
             bank: this.checkExistsOnly(["body"], "Your bank is missing"),
             bankAccount: this.checkExistsOnly(["body"], "Your bankAccount is missing"),
+            bankId: this.checkNumber(["body"], "Your bankId is missing"),
             districtId: this.checkNumber(["body"], "Your districtId is not valid, must be a number"),
-            
         });
     }
 }

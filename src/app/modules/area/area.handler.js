@@ -18,7 +18,9 @@ class AreaHandler extends CoreHandler {
 
     getDistrictsByCity() {
         return [
-            this.controller.call("getDistrictsByCity"),
+            this.validator.checkParamsId(),
+            this.validator.catchValidateErrors,
+            this.controller.call("getDistrictsByCityId"),
         ];
     }
 }

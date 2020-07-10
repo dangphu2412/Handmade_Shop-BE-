@@ -21,11 +21,11 @@ class AreaController extends CoreController {
         }
     }
 
-    async getDistrictsByCity(request, response) {
+    async getDistrictsByCityId(request, response) {
         try {
             const { params, query } = request;
 
-            const results = await this.service.getDistrictsByCity(params, query);
+            const results = await this.service.getDistrictsByCityId(params, query);
 
             return response.status(httpStatus.OK).json({
                 status: httpStatus.OK,

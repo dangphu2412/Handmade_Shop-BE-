@@ -19,6 +19,18 @@ export default class Repository {
         });
     }
 
+    getRecursive(alias, attributes) {
+        return this.model.findAll({
+            attributes,
+            include: [{
+                attributes,
+                model: this.model,
+                as: alias,
+                nested: true,
+            }],
+        });
+    }
+
     async create(payload, transaction = null, returning = ["*"], include = null) {
         try {
             const response = await this.model.create(payload, {
@@ -51,17 +63,5 @@ export default class Repository {
 
     deleteMultiple(ids) {
         return this.model.deleteMultiple(ids);
-    }
-
-    getRecursive(alias, attributes) {
-        return this.model.findAll({
-            attributes,
-            include: [{
-                attributes,
-                model: this.model,
-                as: alias,
-                nested: true,
-            }],
-        });
     }
 }
