@@ -24,7 +24,6 @@ class ProductService extends CoreService {
                 ...productPayload
             } = payload;
 
-            console.log(`========${materialId} and ${transportId}`)
             productPayload.slug = slugTransfer(productPayload.name);
             productPayload.restAmount = productPayload.amount;
 
@@ -38,6 +37,7 @@ class ProductService extends CoreService {
             await this.repository.createRelationWithMaterial(productId, materialId, transaction);
             await this.repository.createRelationWithTransport(productId, transportId, transaction);
         } catch (error) {
+            console.log(error);
             transaction.rollback();
             throw new ServerError("Server is crashing");
         }

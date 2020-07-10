@@ -15,7 +15,7 @@ class GalleryRepository extends CoreRepository {
             };
         });
 
-        return this.model.bulkInsert(mappingData, {
+        return this.model.bulkCreate(mappingData, {
             transaction,
         });
     }
