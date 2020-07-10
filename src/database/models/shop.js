@@ -9,6 +9,10 @@ module.exports = (sequelize, DataTypes) => {
         as: "users",
         foreignKey: "userId",
       });
+      Shop.belongsTo(models.District, {
+        as: "districts",
+        foreignKey: "districtId",
+      });
     }
   };
   Shop.init({

@@ -42,6 +42,11 @@ module.exports = {
         },
         onUpdate: "CASCADE",
       },
+      shopActive: {
+        allowNull: false,
+        defaultValue: false,
+        type: Sequelize.BOOLEAN,
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,

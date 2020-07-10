@@ -7,21 +7,6 @@ class TransportController extends CoreController {
         super();
         this.service = AuthService;
     }
-
-    async createTransport(request, response) {
-        try {
-            const payload = request.body;
-
-            await this.service.create(payload);
-
-            return response.status(httpStatus.OK).json({
-                status: httpStatus.OK,
-                message: "Create Transport success",
-            });
-        } catch (error) {
-            return this.ErrorHandler(response, error);
-        }
-    }
 }
 
 export default new TransportController();

@@ -1,14 +1,19 @@
 import { checkSchema } from "express-validator";
 import CoreValidator from "../../concept/Validator";
 
-class AuthValidator extends CoreValidator {
-    checkSignUpData() {
+class ShopValidator extends CoreValidator {
+    checkCreateShop() {
         return checkSchema({
-            username: this.checkEmail(["body"], "Your username is not valid"),
-            name: this.checkExistsOnly(["body"], "Your name is missing"),
-            password: this.checkWithLength(["body"], "Your password is not valid", { max: 15, min: 10 }),
+            name: this.checkWithLength(["body"], "Your shop name is not valid", { max: 20, min: 1 }),
+            description: this.checkExistsOnly(["body"], "Your description is missing"),
+            thumbnail: this.checkExistsOnly(["body"], "Your thumbnail is missing"),
+            cardNumber: this.checkExistsOnly(["body"], "Your cardNumber is missing"),
+            bank: this.checkExistsOnly(["body"], "Your bank is missing"),
+            bankAccount: this.checkExistsOnly(["body"], "Your bankAccount is missing"),
+            districtId: this.checkNumber(["body"], "Your districtId is not valid, must be a number"),
+            
         });
     }
 }
 
-export default new AuthValidator();
+export default new ShopValidator();

@@ -7,14 +7,6 @@ class CategoryService extends CoreService {
         super();
         this.repository = CategoryRepository;
     }
-
-    async upload(file) {
-        try {
-
-        } catch (error) {
-
-        }
-    }
 }
 
 export default new CategoryService();

@@ -1,7 +1,6 @@
-"use strict";
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable("Categories", {
+    await queryInterface.createTable("Districts", {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -10,43 +9,33 @@ module.exports = {
       },
       name: {
         unique: true,
+        allowNull: false,
         type: Sequelize.STRING,
       },
       slug: {
         unique: true,
+        allowNull: false,
         type: Sequelize.STRING,
       },
-      parentId: {
-        defaultValue: null,
+      cityId: {
         type: Sequelize.INTEGER,
         references: {
-          model: "Categories",
+          model: "Cities",
           key: "id",
         },
         onUpdate: "CASCADE",
       },
-      status: {
-        allowNull: false,
-        defaultValue: true,
-        type: Sequelize.BOOLEAN,
-      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
-        defaultValue: Sequelize.NOW,
       },
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE,
-        defaultValue: Sequelize.NOW,
-      },
-      deletedAt: {
-        type: Sequelize.DATE,
-        defaultValue: null,
       },
     });
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable("Categories");
+    await queryInterface.dropTable("Districts");
   },
 };

@@ -3,7 +3,7 @@ import { Shop } from "../../../database/models/index";
 
 class ShopRepository extends CoreRepository {
     constructor() {
-        super(User);
+        super(Shop);
     }
 }
 

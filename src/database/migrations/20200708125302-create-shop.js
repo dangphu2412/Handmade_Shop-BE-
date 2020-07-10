@@ -16,6 +16,14 @@ module.exports = {
         },
         onUpdate: "CASCADE",
       },
+      districtId: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: "Districts",
+          key: "id",
+        },
+        onUpdate: "CASCADE",
+      },
       name: {
         unique: true,
         allowNull: false,
