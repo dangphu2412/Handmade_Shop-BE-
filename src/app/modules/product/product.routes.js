@@ -3,6 +3,6 @@ import ProductHandler from "./product.handler";
 
 const router = express.Router();
 
-// router.post("/shop", ProductHandler["createShop"]());
+router.post("/users/shop/product", ProductHandler["createProduct"]());
 
 export default router;

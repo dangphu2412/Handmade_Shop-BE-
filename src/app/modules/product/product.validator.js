@@ -2,11 +2,16 @@ import { checkSchema } from "express-validator";
 import CoreValidator from "../../concept/Validator";
 
 class ProductValidator extends CoreValidator {
-    checkSignUpData() {
+    checkCreateProduct() {
         return checkSchema({
-            username: this.checkEmail(["body"], "Your username is not valid"),
-            name: this.checkExistsOnly(["body"], "Your name is missing"),
-            password: this.checkWithLength(["body"], "Your password is not valid", { max: 15, min: 10 }),
+            shopId: this.checkNumber(["body"], "Your shopId is empty"),
+            categoryId: this.checkNumber(["body"], "Your categoryId is empty"),
+            name: this.checkExistsOnly(["body"], "Your name is empty"),
+            description: this.checkExistsOnly(["body"], "Your description is empty"),
+            price: this.checkNumber(["body"], "Your price is empty"),
+            amount: this.checkNumber(["body"], "Your amount is empty"),
+            materialId: this.checkExistsOnly(["body"], "Your materialId is empty"),
+            transportId: this.checkExistsOnly(["body"], "Your transportId is empty"),
         });
     }
 }

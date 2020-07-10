@@ -12,7 +12,7 @@ class ProductController extends CoreController {
         try {
             const payload = request.body;
 
-            await this.service.create(payload);
+            await this.service.createProduct(payload);
 
             return response.status(httpStatus.OK).json({
                 status: httpStatus.OK,

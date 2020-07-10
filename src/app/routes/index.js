@@ -7,6 +7,7 @@ import transportRoute from "../modules/transport/transport.routes";
 import areaRoute from "../modules/area/area.routes";
 import shopRoute from "../modules/shop/shop.routes";
 import paymentRoute from "../modules/payment/payment.routes";
+import productRoute from "../modules/product/product.routes";
 
 const router = express.Router();
 
@@ -18,5 +19,6 @@ router.use(transportRoute);
 router.use(areaRoute);
 router.use(shopRoute);
 router.use(paymentRoute);
+router.use(productRoute);
 
 export default router;
