@@ -3,7 +3,7 @@ import slugTransfer from "speakingurl";
 import CoreService from "../../concept/Service";
 import ShopRepository from "./shop.repository";
 import AuthRepository from "../auth/auth.repository";
-import ServerError from "../../../errors/Server.error";
+import LogicError from "../../../errors/Logic.error";
 
 
 class ShopService extends CoreService {
@@ -14,18 +14,19 @@ class ShopService extends CoreService {
     }
 
     async createShop(payload) {
-        try {
-            payload.slug = slugTransfer(payload.name);
-            const shopInfo = await this.repository.create(payload);
+        payload.slug = slugTransfer(payload.name);
+        const isExist = await this.authRepository.getOne(payload.userId);
 
-            await this.authRepository.updateOne({
-                shopActive: true,
-            }, payload.userId);
-            return shopInfo;
-        } catch (error) {
-            console.log(error);
-            throw new ServerError("Server is crashing");
+        if (isExist.shopActive) {
+            throw new LogicError("Shop has been created");
         }
+
+        const shopInfo = await this.repository.create(payload);
+
+        await this.authRepository.updateOne({
+            shopActive: true,
+        }, payload.userId);
+        return shopInfo;
     }
 }
 
