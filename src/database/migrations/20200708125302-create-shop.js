@@ -53,10 +53,6 @@ module.exports = {
         allowNull: false,
         type: Sequelize.STRING,
       },
-      bank: {
-        allowNull: false,
-        type: Sequelize.STRING,
-      },
       bankAccount: {
         allowNull: false,
         type: Sequelize.STRING,
