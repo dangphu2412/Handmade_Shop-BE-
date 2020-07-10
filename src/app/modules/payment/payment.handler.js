@@ -11,7 +11,7 @@ class PaymentHandler extends CoreHandler {
 
     getBanks() {
         return [
-            this.controller.call("getBanks"),
+            this.controller.call("getMany"),
         ];
     }
 }

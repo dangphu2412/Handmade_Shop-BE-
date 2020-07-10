@@ -6,6 +6,7 @@ import materialRoute from "../modules/material/material.routes";
 import transportRoute from "../modules/transport/transport.routes";
 import areaRoute from "../modules/area/area.routes";
 import shopRoute from "../modules/shop/shop.routes";
+import paymentRoute from "../modules/payment/payment.routes";
 
 const router = express.Router();
 
@@ -16,5 +17,6 @@ router.use(materialRoute);
 router.use(transportRoute);
 router.use(areaRoute);
 router.use(shopRoute);
+router.use(paymentRoute);
 
 export default router;
