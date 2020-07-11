@@ -1,22 +1,20 @@
 import httpStatus from "http-status";
 import CoreController from "../../concept/Controller";
-import AuthService from "./material.service";
+import MaterialService from "./material.service";
 
 class MaterialController extends CoreController {
     constructor() {
         super();
-        this.service = AuthService;
+        this.service = MaterialService;
     }
 
-    async createMaterial(request, response) {
+    async getMaterials(request, response) {
         try {
-            const payload = request.body;
-
-            await this.service.create(payload);
-
-            return response.status(httpStatus.OK).json({
+            const { query } = request;
+            const results = await this.service.getMaterials(query);
+            return response.json({
                 status: httpStatus.OK,
-                message: "Create Material success",
+                results,
             });
         } catch (error) {
             return this.ErrorHandler(response, error);

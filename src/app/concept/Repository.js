@@ -3,23 +3,35 @@ import ServerError from "../../errors/Server.error";
 export default class Repository {
     constructor(model) {
         this.model = model;
+        this.serverMessageError = "Server is crashing ! Pleas check your input before calling handling";
     }
 
-    getMany({ page = 1, amount = 10 }) {
+    getMany({ page = 1, amount = 10 }, where = null, attributes = ["*"]) {
         return this.model.findAll({
+            where,
             raw: true,
+            attributes,
             limit: amount,
             amount: (page - 1) * amount,
         });
     }
 
-    getOne(id) {
+    getOne(id, attributes = ["*"]) {
         return this.model.findByPk(id, {
-            raw: true
+            raw: true,
+            attributes,
         });
     }
 
-    getRecursive(alias, attributes) {
+    getOneWithConditions(conditions, attributes = ["*"]) {
+        return this.model.findOne({
+            where: conditions,
+            raw: true,
+            attributes,
+        });
+    }
+
+    getRecursive(alias, attributes = ["*"]) {
         return this.model.findAll({
             attributes,
             include: [{
@@ -31,37 +43,50 @@ export default class Repository {
         });
     }
 
-    async create(payload, transaction = null, returning = ["*"], include = null) {
+    async create(payload, transaction = null, returning = ["*"]) {
         try {
             const response = await this.model.create(payload, {
                 raw: true,
                 transaction,
                 returning,
-                include,
             });
             return response;
         } catch (error) {
             console.log(error);
-            throw new ServerError("Your data is unexcepted");
+            throw new ServerError(this.serverMessageError);
         }
     }
 
-    updateOne(payload, id, transaction = null) {
+    async updateOne(payload, id, transaction = null, returning = ["*"]) {
         try {
-            return this.model.update(payload, {
+            const response = await this.model.update(payload, {
                 where: { id },
                 transaction,
+                returning,
             });
+            return response;
         } catch (error) {
-            throw new ServerError("Your data is unexcepted");
+            console.log(error);
+            throw new ServerError(this.serverMessageError);
         }
     }
 
-    deleteOne(id) {
-        return this.model.destroy(id);
-    }
-
-    deleteMultiple(ids) {
-        return this.model.deleteMultiple(ids);
+    async softDeleteOrActiveOne(id, status = false, transaction = null, returning = ["*"]) {
+        try {
+            const response = await this.model.update({
+                status,
+                deletedAt: new Date().toISOString(),
+            }, {
+                where: {
+                    id,
+                },
+                transaction,
+                returning,
+            });
+            return response;
+        } catch (error) {
+            console.log(error);
+            throw new ServerError(this.serverMessageError);
+        }
     }
 }

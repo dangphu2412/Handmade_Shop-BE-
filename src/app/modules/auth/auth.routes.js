@@ -3,6 +3,8 @@ import AuthHandler from "./auth.handler";
 
 const router = express.Router();
 
+router.get("/users", AuthHandler["getAllUsers"]());
+
 router.get("/users/mail/verify", AuthHandler["verifyAccount"]());
 
 router.post("/signup", AuthHandler["signup"]());

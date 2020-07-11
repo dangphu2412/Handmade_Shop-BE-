@@ -13,7 +13,7 @@ class MaterialpHandler extends CoreHandler {
         return [
             // this.validator.checkGetMaterials(),
             // this.validator.catchValidateErrors,
-            this.controller.call("getMany"),
+            this.controller.call("getMaterials"),
         ];
     }
 }

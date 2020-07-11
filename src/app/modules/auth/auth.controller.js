@@ -1,9 +1,8 @@
 import httpStatus from "http-status";
 import CoreController from "../../concept/Controller";
 import AuthService from "./auth.service";
-import { ServerConfig } from "../../../constants/secret";
 
-class TestController extends CoreController {
+class AuthController extends CoreController {
     constructor() {
         super();
         this.service = AuthService;
@@ -73,4 +72,4 @@ class TestController extends CoreController {
     }
 }
 
-export default new TestController();
+export default new AuthController();

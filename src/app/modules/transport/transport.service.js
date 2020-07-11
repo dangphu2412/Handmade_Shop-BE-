@@ -6,6 +6,10 @@ class TransportService extends CoreService {
         super();
         this.repository = TransportRepository;
     }
+
+    getTransports(query) {
+        return this.repository.getMany(query, null, ["id", "brand", "slug", "fee"]);
+    }
 }
 
 export default new TransportService();

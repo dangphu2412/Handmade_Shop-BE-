@@ -19,12 +19,6 @@ class AuthService extends CoreService {
 
     async signup(payload) {
         const { username, password, name } = payload;
-        const isExistWithEmail = await this.repository.getOneByUsername(username);
-
-        if (isExistWithEmail) {
-            throw new LogicError("Your username has already been existed");
-        }
-
         const hashedPassword = bcrypt.hashSync(password, saltRounds);
         const slug = slugTransfer(name, { uric: true });
 
@@ -35,7 +29,9 @@ class AuthService extends CoreService {
             password: hashedPassword,
         };
 
-        const returnedData = await this.repository.create(payloadFromService);
+        const returnedData = await this.findNotThenCreate(payloadFromService,
+        { username },
+        "Your username has already been existed");
 
         let verifyToken = TokenService.sign({
             id: returnedData.id,
@@ -60,30 +56,36 @@ class AuthService extends CoreService {
             throw new LogicError("Your email has already been verified");
         }
 
-        if (userInfo.username === email) {
-            await this.updateOne({ status: true }, id);
-            const signPayload = {
-                id: userInfo.id,
-                slug: userInfo.slug,
-            };
-            const signToken = TokenService.sign(signPayload);
-            const dataResponse = {
-                userInfo,
-                token: signToken,
-            };
-            return dataResponse;
+        if (userInfo.username !== email) {
+            throw new LogicError("Your email is not fit to your id");
         }
 
-        throw new LogicError("Your email is not fit to your id");
+        await this.updateOne({ status: true }, id);
+        const signPayload = {
+            id: userInfo.id,
+            slug: userInfo.slug,
+        };
+        const signToken = TokenService.sign(signPayload);
+        const dataResponse = {
+            userInfo,
+            token: signToken,
+        };
+        return dataResponse;
     }
 
     async signin(payload) {
-        const { username } = payload;
-        const userInfo = await this.repository.getOneByUsername(username);
+        const { username, password } = payload;
+        const userInfo = await this.repository.getOneWithConditions({ username, status: true },
+            ["id", "username", "name", "slug", "password", "avatar", "shopActive"]);
 
-        if (!userInfo || !userInfo.status || !bcrypt.compareSync(userInfo.password, payload.password)) {
+        if (!userInfo) {
             throw new LogicError("Your account is not valid");
         }
+        if (!bcrypt.compareSync(password, userInfo.password)) {
+            throw new LogicError("Your password is not valid");
+        }
+
+        delete userInfo.password;
 
         const signPayload = {
             id: userInfo.id,

@@ -1,6 +1,8 @@
 import LogicError from "../../errors/Logic.error";
 
 export default class Service {
+    serviceMessageError = "Your input has been created";
+
     repository;
 
     getMany(query) {
@@ -23,15 +25,20 @@ export default class Service {
         return this.repository.create(payload);
     }
 
+    async findNotThenCreate(payload, conditions, msg = this.serviceMessageError, attributes = ["*"]) {
+        const found = await this.repository.getOneWithConditions(conditions, attributes);
+        if (found) {
+            throw new LogicError(msg);
+        }
+        const response = await this.repository.create(payload);
+        return response;
+    }
+
     updateOne(payload, id) {
         return this.repository.updateOne(payload, id);
     }
 
-    deleteOne(id) {
+    softDeleteOne(id) {
         return this.repository.deleteOne(id);
-    }
-
-    deleteMultiple(ids) {
-        return this.repository.deleteMultiple(ids);
     }
 }
