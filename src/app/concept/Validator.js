@@ -16,6 +16,7 @@ class Validator {
             errorMessage: msg,
             isEmail: true,
             exists: true,
+            trim: true,
         };
     }
 

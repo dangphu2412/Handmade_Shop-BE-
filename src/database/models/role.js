@@ -23,7 +23,7 @@ module.exports = (sequelize, DataTypes) => {
     status: DataTypes.BOOLEAN,
     createdAt: DataTypes.DATE,
     updatedAt: DataTypes.DATE,
-    deleteddAt: DataTypes.DATE,
+    deletedAt: DataTypes.DATE,
   }, {
     sequelize,
     modelName: "Role",

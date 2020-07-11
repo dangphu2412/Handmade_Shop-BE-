@@ -1,6 +1,6 @@
 import express from "express";
-import initBase from "./config/initBase";
 
+import initBase from "./config/initBase";
 import "dotenv/config";
 
 const app = express();

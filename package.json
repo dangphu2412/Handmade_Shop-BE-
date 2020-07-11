@@ -45,7 +45,9 @@
     "pg": "^8.2.1",
     "pg-hstore": "^2.3.3",
     "sequelize": "^6.2.0",
-    "speakingurl": "^14.0.1"
+    "speakingurl": "^14.0.1",
+    "swagger-jsdoc": "^4.0.0",
+    "swagger-ui-express": "^4.1.4"
   },
   "devDependencies": {
     "@babel/cli": "^7.10.4",
