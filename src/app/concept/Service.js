@@ -25,17 +25,27 @@ export default class Service {
         return this.repository.create(payload);
     }
 
-    async findNotThenCreate(payload, conditions, msg = this.serviceMessageError, attributes = ["*"]) {
-        const found = await this.repository.getOneWithConditions(conditions, attributes);
-        if (found) {
+    async findNotThenCreate(payload, conditions = ["*"], transaction = null, msg = this.serviceMessageError, attributes = ["*"]) {
+        const [response, isCreated] = await this.repository.findNotThenCreate(conditions, attributes, transaction, attributes);
+
+        if (!isCreated) {
             throw new LogicError(msg);
         }
-        const response = await this.repository.create(payload);
+
         return response;
     }
 
     updateOne(payload, id) {
         return this.repository.updateOne(payload, id);
+    }
+
+    async upsert(payload, transaction = null, returning = ["*"]) {
+            const [record, created] = await this.repository.upsert(payload, transaction, returning);
+
+            return {
+                record,
+                created,
+            };
     }
 
     softDeleteOne(id) {

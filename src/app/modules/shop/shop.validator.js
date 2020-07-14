@@ -4,13 +4,13 @@ import CoreValidator from "../../concept/Validator";
 class ShopValidator extends CoreValidator {
     checkCreateShop() {
         return checkSchema({
-            name: this.checkWithLength(["body"], "Your shop name is not valid", { max: 20, min: 1 }),
-            description: this.checkExistsOnly(["body"], "Your description is missing"),
-            thumbnail: this.checkExistsOnly(["body"], "Your thumbnail is missing"),
-            cardNumber: this.checkExistsOnly(["body"], "Your cardNumber is missing"),
-            bankAccount: this.checkExistsOnly(["body"], "Your bankAccount is missing"),
-            bankId: this.checkNumber(["body"], "Your bankId is missing"),
-            districtId: this.checkNumber(["body"], "Your districtId is not valid, must be a number"),
+            name: this.checkWithLength(["body"], "Name ", { max: 20, min: 1 }),
+            description: this.checkExistsOnly(["body"], "Description "),
+            thumbnail: this.checkExistsOnly(["body"], "Thumbnail "),
+            cardNumber: this.checkExistsOnly(["body"], "CardNumber "),
+            bankAccount: this.checkExistsOnly(["body"], "BankAccount "),
+            bankId: this.checkNumber(["body"], "BankId "),
+            districtId: this.checkNumber(["body"], "DistrictIdr"),
         });
     }
 }

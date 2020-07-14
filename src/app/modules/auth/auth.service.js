@@ -75,7 +75,7 @@ class AuthService extends CoreService {
 
     async signin(payload) {
         const { username, password } = payload;
-        const userInfo = await this.repository.getOneWithConditions({ username, status: true },
+        const userInfo = await this.repository.getOneWithConditions({ username, status: true }, null,
             ["id", "username", "name", "slug", "password", "avatar", "shopActive"]);
 
         if (!userInfo) {

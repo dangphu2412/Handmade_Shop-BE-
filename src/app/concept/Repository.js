@@ -16,18 +16,20 @@ export default class Repository {
         });
     }
 
-    getOne(id, attributes = ["*"]) {
+    getOne(id, include = null, attributes = ["*"]) {
         return this.model.findByPk(id, {
             raw: true,
             attributes,
+            include,
         });
     }
 
-    getOneWithConditions(conditions, attributes = ["*"]) {
+    getOneWithConditions(conditions, include = null, attributes = ["*"]) {
         return this.model.findOne({
             where: conditions,
             raw: true,
             attributes,
+            include,
         });
     }
 
@@ -43,12 +45,12 @@ export default class Repository {
         });
     }
 
-    async create(payload, transaction = null, returning = ["*"]) {
+    async create(payload, transaction = null, attributes = ["*"]) {
         try {
             const response = await this.model.create(payload, {
                 raw: true,
                 transaction,
-                returning,
+                attributes,
             });
             return response;
         } catch (error) {
@@ -57,12 +59,28 @@ export default class Repository {
         }
     }
 
-    async updateOne(payload, id, transaction = null, returning = ["*"]) {
+    async findNotThenCreate(payload, conditions = null, transaction = null, attributes = ["*"]) {
+        try {
+            const response = await this.model.findOrCreate({
+                raw: true,
+                where: conditions,
+                defaults: payload,
+                transaction,
+                attributes,
+            });
+            return response;
+        } catch (error) {
+            console.log(error);
+            throw new ServerError(this.serverMessageError);
+        }
+    }
+
+    async updateOne(payload, id, transaction = null, attributes = ["*"]) {
         try {
             const response = await this.model.update(payload, {
                 where: { id },
                 transaction,
-                returning,
+                attributes,
             });
             return response;
         } catch (error) {
@@ -71,7 +89,21 @@ export default class Repository {
         }
     }
 
-    async softDeleteOrActiveOne(id, status = false, transaction = null, returning = ["*"]) {
+    async upsert(payload, transaction = null, attributes = ["*"]) {
+        try {
+            const response = await this.model.upsert(payload, {
+                raw: true,
+                transaction,
+                attributes,
+            });
+            return response;
+        } catch (error) {
+            console.log(error);
+            throw new ServerError(this.serverMessageError);
+        }
+    }
+
+    async softDeleteOrActiveOne(id, status = false, transaction = null, attributes = ["*"]) {
         try {
             const response = await this.model.update({
                 status,
@@ -81,7 +113,7 @@ export default class Repository {
                     id,
                 },
                 transaction,
-                returning,
+                attributes,
             });
             return response;
         } catch (error) {
