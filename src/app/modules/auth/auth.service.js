@@ -30,7 +30,7 @@ class AuthService extends CoreService {
         };
 
         const returnedData = await this.findNotThenCreate(payloadFromService,
-        { username },
+        { username }, null,
         "Your username has already been existed");
 
         let verifyToken = TokenService.sign({

@@ -25,8 +25,8 @@ export default class Service {
         return this.repository.create(payload);
     }
 
-    async findNotThenCreate(payload, conditions = ["*"], transaction = null, msg = this.serviceMessageError, attributes = ["*"]) {
-        const [response, isCreated] = await this.repository.findNotThenCreate(conditions, attributes, transaction, attributes);
+    async findNotThenCreate(payload, conditions = null, transaction = null, msg = this.serviceMessageError, attributes = null) {
+        const [response, isCreated] = await this.repository.findNotThenCreate(payload, conditions, transaction, attributes);
 
         if (!isCreated) {
             throw new LogicError(msg);
