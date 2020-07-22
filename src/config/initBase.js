@@ -2,8 +2,10 @@ import express from "express";
 import logger from "morgan";
 import methodOverride from "method-override";
 import cors from "cors";
+import swaggerUi from "swagger-ui-express";
 
 import initRoutes from "../app/routes";
+import swaggerConfig from "./swagger";
 
 export default (app) => {
     app.use(logger("dev"));
@@ -23,6 +25,7 @@ export default (app) => {
 		}));
 
     app.use("/api/v1/", initRoutes);
+    app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerConfig));
 
     app.use("*", (req, res) => res.status(404).json({
 					status: 404,

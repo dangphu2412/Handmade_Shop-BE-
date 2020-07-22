@@ -1,9 +1,8 @@
 import httpStatus from "http-status";
 import CoreController from "../../concept/Controller";
 import AuthService from "./auth.service";
-import { ServerConfig } from "../../../constants/secret";
 
-class TestController extends CoreController {
+class AuthController extends CoreController {
     constructor() {
         super();
         this.service = AuthService;
@@ -29,9 +28,13 @@ class TestController extends CoreController {
             const { query } = request;
             const { token } = query;
 
-            await this.service.verify(token);
+            const responseData = await this.service.verify(token);
 
-            return response.redirect(`${ServerConfig.FRONT_HOST}`);
+            return response.status(httpStatus.OK).json({
+                status: httpStatus.OK,
+                message: "Verify success",
+                data: responseData,
+            });
         } catch (error) {
             return this.ErrorHandler(response, error);
         }
@@ -41,14 +44,12 @@ class TestController extends CoreController {
         try {
             const payload = request.body;
 
-            const token = await this.service.signin(payload);
+            const responseData = await this.service.signin(payload);
 
             return response.status(httpStatus.OK).json({
                 status: httpStatus.OK,
                 message: "Sign in success",
-                results: {
-                    token,
-                },
+                data: responseData,
             });
         } catch (error) {
             return this.ErrorHandler(response, error);
@@ -71,4 +72,4 @@ class TestController extends CoreController {
     }
 }
 
-export default new TestController();
+export default new AuthController();

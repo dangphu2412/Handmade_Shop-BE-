@@ -1,10 +1,16 @@
 import LogicError from "../../errors/Logic.error";
 
 export default class Service {
+    serviceMessageError = "Your input has been created";
+
     repository;
 
     getMany(query) {
         return this.repository.getMany(query);
+    }
+
+    getRecursive(alias, attributes) {
+        return this.repository.getRecursive(alias, attributes);
     }
 
     async getOne(id) {
@@ -19,15 +25,30 @@ export default class Service {
         return this.repository.create(payload);
     }
 
+    async findNotThenCreate(payload, conditions = null, transaction = null, msg = this.serviceMessageError, attributes = null) {
+        const [response, isCreated] = await this.repository.findNotThenCreate(payload, conditions, transaction, attributes);
+
+        if (!isCreated) {
+            throw new LogicError(msg);
+        }
+
+        return response;
+    }
+
     updateOne(payload, id) {
         return this.repository.updateOne(payload, id);
     }
 
-    deleteOne(id) {
-        return this.repository.deleteOne(id);
+    async upsert(payload, transaction = null, returning = ["*"]) {
+            const [record, created] = await this.repository.upsert(payload, transaction, returning);
+
+            return {
+                record,
+                created,
+            };
     }
 
-    deleteMultiple(ids) {
-        return this.repository.deleteMultiple(ids);
+    softDeleteOne(id) {
+        return this.repository.deleteOne(id);
     }
 }

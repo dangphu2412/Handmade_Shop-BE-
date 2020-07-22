@@ -1,3 +1,5 @@
+import "dotenv/config";
+
 export const ServerConfig = {
     HOST: process.env.HOST,
     PORT: process.env.PORT,
@@ -18,8 +20,16 @@ export const MailAuthConfig = {
     pass: process.env.EMAIL_PASSWORD,
 };
 
+export const CloudinaryConfig = {
+    cloud_name: process.env.CLOUD_NAME,
+    api_key: process.env.CLOUD_API_KEY,
+    api_secret: process.env.CLOUD_API_SECRET,
+    enhance_image_tag: true,
+    static_file_support: false,
+};
+
 if (!ServerConfig.FRONT_HOST || !ServerConfig.HOST || !ServerConfig.PORT) {
-    console.error("You are missing server config in env! Please check config/secrect.js");
+    console.error("You are missing server config in env! Please check constants/secrect.js");
     process.exit(1);
 }
 

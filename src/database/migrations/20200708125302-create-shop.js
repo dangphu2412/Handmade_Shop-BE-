@@ -16,6 +16,22 @@ module.exports = {
         },
         onUpdate: "CASCADE",
       },
+      districtId: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: "Districts",
+          key: "id",
+        },
+        onUpdate: "CASCADE",
+      },
+      bankId: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: "Banks",
+          key: "id",
+        },
+        onUpdate: "CASCADE",
+      },
       name: {
         unique: true,
         allowNull: false,
@@ -37,10 +53,6 @@ module.exports = {
         allowNull: false,
         type: Sequelize.STRING,
       },
-      bank: {
-        allowNull: false,
-        type: Sequelize.STRING,
-      },
       bankAccount: {
         allowNull: false,
         type: Sequelize.STRING,
@@ -53,10 +65,12 @@ module.exports = {
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
+        defaultValue: Sequelize.NOW,
       },
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE,
+        defaultValue: Sequelize.NOW,
       },
       deletedAt: {
         type: Sequelize.DATE,

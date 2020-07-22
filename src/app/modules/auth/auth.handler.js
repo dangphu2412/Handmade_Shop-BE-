@@ -38,6 +38,12 @@ class TestHandler extends CoreHandler {
             this.controller.call("oauthGoogle"),
         ];
     }
+
+    getAllUsers() {
+        return [
+            this.controller.call("getMany"),
+        ];
+    }
 }
 
 export default new TestHandler();

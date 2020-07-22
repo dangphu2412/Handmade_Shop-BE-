@@ -12,11 +12,16 @@ class ShopController extends CoreController {
         try {
             const payload = request.body;
 
-            await this.service.create(payload);
+            const credentials = this.getCredentialInfo(request);
+
+            payload.userId = credentials.userId;
+
+            const data = await this.service.createShop(payload);
 
             return response.status(httpStatus.OK).json({
                 status: httpStatus.OK,
                 message: "Create shop success",
+                data,
             });
         } catch (error) {
             return this.ErrorHandler(response, error);

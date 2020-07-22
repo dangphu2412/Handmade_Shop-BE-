@@ -4,7 +4,7 @@ import ShopValidator from "./shop.validator";
 import AuthenService from "../../../middlewares/Authentication";
 import AuthorizeService from "../../../middlewares/Authorization";
 
-class ShoppHandler extends CoreHandler {
+class ShopHandler extends CoreHandler {
     constructor() {
         super(ShopController, AuthenService, AuthorizeService, ShopValidator);
     }
@@ -13,9 +13,10 @@ class ShoppHandler extends CoreHandler {
         return [
             this.validator.checkCreateShop(),
             this.validator.catchValidateErrors,
+            this.authen.call("verify"),
             this.controller.call("createShop"),
         ];
     }
 }
 
-export default new ShoppHandler();
+export default new ShopHandler();

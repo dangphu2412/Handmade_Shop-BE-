@@ -9,9 +9,11 @@ module.exports = {
         type: Sequelize.INTEGER,
       },
       name: {
+        unique: true,
         type: Sequelize.STRING,
       },
       slug: {
+        unique: true,
         type: Sequelize.STRING,
       },
       parentId: {
@@ -31,10 +33,12 @@ module.exports = {
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
+        defaultValue: Sequelize.NOW,
       },
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE,
+        defaultValue: Sequelize.NOW,
       },
       deletedAt: {
         type: Sequelize.DATE,

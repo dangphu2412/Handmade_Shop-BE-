@@ -1,6 +1,4 @@
 import httpStatus from "http-status";
-import LogicError from "../../errors/Logic.error";
-import ServerError from "../../errors/Server.error";
 
 export default class Controller {
     service
@@ -8,10 +6,10 @@ export default class Controller {
     async getMany(request, response) {
         try {
             const { query } = request;
-            const results = await this.service.getMany(query);
+            const data = await this.service.getMany(query);
             return response.json({
                 status: httpStatus.OK,
-                results,
+                data,
             });
         } catch (error) {
             return this.ErrorHandler(response, error);
@@ -22,10 +20,10 @@ export default class Controller {
         try {
             const { params } = request;
             const { ids } = params;
-            const results = await this.service.getByIds(ids);
+            const data = await this.service.getByIds(ids);
             return response.status(httpStatus.OK).json({
                 status: httpStatus.OK,
-                results,
+                data,
             });
         } catch (error) {
             return this.ErrorHandler(response, error);
@@ -35,10 +33,10 @@ export default class Controller {
     async getOne(request, response) {
         try {
             const { id } = request.params;
-            const result = await this.service.getOne(id);
+            const data = await this.service.getOne(id);
             return response.json({
                 status: httpStatus.OK,
-                result,
+                data,
             });
         } catch (error) {
             return this.ErrorHandler(response, error);
@@ -72,26 +70,13 @@ export default class Controller {
         }
     }
 
-    async deleteOne(request, response) {
+    async softDeleteOne(request, response) {
         try {
             const { id } = request.params;
-            await this.service.deleteOne(id);
+            await this.service.softDeleteOne(id);
             return response.status(httpStatus.OK).json({
                 status: httpStatus.OK,
                 message: "Delete success",
-            });
-        } catch (error) {
-            return this.ErrorHandler(response, error);
-        }
-    }
-
-    async deleteMultiple(request, response) {
-        try {
-            const { ids } = request.payload;
-            await this.service.deleteMultiple(ids);
-            return response.status(httpStatus.OK).json({
-                status: httpStatus.OK,
-                message: "Delete mutiple success",
             });
         } catch (error) {
             return this.ErrorHandler(response, error);
@@ -108,9 +93,15 @@ export default class Controller {
 
     ErrorHandler(response, error) {
         console.log(error);
-        return response.status(error.status).json({
-            error: error.message,
-            status: error.status,
+        if (error.status) {
+            return response.status(error.status).json({
+                message: error.message,
+                status: error.status,
+            });
+        }
+        return response.status(httpStatus.INTERNAL_SERVER_ERROR).json({
+            message: "Server is crashing",
+            status: httpStatus.INTERNAL_SERVER_ERROR,
         });
     }
 

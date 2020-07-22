@@ -1,7 +1,7 @@
-import express from 'express';
-import initBase from './config/initBase';
+import express from "express";
 
-import 'dotenv/config';
+import initBase from "./config/initBase";
+import "dotenv/config";
 
 const app = express();
 
