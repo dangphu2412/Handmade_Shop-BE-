@@ -94,13 +94,13 @@ export default class Controller {
     ErrorHandler(response, error) {
         console.log(error);
         if (error.status) {
-            return response.status(error.status).json({
+            return response.status(httpStatus.OK).json({
                 message: error.message,
                 status: error.status,
             });
         }
-        return response.status(httpStatus.INTERNAL_SERVER_ERROR).json({
-            message: "Server is crashing",
+        return response.status(httpStatus.OK).json({
+            message: error,
             status: httpStatus.INTERNAL_SERVER_ERROR,
         });
     }

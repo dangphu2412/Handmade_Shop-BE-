@@ -32,7 +32,7 @@ class Authentication {
 
             return next();
         } catch (error) {
-            return response.status(httpStatus.UNAUTHORIZED).json({
+            return response.status(httpStatus.OK).json({
                 status: error.status,
                 message: error.message,
             });
