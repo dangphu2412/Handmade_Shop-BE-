@@ -3,27 +3,7 @@ import GalleryHandler from "./gallery.handler";
 
 const router = express.Router();
 
- /**
-   * @swagger
-   * definitions:
-   *   ApiResponse:
-   *     type: object
-   *     properties:
-   *       status:
-   *         type: integer
-   *         format: int32
-   *       message:
-   *         type: string
-   *       data:
-   *         type: object
-   *   ErrorResponse:
-   *     type: object
-   *     properties:
-   *       status:
-   *         type: integer
-   *       message:
-   *         type: string
-   */
+router.post("/gallery", GalleryHandler["uploadImage"]());
 
   /**
    * @swagger
@@ -62,7 +42,5 @@ const router = express.Router();
    *           type: object
    *           $ref: '#/definitions/ErrorResponse'
    */
-
-router.post("/gallery", GalleryHandler["uploadImage"]());
 
 export default router;

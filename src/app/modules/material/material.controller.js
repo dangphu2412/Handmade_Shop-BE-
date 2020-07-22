@@ -11,10 +11,10 @@ class MaterialController extends CoreController {
     async getMaterials(request, response) {
         try {
             const { query } = request;
-            const results = await this.service.getMaterials(query);
+            const data = await this.service.getMaterials(query);
             return response.json({
                 status: httpStatus.OK,
-                results,
+                data,
             });
         } catch (error) {
             return this.ErrorHandler(response, error);

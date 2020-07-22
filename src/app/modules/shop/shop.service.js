@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import slugTransfer from "speakingurl";
 
 import CoreService from "../../concept/Service";
@@ -14,19 +15,23 @@ class ShopService extends CoreService {
     }
 
     async createShop(payload) {
-        payload.slug = slugTransfer(payload.name);
-        const isExist = await this.authRepository.getOne(payload.userId);
+        const { name, userId } = payload;
+
+        payload.slug = slugTransfer(name);
+
+        const isExist = await this.authRepository.getOne(userId);
 
         if (isExist.shopActive) {
             throw new LogicError("Shop has been created");
         }
 
-        const shopInfo = await this.repository.create(payload);
+        const response = await this.repository.create(payload);
 
         await this.authRepository.updateOne({
             shopActive: true,
         }, payload.userId);
-        return shopInfo;
+
+        return response;
     }
 }
 

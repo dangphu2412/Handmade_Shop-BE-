@@ -6,10 +6,10 @@ export default class Controller {
     async getMany(request, response) {
         try {
             const { query } = request;
-            const results = await this.service.getMany(query);
+            const data = await this.service.getMany(query);
             return response.json({
                 status: httpStatus.OK,
-                results,
+                data,
             });
         } catch (error) {
             return this.ErrorHandler(response, error);
@@ -20,10 +20,10 @@ export default class Controller {
         try {
             const { params } = request;
             const { ids } = params;
-            const results = await this.service.getByIds(ids);
+            const data = await this.service.getByIds(ids);
             return response.status(httpStatus.OK).json({
                 status: httpStatus.OK,
-                results,
+                data,
             });
         } catch (error) {
             return this.ErrorHandler(response, error);
@@ -33,10 +33,10 @@ export default class Controller {
     async getOne(request, response) {
         try {
             const { id } = request.params;
-            const result = await this.service.getOne(id);
+            const data = await this.service.getOne(id);
             return response.json({
                 status: httpStatus.OK,
-                result,
+                data,
             });
         } catch (error) {
             return this.ErrorHandler(response, error);
@@ -95,12 +95,12 @@ export default class Controller {
         console.log(error);
         if (error.status) {
             return response.status(error.status).json({
-                error: error.message,
+                message: error.message,
                 status: error.status,
             });
         }
         return response.status(httpStatus.INTERNAL_SERVER_ERROR).json({
-            error: "Server is crashing",
+            message: "Server is crashing",
             status: httpStatus.INTERNAL_SERVER_ERROR,
         });
     }

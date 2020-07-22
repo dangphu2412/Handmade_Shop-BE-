@@ -11,7 +11,7 @@ const swaggerOptions = {
         },
         basePath: "/api/v1",
     },
-    apis: ["./src/app/modules/**/*.routes.js"],
+    apis: ["./src/app/modules/**/*.routes.js", "./src/app/modules/swagger.def.js"],
 };
 
 export default swaggerDocs(swaggerOptions);

@@ -16,12 +16,12 @@ class ShopController extends CoreController {
 
             payload.userId = credentials.userId;
 
-            const shopInfo = await this.service.createShop(payload);
+            const data = await this.service.createShop(payload);
 
             return response.status(httpStatus.OK).json({
                 status: httpStatus.OK,
                 message: "Create shop success",
-                results: shopInfo
+                data,
             });
         } catch (error) {
             return this.ErrorHandler(response, error);

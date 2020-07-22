@@ -12,10 +12,10 @@ class PaymentController extends CoreController {
     async getBanks(request, response) {
         try {
             const { query } = request;
-            const results = await this.service.getBanks(query);
+            const data = await this.service.getBanks(query);
             return response.json({
                 status: httpStatus.OK,
-                results,
+                data,
             });
         } catch (error) {
             return this.ErrorHandler(response, error);

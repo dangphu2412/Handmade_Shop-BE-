@@ -1,18 +1,29 @@
-import { ROLE } from "../constants/role";
 import AuthorizeError from "../errors/Authorize.error";
 import { User, Role, Permission } from "../database/models/index";
 
 class Authentication {
-    constructor() {
-        this.role = ROLE;
+    WithScope(role, method, module) {
+        const passScope = (request, response, next) => {
+            request.auth.credentials.scope = {
+                role,
+                method,
+                module,
+            };
+            return next();
+        };
+        return [
+            passScope,
+            this.Authorize,
+        ];
     }
 
-    async getScopeAfterAuthenticate(request, response, next) {
+    async Authorize(request, response, next) {
         if (!request.auth.isAuthenticated) {
-            throw new AuthorizeError("Missing middleware authenticate");
+            throw new AuthorizeError("Backend forgot to pass middleware");
         }
-        const { id } = request.auth.credentials;
-        const scope = await User.findOne({
+        const { id, scope: required } = request.auth.credentials;
+
+        const userScope = await User.findOne({
             where: { id },
             include: [{
                 model: Role,
@@ -21,21 +32,23 @@ class Authentication {
                 include: [{
                     model: Permission,
                     as: "permissions",
-                    attributes: ["id", "method", "module"],
-                    where: { status: true }
+                    attributes: ["method", "module"],
+                    where: { status: true },
+                    through: [{}],
                 }],
             }],
         });
+        const { role: roleRequired, method: methodRequired, module: moduleRequired} = required;
+        const { role } = userScope;
+        const { permissions, roleName } = role;
 
-        request.auth.credentials.scope = {
-            scope: scope.role.roleName,
-            permissions: scope.role.permissions,
-        };
-        return next();
-    }
+        permissions.forEach((permission) => {
+            if (permission.method === methodRequired && permission.module === moduleRequired) {
+                return next();
+            }
+        });
 
-    authorizeScope(method, module, userScope) {
-
+        throw new AuthorizeError(`Your role ${roleName} is not allowed to do this action. You should be ${roleRequired}`);
     }
 }
 

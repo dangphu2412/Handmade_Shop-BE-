@@ -11,10 +11,10 @@ class TransportController extends CoreController {
     async getTransport(request, response) {
         try {
             const { query } = request;
-            const results = await this.service.getTransports(query);
+            const data = await this.service.getTransports(query);
             return response.json({
                 status: httpStatus.OK,
-                results,
+                data,
             });
         } catch (error) {
             return this.ErrorHandler(response, error);

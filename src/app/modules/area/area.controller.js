@@ -11,10 +11,10 @@ class AreaController extends CoreController {
     async getCities(request, response) {
         try {
             const { query } = request;
-            const results = await this.service.getCities(query);
+            const data = await this.service.getCities(query);
             return response.json({
                 status: httpStatus.OK,
-                results,
+                data,
             });
         } catch (error) {
             return this.ErrorHandler(response, error);
@@ -25,12 +25,12 @@ class AreaController extends CoreController {
         try {
             const { params, query } = request;
 
-            const results = await this.service.getDistrictsByCityId(params, query);
+            const data = await this.service.getDistrictsByCityId(params, query);
 
             return response.status(httpStatus.OK).json({
                 status: httpStatus.OK,
                 message: "Get success Area success",
-                results,
+                data,
             });
         } catch (error) {
             return this.ErrorHandler(response, error);

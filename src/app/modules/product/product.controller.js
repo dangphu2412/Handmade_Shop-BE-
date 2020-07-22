@@ -10,7 +10,10 @@ class ProductController extends CoreController {
 
     async createProduct(request, response) {
         try {
+            const { id: shopId } = request.params;
             const payload = request.body;
+
+            payload.shopId = shopId;
 
             await this.service.createProduct(payload);
 

@@ -12,10 +12,10 @@ class CategoryController extends CoreController {
     async getRecursiveCategories(request, response) {
         try {
             const attributes = ["id", "parentId", "name", "slug"];
-            const categories = await this.service.getRecursive("categories", attributes);
+            const data = await this.service.getRecursive("children", attributes);
             return response.json({
                 status: httpStatus.OK,
-                results: categories,
+                data,
             });
         } catch (error) {
             return this.ErrorHandler(response, error);

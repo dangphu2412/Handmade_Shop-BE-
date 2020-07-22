@@ -33,7 +33,7 @@ class AuthController extends CoreController {
             return response.status(httpStatus.OK).json({
                 status: httpStatus.OK,
                 message: "Verify success",
-                results: responseData,
+                data: responseData,
             });
         } catch (error) {
             return this.ErrorHandler(response, error);
@@ -49,7 +49,7 @@ class AuthController extends CoreController {
             return response.status(httpStatus.OK).json({
                 status: httpStatus.OK,
                 message: "Sign in success",
-                results: responseData,
+                data: responseData,
             });
         } catch (error) {
             return this.ErrorHandler(response, error);

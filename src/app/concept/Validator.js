@@ -60,7 +60,7 @@ class Validator {
             console.log(error);
             return response.status(422).json({
                 status: 422,
-                errors: `${error.errors[0].msg} in ${error.errors[0].location}`,
+                message: `${error.errors[0].msg} in ${error.errors[0].location}`,
             });
         }
     }
