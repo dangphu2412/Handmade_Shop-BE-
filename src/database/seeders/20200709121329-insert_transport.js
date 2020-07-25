@@ -1,7 +1,8 @@
-module.exports = {
-  up: async (queryInterface, Sequelize) => {
+export default {
+  up: async (queryInterface) => {
     await queryInterface.bulkInsert("Transports", [{
         brand: "Grab",
+        slug: "grab",
         fee: 0.15,
         status: true,
         createdAt: new Date().toISOString(),
@@ -10,6 +11,7 @@ module.exports = {
      },
      {
         brand: "Bee",
+        slug: "bee",
         fee: 0.15,
         status: true,
         createdAt: new Date().toISOString(),
@@ -18,6 +20,7 @@ module.exports = {
       },
       {
         brand: "VnExpress",
+        slug: "vnexpress",
         fee: 0.15,
         status: true,
         createdAt: new Date().toISOString(),
@@ -26,6 +29,7 @@ module.exports = {
      },
     {
         brand: "GiaoHangNhanh",
+        slug: "giaohangnhanh",
         fee: 0.15,
         status: true,
         createdAt: new Date().toISOString(),
@@ -35,7 +39,7 @@ module.exports = {
     ]);
   },
 
-  down: async (queryInterface, Sequelize) => {
+  down: async (queryInterface) => {
     await queryInterface.bulkDelete("Transports", null, {});
   },
 };

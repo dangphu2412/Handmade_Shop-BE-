@@ -1,5 +1,5 @@
-module.exports = {
-  up: async (queryInterface, Sequelize) => {
+export default {
+  up: async (queryInterface) => {
     await queryInterface.bulkInsert("Categories", [{
       name: "Áo quần",
       slug: "ao-quan",
@@ -120,7 +120,7 @@ module.exports = {
   ]);
   },
 
-  down: async (queryInterface, Sequelize) => {
+  down: async (queryInterface) => {
      await queryInterface.bulkDelete("Categories", null, {});
   },
 };

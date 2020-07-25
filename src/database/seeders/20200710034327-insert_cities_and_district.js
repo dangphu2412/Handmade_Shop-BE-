@@ -1,5 +1,5 @@
-module.exports = {
-  up: async (queryInterface, Sequelize) => {
+export default {
+  up: async (queryInterface) => {
     await queryInterface.bulkInsert("Cities", [{
       name: "Đà Nẵng",
       slug: "da-nang",
@@ -118,7 +118,7 @@ module.exports = {
     ]);
   },
 
-  down: async (queryInterface, Sequelize) => {
+  down: async (queryInterface) => {
     /**
      * Add commands to revert seed here.
      *

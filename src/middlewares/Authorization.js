@@ -30,28 +30,30 @@ class Authentication {
                 include: [{
                     model: Role,
                     as: "role",
-                    attributes: ["roleName"],
+                    attributes: ["rolename"],
                     include: [{
                         model: Permission,
                         as: "permissions",
                         attributes: ["method", "module"],
                         where: { status: true },
-                        through: [{}],
+                        through: { attributes: [] },
                     }],
                 }],
             });
-            const { role: roleRequired, method: methodRequired, module: moduleRequired} = required;
+            const { role: roleRequired, method: methodRequired, module: moduleRequired } = required;
             const { role } = userScope;
-            const { permissions, roleName } = role;
+            const { permissions, rolename } = role;
 
-            permissions.forEach((permission) => {
+            for (let index = 0; index < permissions.length; index += 1) {
+                const permission = permissions[index].get({ plain: true });
                 if (permission.method === methodRequired && permission.module === moduleRequired) {
                     return next();
                 }
-            });
+            }
 
-            throw new AuthorizeError(`Your role ${roleName} is not allowed to do this action. You should be ${roleRequired}`);
+            throw new AuthorizeError(`Your role ${rolename} is not allowed to do this action. You should be ${roleRequired.value}`);
         } catch (error) {
+            console.log(error);
             return response.status(httpStatus.OK).json({
                 status: error.status,
                 message: error.message,

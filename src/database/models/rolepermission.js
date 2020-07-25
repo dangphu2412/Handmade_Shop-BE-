@@ -1,8 +1,6 @@
-"use strict";
+import { Model } from "sequelize";
 
-const { Model } = require("sequelize");
-
-module.exports = (sequelize, DataTypes) => {
+export default (sequelize, DataTypes) => {
   class RolePermission extends Model {
   }
 

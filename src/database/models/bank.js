@@ -1,8 +1,6 @@
-const {
-  Model,
-} = require("sequelize");
+import { Model } from "sequelize";
 
-module.exports = (sequelize, DataTypes) => {
+export default (sequelize, DataTypes) => {
   class Bank extends Model {
     static associate(models) {
       Bank.hasMany(models.Shop, {

@@ -1,4 +1,5 @@
 import express from "express";
+import userRoute from "../modules/user/user.routes";
 import authRoute from "../modules/auth/auth.routes";
 import galleryRoute from "../modules/gallery/gallery.routes";
 import categoryRoute from "../modules/category/category.routes";
@@ -12,6 +13,7 @@ import productRoute from "../modules/product/product.routes";
 const router = express.Router();
 
 router.use(authRoute);
+router.use(userRoute);
 router.use(galleryRoute);
 router.use(categoryRoute);
 router.use(materialRoute);

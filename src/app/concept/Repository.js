@@ -6,34 +6,32 @@ export default class Repository {
         this.serverMessageError = "Server is crashing ! Pleas check your input before calling handling";
     }
 
-    getMany({ page = 1, amount = 10 }, where = null, attributes = ["*"]) {
+    getMany({ page = 1, amount = 10 }, where = null, attributes = null, include = null) {
         return this.model.findAll({
             where,
-            raw: true,
             attributes,
             limit: amount,
             amount: (page - 1) * amount,
+            include,
         });
     }
 
-    getOne(id, include = null, attributes = ["*"]) {
+    getOne(id, include = null, attributes = null) {
         return this.model.findByPk(id, {
-            raw: true,
             attributes,
             include,
         });
     }
 
-    getOneWithConditions(conditions, include = null, attributes = ["*"]) {
+    getOneWithConditions(conditions, include = null, attributes = null) {
         return this.model.findOne({
             where: conditions,
-            raw: true,
             attributes,
             include,
         });
     }
 
-    getRecursive(alias, attributes = ["*"]) {
+    getRecursive(alias, attributes = null) {
         return this.model.findAll({
             attributes,
             include: [{
@@ -45,12 +43,12 @@ export default class Repository {
         });
     }
 
-    async create(payload, transaction = null, attributes = ["*"]) {
+    async create(payload, transaction = null, attributes = null, include = null) {
         try {
             const response = await this.model.create(payload, {
-                raw: true,
                 transaction,
                 attributes,
+                include,
             });
             return response;
         } catch (error) {
@@ -59,10 +57,9 @@ export default class Repository {
         }
     }
 
-    async findNotThenCreate(payload, conditions = null, transaction = null, attributes = ["*"]) {
+    async findNotThenCreate(payload, conditions = null, transaction = null, attributes = null) {
         try {
             const response = await this.model.findOrCreate({
-                raw: true,
                 where: conditions,
                 defaults: payload,
                 transaction,
@@ -75,7 +72,7 @@ export default class Repository {
         }
     }
 
-    async updateOne(payload, id, transaction = null, attributes = ["*"]) {
+    async updateOne(payload, id, transaction = null, attributes = null) {
         try {
             const response = await this.model.update(payload, {
                 where: { id },
@@ -89,10 +86,9 @@ export default class Repository {
         }
     }
 
-    async upsert(payload, transaction = null, attributes = ["*"]) {
+    async upsert(payload, transaction = null, attributes = null) {
         try {
             const response = await this.model.upsert(payload, {
-                raw: true,
                 transaction,
                 attributes,
             });
@@ -103,7 +99,7 @@ export default class Repository {
         }
     }
 
-    async softDeleteOrActiveOne(id, status = false, transaction = null, attributes = ["*"]) {
+    async softDeleteOrActiveOne(id, status = false, transaction = null, attributes = null) {
         try {
             const response = await this.model.update({
                 status,
