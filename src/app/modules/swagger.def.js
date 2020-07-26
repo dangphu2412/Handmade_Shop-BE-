@@ -2,7 +2,7 @@
   * @swagger
   * securityDefinitions:
   *   authentication:
-  *     type: http
+  *     type: apiKey
   *     name: Authorization
   *     in: header
   *     bearerFormat: JWT

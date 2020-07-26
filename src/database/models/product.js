@@ -1,10 +1,6 @@
-"use strict";
+import { Model } from "sequelize";
 
-const {
-  Model,
-} = require("sequelize");
-
-module.exports = (sequelize, DataTypes) => {
+export default (sequelize, DataTypes) => {
   class Product extends Model {
     static associate(models) {
       Product.belongsToMany(models.Material, {
@@ -14,18 +10,22 @@ module.exports = (sequelize, DataTypes) => {
         otherKey: "materialId",
       });
       Product.belongsToMany(models.Transport, {
-        as: "products",
+        as: "transports",
         through: models.ProductTransport,
         foreignKey: "productId",
         otherKey: "transportId",
       });
       Product.belongsTo(models.Shop, {
-        as: "shops",
+        as: "shop",
         foreignKey: "shopId",
       });
       Product.belongsTo(models.Category, {
-        as: "categories",
+        as: "category",
         foreignKey: "categoryId",
+      });
+      Product.hasMany(models.Gallery, {
+        as: "gallery",
+        foreignKey: "productId",
       });
     }
   }

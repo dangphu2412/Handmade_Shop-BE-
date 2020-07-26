@@ -33,7 +33,7 @@ module.exports = {
         allowNull: false,
       },
       description: {
-        type: Sequelize.TEXT("long"),
+        type: Sequelize.TEXT,
         allowNull: false,
       },
       price: {

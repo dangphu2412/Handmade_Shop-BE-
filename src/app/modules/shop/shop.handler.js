@@ -1,6 +1,8 @@
 import CoreHandler from "../../concept/Handler";
 import ShopController from "./shop.controller";
 import ShopValidator from "./shop.validator";
+import { ROLE, METHOD, MODULE } from "../../../constants/role";
+
 import AuthenService from "../../../middlewares/Authentication";
 import AuthorizeService from "../../../middlewares/Authorization";
 
@@ -9,11 +11,28 @@ class ShopHandler extends CoreHandler {
         super(ShopController, AuthenService, AuthorizeService, ShopValidator);
     }
 
+    getOwnerShop() {
+        return [
+            this.authen.call("verify"),
+            // this.authorize.WithScope(ROLE.SHOP_KEEPER, METHOD.POST, MODULE.SHOP),
+            this.controller.call("getOwnerShop"),
+        ];
+    }
+
+    fetchOwnerProducts() {
+        return [
+            this.authen.call("verify"),
+            this.authorize.WithScope(ROLE.SHOP_KEEPER, METHOD.GET, MODULE.SHOP_KEEPER_PRODUCT),
+            this.controller.call("fetchOwnerProducts"),
+        ];
+    }
+
     createShop() {
         return [
             this.validator.checkCreateShop(),
             this.validator.catchValidateErrors,
             this.authen.call("verify"),
+            this.authorize.WithScope(ROLE.USER, METHOD.POST, MODULE.SHOP),
             this.controller.call("createShop"),
         ];
     }

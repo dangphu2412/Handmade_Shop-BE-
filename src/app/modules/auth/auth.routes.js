@@ -3,8 +3,6 @@ import AuthHandler from "./auth.handler";
 
 const router = express.Router();
 
-router.get("/users", AuthHandler["getAllUsers"]());
-
 router.get("/users/mail/verify", AuthHandler["verifyAccount"]());
 
 router.post("/signup", AuthHandler["signup"]());
@@ -27,60 +25,6 @@ export default router;
   * tags:
   *   name: User
   *   description: User information
-  */
-
-/**
-  * @swagger
-  * /users:
-  *   get:
-  *     description: Get city by page and amount
-  *     tags: [User]
-  *     produces:
-  *       - application/json
-  *     parameters:
-  *       - name: page
-  *         description: Page get list cities.
-  *         in: query
-  *         type: integer
-  *       - name: amount
-  *         description: Amount get list cities.
-  *         in: query
-  *         type: integer
-  *     responses:
-  *       200:
-  *         description: Get cities success
-  *         schema:
-  *           properties:
-  *             status:
-  *               type: integer
-  *               format: int32
-  *             message:
-  *               type: string
-  *             data:
-  *               type: array
-  *               items:
-  *                 type: object
-  *                 $ref: '#/definitions/User
-  *       401:
-  *         description: Unauthenticated
-  *         schema:
-  *           type: object
-  *           $ref: '#/definitions/ErrorResponse'
-  *       403:
-  *         description: UNauthorized
-  *         schema:
-  *           type: object
-  *           $ref: '#/definitions/ErrorResponse'
-  *       422:
-  *         description: Invalid format of comment
-  *         schema:
-  *           type: object
-  *           $ref: '#/definitions/ErrorResponse'
-  *       500:
-  *         description: Third party is out of service
-  *         schema:
-  *           type: object
-  *           $ref: '#/definitions/ErrorResponse'
   */
 
 /**

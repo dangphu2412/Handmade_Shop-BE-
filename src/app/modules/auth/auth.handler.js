@@ -1,6 +1,8 @@
 import CoreHandler from "../../concept/Handler";
 import AuthController from "./auth.controller";
 import AuthValidator from "./auth.validator";
+import { ROLE, METHOD, MODULE } from "../../../constants/role";
+
 import AuthenService from "../../../middlewares/Authentication";
 import AuthorizeService from "../../../middlewares/Authorization";
 
@@ -41,6 +43,8 @@ class TestHandler extends CoreHandler {
 
     getAllUsers() {
         return [
+            this.authen.call("verify"),
+            this.authorize.WithScope(ROLE.ADMIN, METHOD.GET, MODULE.USER),
             this.controller.call("getMany"),
         ];
     }

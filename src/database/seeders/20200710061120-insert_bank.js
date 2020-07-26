@@ -1,7 +1,5 @@
-'use strict';
-
-module.exports = {
-  up: async (queryInterface, Sequelize) => {
+export default {
+  up: async (queryInterface) => {
     await queryInterface.bulkInsert("Banks", [{
       name: "SBTC",
       slug: "sbtc",
@@ -35,7 +33,7 @@ module.exports = {
     ]);
   },
 
-  down: async (queryInterface, Sequelize) => {
+  down: async (queryInterface) => {
     /**
      * Add commands to revert seed here.
      *
