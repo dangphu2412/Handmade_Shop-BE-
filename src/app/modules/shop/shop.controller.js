@@ -29,9 +29,10 @@ class ShopController extends CoreController {
             const { query } = request;
             const { userId } = this.getCredentialInfo(request);
             const shop = await this.service.fetchOwnerProducts(query, userId);
+            const data = shop[0]?.products || [];
             return response.json({
                 status: httpStatus.OK,
-                data: shop[0].products,
+                data,
             });
         } catch (error) {
             return this.ErrorHandler(response, error);
