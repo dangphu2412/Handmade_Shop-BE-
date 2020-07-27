@@ -59,8 +59,7 @@ class AuthService extends CoreService {
         if (userInfo.username !== email) {
             throw new LogicError("Your email is not fit to your id");
         }
-
-        await this.updateOne({ status: true }, id);
+        await this.repository.updateOne({ status: true }, id);
         const signPayload = {
             id: userInfo.id,
             slug: userInfo.slug,

@@ -1,12 +1,14 @@
-import CoreHandler from "../../concept/Handler";
 import MaterialController from "./material.controller";
 import MaterialValidator from "./material.validator";
 import AuthenService from "../../../middlewares/Authentication";
 import AuthorizeService from "../../../middlewares/Authorization";
 
-class MaterialpHandler extends CoreHandler {
+class MaterialpHandler {
     constructor() {
-        super(MaterialController, AuthenService, AuthorizeService, MaterialValidator);
+        this.controller = MaterialController;
+        this.authen = AuthenService;
+        this.authorize = AuthorizeService;
+        this.validator = MaterialValidator;
     }
 
     getMaterial() {

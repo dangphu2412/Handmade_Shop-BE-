@@ -1,4 +1,3 @@
-import CoreHandler from "../../concept/Handler";
 import AuthController from "./auth.controller";
 import AuthValidator from "./auth.validator";
 import { ROLE, METHOD, MODULE } from "../../../constants/role";
@@ -6,9 +5,12 @@ import { ROLE, METHOD, MODULE } from "../../../constants/role";
 import AuthenService from "../../../middlewares/Authentication";
 import AuthorizeService from "../../../middlewares/Authorization";
 
-class TestHandler extends CoreHandler {
+class AuthHandler {
     constructor() {
-        super(AuthController, AuthenService, AuthorizeService, AuthValidator);
+        this.controller = AuthController;
+        this.authen = AuthenService;
+        this.authorize = AuthorizeService;
+        this.validator = AuthValidator;
     }
 
     signup() {
@@ -50,4 +52,4 @@ class TestHandler extends CoreHandler {
     }
 }
 
-export default new TestHandler();
+export default new AuthHandler();

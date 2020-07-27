@@ -9,6 +9,8 @@ router.get("/products/:slug", ProductHandler["fetchProductDetail"]());
 
 router.post("/users/shop/products", ProductHandler["createProduct"]());
 
+router.delete("/users/shop/products/:slug", ProductHandler["softDeleteProduct"]());
+
 export default router;
 
 /**

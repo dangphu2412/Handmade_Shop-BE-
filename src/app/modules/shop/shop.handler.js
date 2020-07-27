@@ -1,4 +1,3 @@
-import CoreHandler from "../../concept/Handler";
 import ShopController from "./shop.controller";
 import ShopValidator from "./shop.validator";
 import { ROLE, METHOD, MODULE } from "../../../constants/role";
@@ -6,9 +5,12 @@ import { ROLE, METHOD, MODULE } from "../../../constants/role";
 import AuthenService from "../../../middlewares/Authentication";
 import AuthorizeService from "../../../middlewares/Authorization";
 
-class ShopHandler extends CoreHandler {
+class ShopHandler {
     constructor() {
-        super(ShopController, AuthenService, AuthorizeService, ShopValidator);
+        this.controller = ShopController;
+        this.authen = AuthenService;
+        this.authorize = AuthorizeService;
+        this.validator = ShopValidator;
     }
 
     getOwnerShop() {

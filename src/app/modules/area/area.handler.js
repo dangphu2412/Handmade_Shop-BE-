@@ -1,13 +1,15 @@
-import CoreHandler from "../../concept/Handler";
 import AreaController from "./area.controller";
 import AreaValidator from "./area.validator";
 
 import AuthenService from "../../../middlewares/Authentication";
 import AuthorizeService from "../../../middlewares/Authorization";
 
-class AreaHandler extends CoreHandler {
+class AreaHandler {
     constructor() {
-        super(AreaController, AuthenService, AuthorizeService, AreaValidator);
+        this.controller = AreaController;
+        this.authen = AuthenService;
+        this.authorize = AuthorizeService;
+        this.validator = AreaValidator;
     }
 
     getCities() {
@@ -25,4 +27,4 @@ class AreaHandler extends CoreHandler {
     }
 }
 
-export default new AreaHandler();
+export default AreaHandler();

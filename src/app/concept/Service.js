@@ -1,7 +1,9 @@
 import LogicError from "../../errors/Logic.error";
 
 export default class Service {
-    serviceMessageError = "Your input has been created";
+    constructor() {
+        this.serviceMessageError = "Your input has been created";
+    }
 
     repository;
 

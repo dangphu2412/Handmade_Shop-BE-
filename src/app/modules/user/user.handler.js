@@ -1,14 +1,16 @@
-import CoreHandler from "../../concept/Handler";
 import UserController from "./user.controller";
-import AuthValidator from "./user.validator";
+import UserValidator from "./user.validator";
 import { ROLE, METHOD, MODULE } from "../../../constants/role";
 
 import AuthenService from "../../../middlewares/Authentication";
 import AuthorizeService from "../../../middlewares/Authorization";
 
-class TestHandler extends CoreHandler {
+class UserHandler {
     constructor() {
-        super(UserController, AuthenService, AuthorizeService, AuthValidator);
+        this.controller = UserController;
+        this.authen = AuthenService;
+        this.authorize = AuthorizeService;
+        this.validator = UserValidator;
     }
 
     getAllUsers() {
@@ -20,4 +22,4 @@ class TestHandler extends CoreHandler {
     }
 }
 
-export default new TestHandler();
+export default new UserHandler();

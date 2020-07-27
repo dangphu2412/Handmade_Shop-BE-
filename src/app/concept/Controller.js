@@ -1,8 +1,6 @@
 import httpStatus from "http-status";
 
 export default class Controller {
-    service
-
     async getMany(request, response) {
         try {
             const { query } = request;

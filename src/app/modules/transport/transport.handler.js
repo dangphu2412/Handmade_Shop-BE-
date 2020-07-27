@@ -1,12 +1,14 @@
-import CoreHandler from "../../concept/Handler";
 import TransportController from "./transport.controller";
 import TransportValidator from "./transport.validator";
 import AuthenService from "../../../middlewares/Authentication";
 import AuthorizeService from "../../../middlewares/Authorization";
 
-class TransportpHandler extends CoreHandler {
+class TransportpHandler {
     constructor() {
-        super(TransportController, AuthenService, AuthorizeService, TransportValidator);
+        this.controller = TransportController;
+        this.authen = AuthenService;
+        this.authorize = AuthorizeService;
+        this.validator = TransportValidator;
     }
 
     getTransport() {

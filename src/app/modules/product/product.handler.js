@@ -1,4 +1,3 @@
-import CoreHandler from "../../concept/Handler";
 import ProductController from "./product.controller";
 import ProductValidator from "./product.validator";
 import { ROLE, METHOD, MODULE } from "../../../constants/role";
@@ -6,9 +5,12 @@ import { ROLE, METHOD, MODULE } from "../../../constants/role";
 import AuthenService from "../../../middlewares/Authentication";
 import AuthorizeService from "../../../middlewares/Authorization";
 
-class ProductpHandler extends CoreHandler {
+class ProductpHandler {
     constructor() {
-        super(ProductController, AuthenService, AuthorizeService, ProductValidator);
+        this.controller = ProductController;
+        this.authen = AuthenService;
+        this.authorize = AuthorizeService;
+        this.validator = ProductValidator;
     }
 
     fetchProducts() {
@@ -27,6 +29,13 @@ class ProductpHandler extends CoreHandler {
         return [
             this.validator.checkCreateProduct(),
             this.validator.catchValidateErrors,
+            this.controller.call("createProduct"),
+        ];
+    }
+
+    softDeleteProduct() {
+        return [
+            this.authorize.WithScope(),
             this.controller.call("createProduct"),
         ];
     }
