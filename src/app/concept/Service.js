@@ -5,8 +5,6 @@ export default class Service {
         this.serviceMessageError = "Your input has been created";
     }
 
-    repository;
-
     getMany(query) {
         return this.repository.getMany(query);
     }

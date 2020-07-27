@@ -5,9 +5,10 @@ export default (sequelize, DataTypes) => {
     static associate(models) {
       Material.belongsToMany(models.Product, {
         as: "products",
-        through: models.ProductMaterial,
+        through: "ProductMaterials",
         foreignKey: "materialId",
         otherKey: "productId",
+        timestamps: false,
       });
     }
   }

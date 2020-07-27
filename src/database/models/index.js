@@ -1,36 +1,46 @@
-/* eslint-disable import/no-dynamic-require */
+import CoreDatabase, { DataTypes } from "sequelize";
+import loadingConfig from "../../config/database";
 
-import { readdirSync } from "fs";
-import { basename as _basename, join } from "path";
-import Sequelize, { DataTypes } from "sequelize";
+import UserModel from "./user";
+import RoleModel from "./role";
+import PermissionModel from "./permission";
+import BankModel from "./bank";
+import CategoryModel from "./categories";
+import CityModel from "./city";
+import DistrictModel from "./district";
+import GalleryModel from "./gallery";
+import MaterialModel from "./material";
+import ProductModel from "./product";
+import ShopModel from "./shop";
+import TransportModel from "./transport";
 
-const basename = _basename(__filename);
-const env = process.env.NODE_ENV || "development";
-const config = require(`${__dirname}/../../config/database.js`)[env];
-const db = {};
+const _env = process.env.NODE_ENV || "development";
+const config = loadingConfig[_env];
+const models = {};
 
-let sequelize;
-if (config.use_env_variable) {
-  sequelize = new Sequelize(process.env[config.use_env_variable], config);
-} else {
-  sequelize = new Sequelize(config.database, config.username, config.password, config);
-}
+const sequelize = new CoreDatabase(config.database, config.username, config.password, config);
 
-readdirSync(__dirname)
-  .filter((file) => (file.indexOf(".") !== 0) && (file !== basename) && (file.slice(-3) === ".js"))
-  .forEach((file) => {
-    // eslint-disable-next-line global-require
-    const model = require(join(__dirname, file)).default(sequelize, DataTypes);
-    db[model.name] = model;
-  });
+models.User = UserModel(sequelize, DataTypes);
+models.Role = RoleModel(sequelize, DataTypes);
+models.Permission = PermissionModel(sequelize, DataTypes);
+models.Bank = BankModel(sequelize, DataTypes);
+models.Category = CategoryModel(sequelize, DataTypes);
+models.City = CityModel(sequelize, DataTypes);
+models.District = DistrictModel(sequelize, DataTypes);
+models.Gallery = GalleryModel(sequelize, DataTypes);
+models.Material = MaterialModel(sequelize, DataTypes);
+models.Product = ProductModel(sequelize, DataTypes);
+models.Shop = ShopModel(sequelize, DataTypes);
+models.Transport = TransportModel(sequelize, DataTypes);
 
-Object.keys(db).forEach((modelName) => {
-  if (db[modelName].associate) {
-    db[modelName].associate(db);
+Object.keys(models).forEach((modelName) => {
+  if (models[modelName].associate) {
+    models[modelName].associate(models);
   }
 });
 
-db.sequelize = sequelize;
-db.Sequelize = Sequelize;
+export default sequelize;
 
-module.exports = db;
+export const Models = models;
+
+export const Sequelize = CoreDatabase;

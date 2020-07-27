@@ -4,7 +4,7 @@ export default (sequelize, DataTypes) => {
   class Bank extends Model {
     static associate(models) {
       Bank.hasMany(models.Shop, {
-        as: "shops",
+        as: "shop",
         foreignKey: "bankId",
       });
     }

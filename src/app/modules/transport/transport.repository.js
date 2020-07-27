@@ -1,8 +1,9 @@
 import CoreRepository from "../../concept/Repository";
-import { Transport } from "../../../database/models/index";
+import { Models } from "../../../database/models/index";
 
 class TransportRepository extends CoreRepository {
     constructor() {
+        const { Transport } = Models;
         super(Transport);
     }
 }

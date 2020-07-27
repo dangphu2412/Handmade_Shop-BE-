@@ -3,8 +3,7 @@ import slugTransfer from "speakingurl";
 import CoreService from "../../concept/Service";
 import ProductRepository from "./product.repository";
 import ServerError from "../../../errors/Server.error";
-// eslint-disable-next-line import/named
-import { sequelize } from "../../../database/models/index";
+import sequelize from "../../../database/models/index";
 
 class ProductService extends CoreService {
     constructor() {

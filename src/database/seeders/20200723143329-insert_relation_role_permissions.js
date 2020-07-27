@@ -1,7 +1,8 @@
-import { Role, Permission, Sequelize } from "../models/index";
+import { Models, Sequelize } from "../models/index";
 import { METHOD, MODULE, ROLE } from "../../constants/role";
 
 const { Op } = Sequelize;
+const { Role, Permission } = Models;
 
 export default {
   up: async (queryInterface, Sequelize) => {

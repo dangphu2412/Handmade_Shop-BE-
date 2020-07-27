@@ -1,8 +1,9 @@
 import CoreRepository from "../../concept/Repository";
-import { Bank } from "../../../database/models/index";
+import { Models } from "../../../database/models/index";
 
 class PaymentRepository extends CoreRepository {
     constructor() {
+        const { Bank } = Models;
         super(Bank);
     }
 }

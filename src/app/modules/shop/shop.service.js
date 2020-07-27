@@ -7,7 +7,7 @@ import ShopRepository from "./shop.repository";
 import AuthRepository from "../auth/auth.repository";
 import LogicError from "../../../errors/Logic.error";
 import { ROLE } from "../../../constants/role";
-import { Sequelize, Product } from "../../../database/models";
+import { Sequelize, Models } from "../../../database/models";
 
 class ShopService extends CoreService {
     constructor() {
@@ -26,7 +26,7 @@ class ShopService extends CoreService {
         switch (key) {
             case "sold-out":
                 relation = [{
-                    model: Product,
+                    model: Models.Product,
                     as: "products",
                     where: {
                         restAmount: 0,
@@ -37,7 +37,7 @@ class ShopService extends CoreService {
             case "inventory":
                 const { Op } = Sequelize;
                 relation = [{
-                    model: Product,
+                    model: Models.Product,
                     as: "products",
                     where: {
                         restAmount: {

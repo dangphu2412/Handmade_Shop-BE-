@@ -5,15 +5,17 @@ export default (sequelize, DataTypes) => {
     static associate(models) {
       Product.belongsToMany(models.Material, {
         as: "materials",
-        through: models.ProductMaterial,
+        through: "ProductMaterials",
         foreignKey: "productId",
         otherKey: "materialId",
+        timestamps: false,
       });
       Product.belongsToMany(models.Transport, {
         as: "transports",
-        through: models.ProductTransport,
+        through: "ProductTransports",
         foreignKey: "productId",
         otherKey: "transportId",
+        timestamps: false,
       });
       Product.belongsTo(models.Shop, {
         as: "shop",

@@ -9,9 +9,10 @@ export default (sequelize, DataTypes) => {
       });
       Role.belongsToMany(models.Permission, {
         as: "permissions",
-        through: models.RolePermission,
+        through: "RolePermissions",
         foreignKey: "roleId",
         otherKey: "permissionId",
+        timestamps: false,
       });
     }
   }

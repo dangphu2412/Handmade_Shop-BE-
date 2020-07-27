@@ -1,8 +1,9 @@
 import CoreRepository from "../../concept/Repository";
-import { User } from "../../../database/models/index";
+import { Models } from "../../../database/models/index";
 
 class AuthRepository extends CoreRepository {
     constructor() {
+        const { User } = Models;
         super(User);
     }
 }

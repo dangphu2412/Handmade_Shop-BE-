@@ -1,8 +1,9 @@
 import CoreRepository from "../../../concept/Repository";
-import { District } from "../../../../database/models/index";
+import { Models } from "../../../../database/models/index";
 
 class DistrictRepository extends CoreRepository {
     constructor() {
+        const { District } = Models;
         super(District);
     }
 }

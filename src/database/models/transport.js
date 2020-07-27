@@ -5,9 +5,10 @@ export default (sequelize, DataTypes) => {
     static associate(models) {
       Transport.belongsToMany(models.Product, {
         as: "products",
-        through: models.ProductTransport,
+        through: "ProductTransports",
         foreignKey: "transportId",
         otherKey: "productId",
+        timestamps: false,
       });
     }
   }

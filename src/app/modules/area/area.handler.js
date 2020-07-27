@@ -27,4 +27,4 @@ class AreaHandler {
     }
 }
 
-export default AreaHandler();
+export default new AreaHandler();

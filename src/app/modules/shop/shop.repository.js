@@ -1,8 +1,9 @@
 import CoreRepository from "../../concept/Repository";
-import { Shop } from "../../../database/models/index";
+import { Models } from "../../../database/models/index";
 
 class ShopRepository extends CoreRepository {
     constructor() {
+        const { Shop } = Models;
         super(Shop);
     }
 }
