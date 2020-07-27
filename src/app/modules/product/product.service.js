@@ -12,6 +12,11 @@ class ProductService extends CoreService {
         this.repository = ProductRepository;
     }
 
+    fetchProductDetail(slug) {
+        const conditions = { slug };
+        return this.repository.getOneWithConditions(conditions, ["category", "materials", "transports", "gallery"]);
+    }
+
     async createProduct(payload) {
         const transaction = await sequelize.transaction();
 

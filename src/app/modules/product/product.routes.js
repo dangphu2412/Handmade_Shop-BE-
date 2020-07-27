@@ -3,7 +3,9 @@ import ProductHandler from "./product.handler";
 
 const router = express.Router();
 
-router.get("/products", ProductHandler["fetchProducts"]);
+router.get("/products", ProductHandler["fetchProducts"]());
+
+router.get("/products/:slug", ProductHandler["fetchProductDetail"]());
 
 router.post("/users/shop/products", ProductHandler["createProduct"]());
 

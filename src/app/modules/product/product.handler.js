@@ -17,6 +17,12 @@ class ProductpHandler extends CoreHandler {
         ];
     }
 
+    fetchProductDetail() {
+        return [
+            this.controller.call("fetchProductDetail"),
+        ];
+    }
+
     createProduct() {
         return [
             this.validator.checkCreateProduct(),
