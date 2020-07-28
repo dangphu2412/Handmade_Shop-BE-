@@ -1,11 +1,20 @@
-const { Model } = require("sequelize");
+import { Model } from "sequelize";
 
-module.exports = (sequelize, DataTypes) => {
+export default (sequelize, DataTypes) => {
   class Category extends Model {
     static associate(models) {
       Category.hasMany(models.Category, {
-        as: "categories",
+        as: "children",
         foreignKey: "parentId",
+      });
+      Category.addScope("treeCategory", {
+        attributes: ["id", "name", "slug", "parentId"],
+        include: [{
+            attributes: ["id", "name", "slug", "parentId"],
+            model: models.Category,
+            as: "children",
+            nested: true,
+        }],
       });
     }
   }
@@ -15,6 +24,9 @@ module.exports = (sequelize, DataTypes) => {
     parentId: DataTypes.INTEGER,
     status: DataTypes.BOOLEAN,
   }, {
+    defaultScope: {
+      attributes: ["id", "name", "slug", "parentId"],
+    },
     sequelize,
     modelName: "Category",
   });

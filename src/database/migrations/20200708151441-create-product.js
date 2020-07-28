@@ -28,11 +28,12 @@ module.exports = {
         allowNull: false,
       },
       slug: {
+        unique: true,
         type: Sequelize.STRING,
         allowNull: false,
       },
       description: {
-        type: Sequelize.TEXT("long"),
+        type: Sequelize.TEXT,
         allowNull: false,
       },
       price: {

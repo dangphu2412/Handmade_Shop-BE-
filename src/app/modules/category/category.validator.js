@@ -1,7 +1,7 @@
 import { checkSchema } from "express-validator";
 import CoreValidator from "../../concept/Validator";
 
-class GalleryValidator extends CoreValidator {
+class CategoryValidator extends CoreValidator {
     checkGetCategories() {
         const customCheckNumberWithMsg = (kind) => this.checkNumber(["query"], `Your ${kind} is not a number`);
         return checkSchema({
@@ -11,4 +11,4 @@ class GalleryValidator extends CoreValidator {
     }
 }
 
-export default new GalleryValidator();
+export default new CategoryValidator();

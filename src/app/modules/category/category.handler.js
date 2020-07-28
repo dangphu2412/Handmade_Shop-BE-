@@ -1,18 +1,19 @@
-import CoreHandler from "../../concept/Handler";
 import CategoryController from "./category.controller";
 import CategoryValidator from "./category.validator";
 import AuthenService from "../../../middlewares/Authentication";
 import AuthorizeService from "../../../middlewares/Authorization";
 
-class CategoryHandler extends CoreHandler {
+class CategoryHandler {
     constructor() {
-        super(CategoryController, AuthenService, AuthorizeService, CategoryValidator);
+        this.controller = CategoryController;
+        this.authen = AuthenService;
+        this.authorize = AuthorizeService;
+        this.validator = CategoryValidator;
     }
 
     getCategories() {
         return [
-            this.validator.checkGetCategories(),
-            this.controller.call("getRecursiveCategories"),
+            this.controller.call("getAllCategories"),
         ];
     }
 }

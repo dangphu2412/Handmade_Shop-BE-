@@ -1,15 +1,14 @@
-const {
-  Model,
-} = require("sequelize");
+import { Model } from "sequelize";
 
-module.exports = (sequelize, DataTypes) => {
+export default (sequelize, DataTypes) => {
   class Material extends Model {
     static associate(models) {
       Material.belongsToMany(models.Product, {
         as: "products",
-        through: models.ProductMaterial,
+        through: "ProductMaterials",
         foreignKey: "materialId",
         otherKey: "productId",
+        timestamps: false,
       });
     }
   }
@@ -18,6 +17,10 @@ module.exports = (sequelize, DataTypes) => {
     slug: DataTypes.STRING,
     status: DataTypes.BOOLEAN,
   }, {
+    defaultScope: {
+      attributes: ["id", "name", "slug"],
+      where: { status: true },
+    },
     sequelize,
     modelName: "Material",
   });

@@ -1,7 +1,16 @@
 export const ROLE = {
-    ADMIN: 1,
-    SHOP_KEEPER: 2,
-    USER: 3,
+    ADMIN: {
+        key: 1,
+        value: "admin",
+    },
+    SHOP_KEEPER: {
+        key: 2,
+        value: "shop keeper",
+    },
+    USER: {
+        key: 3,
+        value: "user",
+    },
 };
 
 export const METHOD = {
@@ -13,7 +22,14 @@ export const METHOD = {
 };
 
 export const MODULE = {
-    SHOP: "SHOP",
     USER: "USER",
+    SHOP: "SHOP",
     PRODUCT: "PRODUCT",
+    CITY: "CITY",
+    DISTRICT: "DISTRICT",
+    MATERIAl: "MATERIAl",
+    PAYMENT: "PAYMENT",
+    TRANSPORT: "TRANSPORT",
+    CATEGORY: "CATEGORY",
+    SHOP_KEEPER_PRODUCT: "USER/PRODUCT",
 };

@@ -1,3 +1,5 @@
+import "dotenv/config";
+
 export const ServerConfig = {
     HOST: process.env.HOST,
     PORT: process.env.PORT,
@@ -27,7 +29,7 @@ export const CloudinaryConfig = {
 };
 
 if (!ServerConfig.FRONT_HOST || !ServerConfig.HOST || !ServerConfig.PORT) {
-    console.error("You are missing server config in env! Please check config/secrect.js");
+    console.error("You are missing server config in env! Please check constants/secrect.js");
     process.exit(1);
 }
 

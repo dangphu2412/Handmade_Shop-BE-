@@ -1,6 +1,5 @@
 import CoreService from "../../concept/Service";
 import CategoryRepository from "./category.repository";
-import ServerError from "../../../errors/Server.error";
 
 class CategoryService extends CoreService {
     constructor() {
@@ -8,12 +7,9 @@ class CategoryService extends CoreService {
         this.repository = CategoryRepository;
     }
 
-    async upload(file) {
-        try {
-
-        } catch (error) {
-
-        }
+    getTreeCategories(query) {
+        const scopes = ["treeCategory"];
+        return this.repository.getMany(query, scopes);
     }
 }
 

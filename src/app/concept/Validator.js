@@ -1,40 +1,51 @@
 import { validationResult } from "express-validator";
 
 class Validator {
-    checkNumber(options, msg) {
+    checkNumber(options, param, exists = true) {
         return {
             in: [...options],
-            errorMessage: msg,
+            errorMessage: `Your ${param} is not format like a number`,
             isInt: true,
-            exists: true,
+            exists,
         };
     }
 
-    checkEmail(options, msg) {
+    checkEmail(options, param) {
         return {
             in: [...options],
-            errorMessage: msg,
+            errorMessage: `Your ${param} is not format as a email`,
             isEmail: true,
             exists: true,
+            trim: true,
         };
     }
 
-    checkWithLength(options, msg, { max, min }) {
+    checkWithLength(options, param, { max, min }, exists = true, trim = true) {
         return {
             in: [...options],
-            errorMessage: msg,
+            errorMessage: `${param} is missing`,
             isLength: {
-                errorMessage: `Password should be at least ${min} chars long and max ${max}`,
+                errorMessage: `${param} should be at least ${min} chars long and max ${max}`,
                 options: { max, min },
             },
+            exists,
+            trim,
+        };
+    }
+
+    checkExistsOnly(options, param) {
+        return {
+            in: [...options],
+            errorMessage: `Your ${param} is missing in ${options}`,
             exists: true,
         };
     }
 
-    checkExistsOnly(options, msg) {
+    checkArray(options, param) {
         return {
             in: [...options],
-            errorMessage: msg,
+            errorMessage: `Your ${param} is missing or not format as an array`,
+            isArray: true,
             exists: true,
         };
     }
@@ -49,7 +60,7 @@ class Validator {
             console.log(error);
             return response.status(422).json({
                 status: 422,
-                errors: error.errors[0],
+                message: `${error.errors[0].msg} in ${error.errors[0].location}`,
             });
         }
     }

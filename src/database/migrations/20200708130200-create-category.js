@@ -9,9 +9,11 @@ module.exports = {
         type: Sequelize.INTEGER,
       },
       name: {
+        unique: true,
         type: Sequelize.STRING,
       },
       slug: {
+        unique: true,
         type: Sequelize.STRING,
       },
       parentId: {

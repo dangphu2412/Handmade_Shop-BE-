@@ -16,6 +16,22 @@ module.exports = {
         },
         onUpdate: "CASCADE",
       },
+      districtId: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: "Districts",
+          key: "id",
+        },
+        onUpdate: "CASCADE",
+      },
+      bankId: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: "Banks",
+          key: "id",
+        },
+        onUpdate: "CASCADE",
+      },
       name: {
         unique: true,
         allowNull: false,
@@ -34,10 +50,6 @@ module.exports = {
         defaultValue: "https://i.ibb.co/9cj28M4/blank-profile-pic.jpg",
       },
       cardNumber: {
-        allowNull: false,
-        type: Sequelize.STRING,
-      },
-      bank: {
         allowNull: false,
         type: Sequelize.STRING,
       },

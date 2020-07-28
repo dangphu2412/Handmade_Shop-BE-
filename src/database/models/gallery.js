@@ -1,12 +1,10 @@
-const {
-  Model,
-} = require("sequelize");
+import { Model } from "sequelize";
 
-module.exports = (sequelize, DataTypes) => {
+export default (sequelize, DataTypes) => {
   class Gallery extends Model {
     static associate(models) {
       Gallery.belongsTo(models.Product, {
-        as: "products",
+        as: "product",
         foreignKey: "productId",
       });
     }
@@ -17,6 +15,10 @@ module.exports = (sequelize, DataTypes) => {
     productId: DataTypes.INTEGER,
     status: DataTypes.BOOLEAN,
   }, {
+    defaultScope: {
+      where: { status: true },
+      attributes: ["src", "kind"],
+    },
     sequelize,
     modelName: "Gallery",
   });

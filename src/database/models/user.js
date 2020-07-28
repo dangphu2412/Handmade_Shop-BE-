@@ -1,8 +1,6 @@
-"use strict";
+import { Model } from "sequelize";
 
-const { Model } = require("sequelize");
-
-module.exports = (sequelize, DataTypes) => {
+export default (sequelize, DataTypes) => {
   class User extends Model {
     static associate(models) {
       User.belongsTo(models.Role, {
@@ -12,6 +10,20 @@ module.exports = (sequelize, DataTypes) => {
       User.hasOne(models.Shop, {
         as: "shop",
         foreignKey: "userId",
+      });
+      User.addScope("authorize", {
+        include: [{
+          model: models.Role,
+          as: "role",
+          attributes: ["rolename"],
+          include: [{
+              model: models.Permission,
+              as: "permissions",
+              attributes: ["method", "module"],
+              where: { status: true },
+              through: { attributes: [] },
+          }],
+        }],
       });
     }
   }
@@ -23,7 +35,16 @@ module.exports = (sequelize, DataTypes) => {
     password: DataTypes.STRING,
     avatar: DataTypes.STRING,
     status: DataTypes.BOOLEAN,
+    shopActive: DataTypes.BOOLEAN,
   }, {
+    defaultScope: {
+      attributes: ["id", "username", "name", "slug", "password", "avatar", "shopActive", "status"],
+    },
+    scopes: {
+      test: {
+        attributes: ["id", "username"],
+      },
+    },
     sequelize,
     modelName: "User",
   });

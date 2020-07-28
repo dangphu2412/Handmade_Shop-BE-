@@ -1,15 +1,14 @@
-const {
-  Model,
-} = require("sequelize");
+import { Model } from "sequelize";
 
-module.exports = (sequelize, DataTypes) => {
+export default (sequelize, DataTypes) => {
   class Transport extends Model {
     static associate(models) {
       Transport.belongsToMany(models.Product, {
         as: "products",
-        through: models.ProductTransport,
+        through: "ProductTransports",
         foreignKey: "transportId",
         otherKey: "productId",
+        timestamps: false,
       });
     }
   }

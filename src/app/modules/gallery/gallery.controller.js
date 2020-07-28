@@ -16,9 +16,7 @@ class GalleryController extends CoreController {
             return response.status(httpStatus.OK).json({
                 status: httpStatus.OK,
                 message: "Upload success",
-                result: {
-                    url,
-                },
+                data: url,
             });
         } catch (error) {
             return this.ErrorHandler(response, error);

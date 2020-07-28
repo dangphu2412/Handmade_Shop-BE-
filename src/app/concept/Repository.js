@@ -3,65 +3,143 @@ import ServerError from "../../errors/Server.error";
 export default class Repository {
     constructor(model) {
         this.model = model;
+        this.serverMessageError = "Server is crashing ! Pleas check your input before calling handling";
     }
 
-    getMany({ page = 1, amount = 10 }) {
-        return this.model.findAll({
-            raw: true,
-            limit: amount,
-            amount: (page - 1) * amount,
+    /**
+     *
+     * @param {Object} query.filter
+     * - filter = {
+     *    page: 0,
+     *    amount: 10
+     *    order: [["createdAt"]]
+     * }
+     * @param {String} scope
+     * - scope is define in model
+     * - Example: scope("defaultScope") if not redefine it will get all fields
+     * - Model: User -> scope: {
+     *  privateUser: {
+     *      attributes: ["id", "username", "name", "password", "roleId"],
+     *  }
+     * }
+     * @param {Object} where
+     * - Conditions where
+     * - where = {
+     *    name: "abc"
+     *   }
+     * @param transaction
+     * - Optionals with sql, usually used when having insert or update
+     * - It will rollback when sql query is failed
+     */
+    getMany({ filter = { page: 0, amount: 10, order: null } },
+    scope = "defaultScope", where = null, transaction = null) {
+        const filterSCope = (scope === "defaultScope") ? scope : [...scope];
+        return this.model.scope(filterSCope).findAll({
+            limit: filter.amount,
+            amount: (filter.page - 1) * filter.amount,
+            order: filter.order,
+            where,
+            transaction,
         });
     }
 
-    getOne(id) {
-        return this.model.findByPk(id, {
-            raw: true
+    getByPk(id, scope = "defaultScope", transaction = null) {
+        return this.model.scope(scope).findByPk(id, {
+            transaction,
         });
     }
 
-    async create(payload, transaction = null, returning = ["*"], include = null) {
+    getOne(conditions, scope = "defaultScope", transaction = null) {
+        return this.model.scope(scope).findOne({
+            where: conditions,
+            transaction,
+        });
+    }
+
+    // getRecursive(alias, attributes = null) {
+    //     return this.model.findAll({
+    //         attributes,
+    //         include: [{
+    //             attributes,
+    //             model: this.model,
+    //             as: alias,
+    //             nested: true,
+    //         }],
+    //     });
+    // }
+
+    async create(payload, transaction = null, attributes = null, include = null) {
         try {
             const response = await this.model.create(payload, {
-                raw: true,
                 transaction,
-                returning,
+                attributes,
                 include,
             });
             return response;
         } catch (error) {
             console.log(error);
-            throw new ServerError("Your data is unexcepted");
+            throw new ServerError(this.serverMessageError);
         }
     }
 
-    updateOne(payload, id, transaction = null) {
+    async findNotThenCreate(payload, conditions = null, transaction = null, attributes = null) {
         try {
-            return this.model.update(payload, {
+            const response = await this.model.findOrCreate({
+                where: conditions,
+                defaults: payload,
+                transaction,
+                attributes,
+            });
+            return response;
+        } catch (error) {
+            console.log(error);
+            throw new ServerError(this.serverMessageError);
+        }
+    }
+
+    async updateOne(payload, id, transaction = null, attributes = null) {
+        try {
+            const response = await this.model.update(payload, {
                 where: { id },
                 transaction,
+                attributes,
             });
+            return response;
         } catch (error) {
-            throw new ServerError("Your data is unexcepted");
+            console.log(error);
+            throw new ServerError(this.serverMessageError);
         }
     }
 
-    deleteOne(id) {
-        return this.model.destroy(id);
-    }
-
-    deleteMultiple(ids) {
-        return this.model.deleteMultiple(ids);
-    }
-
-    getRecursive(alias, attributes) {
-        return this.model.findAll({
-            attributes,
-            include: [{
+    async upsert(payload, transaction = null, attributes = null) {
+        try {
+            const response = await this.model.upsert(payload, {
+                transaction,
                 attributes,
-                model: this.model,
-                as: alias,
-                nested: true,
-            }],
-        });
+            });
+            return response;
+        } catch (error) {
+            console.log(error);
+            throw new ServerError(this.serverMessageError);
+        }
+    }
+
+    async softDeleteOrActiveOne(id, status = false, transaction = null, attributes = null) {
+        try {
+            const response = await this.model.update({
+                status,
+                deletedAt: new Date().toISOString(),
+            }, {
+                where: {
+                    id,
+                },
+                transaction,
+                attributes,
+            });
+            return response;
+        } catch (error) {
+            console.log(error);
+            throw new ServerError(this.serverMessageError);
+        }
     }
 }
