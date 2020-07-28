@@ -1,4 +1,6 @@
-import { Model } from "sequelize";
+import Sequelize, { Model } from "sequelize";
+
+const { Op } = Sequelize;
 
 export default (sequelize, DataTypes) => {
   class Shop extends Model {
@@ -18,6 +20,26 @@ export default (sequelize, DataTypes) => {
       Shop.belongsTo(models.Bank, {
         as: "banks",
         foreignKey: "bankId",
+      });
+      Shop.addScope("productSoldOut", {
+        include: [{
+          model: models.Product,
+          as: "products",
+          where: {
+              restAmount: 0,
+          },
+        }],
+      });
+      Shop.addScope("productInventory", {
+        include: [{
+          model: models.Product,
+          as: "products",
+          where: {
+            restAmount: {
+              [Op.gt]: 0,
+          },
+          },
+        }],
       });
     }
   };

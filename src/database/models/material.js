@@ -17,6 +17,10 @@ export default (sequelize, DataTypes) => {
     slug: DataTypes.STRING,
     status: DataTypes.BOOLEAN,
   }, {
+    defaultScope: {
+      attributes: ["id", "name", "slug"],
+      where: { status: true },
+    },
     sequelize,
     modelName: "Material",
   });

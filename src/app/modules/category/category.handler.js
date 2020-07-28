@@ -13,7 +13,7 @@ class CategoryHandler {
 
     getCategories() {
         return [
-            this.controller.call("getRecursiveCategories"),
+            this.controller.call("getAllCategories"),
         ];
     }
 }

@@ -15,6 +15,10 @@ export default (sequelize, DataTypes) => {
     productId: DataTypes.INTEGER,
     status: DataTypes.BOOLEAN,
   }, {
+    defaultScope: {
+      where: { status: true },
+      attributes: ["src", "kind"],
+    },
     sequelize,
     modelName: "Gallery",
   });

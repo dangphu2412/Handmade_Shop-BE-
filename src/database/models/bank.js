@@ -13,6 +13,10 @@ export default (sequelize, DataTypes) => {
     name: DataTypes.STRING,
     slug: DataTypes.STRING,
   }, {
+    defaultScope: {
+      where: { status: true },
+      attributes: ["id", "name", "slug"],
+    },
     sequelize,
     modelName: "Bank",
   });

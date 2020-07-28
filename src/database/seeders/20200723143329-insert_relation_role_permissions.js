@@ -5,7 +5,8 @@ const { Op } = Sequelize;
 const { Role, Permission } = Models;
 
 export default {
-  up: async () => {
+  // eslint-disable-next-line no-unused-vars
+  up: async (queryInterface) => {
       const admin = await Role.findByPk(ROLE.ADMIN.key);
       const creator = await Role.findByPk(ROLE.SHOP_KEEPER.key);
       const user = await Role.findByPk(ROLE.USER.key);
@@ -51,6 +52,10 @@ export default {
       const adminPermissions = await Permission.findAll({
         where: {
           [Op.or]: [
+            {
+              method: METHOD.GET,
+              module: MODULE.USER,
+            },
             {
               method: METHOD.POST,
               module: MODULE.CATEGORY,

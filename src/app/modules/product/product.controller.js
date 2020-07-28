@@ -39,6 +39,22 @@ class ProductController extends CoreController {
             return this.ErrorHandler(response, error);
         }
     }
+
+    async disableProduct(request, response) {
+        try {
+            const payload = request.body;
+
+            const data = await this.service.fetchProductDetail(payload);
+
+            return response.status(httpStatus.OK).json({
+                status: httpStatus.OK,
+                message: "Create Product success",
+                data,
+            });
+        } catch (error) {
+            return this.ErrorHandler(response, error);
+        }
+    }
 }
 
 export default new ProductController();

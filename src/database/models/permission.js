@@ -18,6 +18,9 @@ export default (sequelize, DataTypes) => {
     module: DataTypes.STRING,
     description: DataTypes.STRING,
   }, {
+    defaultScope: {
+      attributes: ["id", "method", "module"],
+    },
     sequelize,
     modelName: "Permission",
   });

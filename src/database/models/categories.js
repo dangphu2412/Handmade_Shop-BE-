@@ -7,6 +7,15 @@ export default (sequelize, DataTypes) => {
         as: "children",
         foreignKey: "parentId",
       });
+      Category.addScope("treeCategory", {
+        attributes: ["id", "name", "slug", "parentId"],
+        include: [{
+            attributes: ["id", "name", "slug", "parentId"],
+            model: models.Category,
+            as: "children",
+            nested: true,
+        }],
+      });
     }
   }
   Category.init({
@@ -15,6 +24,9 @@ export default (sequelize, DataTypes) => {
     parentId: DataTypes.INTEGER,
     status: DataTypes.BOOLEAN,
   }, {
+    defaultScope: {
+      attributes: ["id", "name", "slug", "parentId"],
+    },
     sequelize,
     modelName: "Category",
   });

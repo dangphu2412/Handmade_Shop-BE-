@@ -3,7 +3,7 @@ import slugTransfer from "speakingurl";
 import CoreService from "../../concept/Service";
 import ProductRepository from "./product.repository";
 import ServerError from "../../../errors/Server.error";
-import sequelize from "../../../database/models/index";
+import database from "../../../database/models/index";
 
 class ProductService extends CoreService {
     constructor() {
@@ -12,15 +12,15 @@ class ProductService extends CoreService {
     }
 
     fetchProductDetail(slug) {
-        // return this.repository.getOneWithConditions(conditions, ["category", "materials", "transports", "gallery"]);
-        return this.repository.model.scope(
-            "category", "materials", "transports", "gallery",
-            { method: ["fetchWithSlug", slug] },
-        ).findAll();
+        const conditions = {
+            slug,
+        };
+        const scopes = ["category", "materials", "transports", "gallery"];
+        return this.repository.getOne(conditions, scopes);
     }
 
     async createProduct(payload) {
-        const transaction = await sequelize.transaction();
+        const transaction = await database.transaction();
 
         try {
             const {
@@ -40,11 +40,11 @@ class ProductService extends CoreService {
 
             await productInfo.addMaterials(materialIds, { transaction });
             await productInfo.addTransports(transportIds, { transaction });
-            transaction.commit();
+            await transaction.commit();
             return productInfo;
         } catch (error) {
             console.log(error);
-            transaction.rollback();
+            await transaction.rollback();
             throw new ServerError("Server is crashing");
         }
     }

@@ -13,7 +13,7 @@ class PaymentHandler {
 
     getBanks() {
         return [
-            this.controller.call("getBanks"),
+            this.controller.call("getMany"),
         ];
     }
 }

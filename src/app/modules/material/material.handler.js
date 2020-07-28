@@ -15,7 +15,7 @@ class MaterialpHandler {
         return [
             // this.validator.checkGetMaterials(),
             // this.validator.catchValidateErrors,
-            this.controller.call("getMaterials"),
+            this.controller.call("getMany"),
         ];
     }
 }

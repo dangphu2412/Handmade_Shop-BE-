@@ -6,10 +6,6 @@ class MaterialService extends CoreService {
         super();
         this.repository = MaterialRepository;
     }
-
-    getMaterials(query) {
-        return this.repository.getMany(query, null, ["id", "name", "slug"]);
-    }
 }
 
 export default new MaterialService();

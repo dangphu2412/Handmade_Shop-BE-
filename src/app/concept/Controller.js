@@ -5,8 +5,9 @@ export default class Controller {
         try {
             const { query } = request;
             const data = await this.service.getMany(query);
-            return response.json({
+            return response.status(httpStatus.OK).json({
                 status: httpStatus.OK,
+                message: "Get success",
                 data,
             });
         } catch (error) {
@@ -28,12 +29,13 @@ export default class Controller {
         }
     }
 
-    async getOne(request, response) {
+    async getByPk(request, response) {
         try {
             const { id } = request.params;
-            const data = await this.service.getOne(id);
-            return response.json({
+            const data = await this.service.getByPk(id);
+            return response.status(httpStatus.OK).json({
                 status: httpStatus.OK,
+                message: "Get success",
                 data,
             });
         } catch (error) {

@@ -9,12 +9,16 @@ export default class Service {
         return this.repository.getMany(query);
     }
 
-    getRecursive(alias, attributes) {
-        return this.repository.getRecursive(alias, attributes);
+    async getByPk(id) {
+        const result = await this.repository.getByPk(id);
+        if (!result) {
+            throw new LogicError("Can't get by this id");
+        }
+        return result;
     }
 
-    async getOne(id) {
-        const result = await this.repository.getOne(id);
+    async getOne(conditions) {
+        const result = await this.repository.getOne(conditions);
         if (!result) {
             throw new LogicError("Can't get by this id");
         }

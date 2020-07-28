@@ -18,6 +18,9 @@ export default (sequelize, DataTypes) => {
     slug: DataTypes.STRING,
     cityId: DataTypes.INTEGER,
   }, {
+    defaultScope: {
+      attributes: ["id", "name", "slug"],
+    },
     sequelize,
     modelName: "District",
   });

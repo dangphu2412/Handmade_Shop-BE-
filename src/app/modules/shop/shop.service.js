@@ -7,7 +7,6 @@ import ShopRepository from "./shop.repository";
 import AuthRepository from "../auth/auth.repository";
 import LogicError from "../../../errors/Logic.error";
 import { ROLE } from "../../../constants/role";
-import { Sequelize, Models } from "../../../database/models";
 
 class ShopService extends CoreService {
     constructor() {
@@ -17,38 +16,26 @@ class ShopService extends CoreService {
     }
 
     async getOwnerShop(userId) {
-        return this.repository.getOneWithConditions({ userId });
+        const conditions = {
+            userId,
+        };
+        return this.repository.getOne(conditions);
     }
 
-    fetchOwnerProducts({ page = 1, amount = 10, key = null, value = null }, userId) {
+    fetchOwnerProducts({ key, value, ...query }, userId) {
         let response;
-        let relation = [];
+        const conditions = { userId };
+        let scopes = ["productSoldOut"];
         switch (key) {
             case "sold-out":
-                relation = [{
-                    model: Models.Product,
-                    as: "products",
-                    where: {
-                        restAmount: 0,
-                    },
-                }];
-                response = this.repository.getMany({ page, amount }, { userId }, ["id"], null);
+                response = this.repository.getMany(query, scopes, conditions);
                 break;
             case "inventory":
-                const { Op } = Sequelize;
-                relation = [{
-                    model: Models.Product,
-                    as: "products",
-                    where: {
-                        restAmount: {
-                            [Op.gt]: 0,
-                        },
-                    },
-                }];
-                response = this.repository.getMany({ page, amount }, { userId }, ["id"], relation);
+                scopes = ["productInventory"];
+                response = this.repository.getMany(query, scopes, conditions);
                 break;
             default:
-                response = this.repository.getMany({ page, amount }, { userId }, ["id"], ["products"]);
+                response = this.repository.getMany(query, scopes, conditions);
                 break;
         }
         return response;
@@ -59,7 +46,7 @@ class ShopService extends CoreService {
 
         payload.slug = slugTransfer(name);
 
-        const isExist = await this.authRepository.getOne(userId);
+        const isExist = await this.authRepository.getByPk(userId);
 
         if (isExist.shopActive) {
             throw new LogicError("Shop has been created");

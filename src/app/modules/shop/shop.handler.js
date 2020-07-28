@@ -16,7 +16,7 @@ class ShopHandler {
     getOwnerShop() {
         return [
             this.authen.call("verify"),
-            // this.authorize.WithScope(ROLE.SHOP_KEEPER, METHOD.POST, MODULE.SHOP),
+            // this.authorize.WithScope(ROLE.SHOP_KEEPER, METHOD.GET, MODULE.SHOP),
             this.controller.call("getOwnerShop"),
         ];
     }

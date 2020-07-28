@@ -13,6 +13,9 @@ export default (sequelize, DataTypes) => {
     name: DataTypes.STRING,
     slug: DataTypes.STRING,
   }, {
+    defaultScope: {
+      attributes: ["id", "name", "slug"],
+    },
     sequelize,
     modelName: "City",
   });

@@ -6,6 +6,11 @@ class CategoryService extends CoreService {
         super();
         this.repository = CategoryRepository;
     }
+
+    getTreeCategories(query) {
+        const scopes = ["treeCategory"];
+        return this.repository.getMany(query, scopes);
+    }
 }
 
 export default new CategoryService();

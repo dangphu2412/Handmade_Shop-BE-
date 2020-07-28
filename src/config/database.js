@@ -7,9 +7,9 @@ module.exports = {
     database: process.env.DB_NAME,
     host: process.env.DB_HOST,
     dialect: "postgres",
-    define: {
-      timestamps: false,
-    },
+    // define: {
+    //   timestamps: false,
+    // },
   },
   test: {
     username: process.env.DB_USER,
@@ -17,9 +17,9 @@ module.exports = {
     database: process.env.DB_NAME,
     host: process.env.DB_HOST,
     dialect: "postgres",
-    define: {
-      timestamps: false,
-    },
+    // define: {
+    //   timestamps: false,
+    // },
   },
   production: {
     username: process.env.DB_USER,
@@ -27,9 +27,9 @@ module.exports = {
     database: process.env.DB_NAME,
     host: process.env.DB_HOST,
     dialect: "postgres",
-    define: {
-      timestamps: false,
-    },
+    // define: {
+    //   timestamps: false,
+    // },
     logging: false,
   },
 };

@@ -1,6 +1,8 @@
 import httpStatus from "http-status";
 import AuthorizeError from "../errors/Authorize.error";
-import { User, Role, Permission } from "../database/models/index";
+import { Models } from "../database/models";
+
+const { User, Role, Permission } = Models;
 
 class Authentication {
     WithScope(role, method, module) {
@@ -25,20 +27,8 @@ class Authentication {
             }
             const { id, scope: required } = request.auth.credentials;
 
-            const userScope = await User.findOne({
+            const userScope = await User.scope("authorize").findOne({
                 where: { id },
-                include: [{
-                    model: Role,
-                    as: "role",
-                    attributes: ["rolename"],
-                    include: [{
-                        model: Permission,
-                        as: "permissions",
-                        attributes: ["method", "module"],
-                        where: { status: true },
-                        through: { attributes: [] },
-                    }],
-                }],
             });
             const { role: roleRequired, method: methodRequired, module: moduleRequired } = required;
             const { role } = userScope;

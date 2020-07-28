@@ -11,6 +11,20 @@ export default (sequelize, DataTypes) => {
         as: "shop",
         foreignKey: "userId",
       });
+      User.addScope("authorize", {
+        include: [{
+          model: models.Role,
+          as: "role",
+          attributes: ["rolename"],
+          include: [{
+              model: models.Permission,
+              as: "permissions",
+              attributes: ["method", "module"],
+              where: { status: true },
+              through: { attributes: [] },
+          }],
+        }],
+      });
     }
   }
 
@@ -23,6 +37,14 @@ export default (sequelize, DataTypes) => {
     status: DataTypes.BOOLEAN,
     shopActive: DataTypes.BOOLEAN,
   }, {
+    defaultScope: {
+      attributes: ["id", "username", "name", "slug", "password", "avatar", "shopActive", "status"],
+    },
+    scopes: {
+      test: {
+        attributes: ["id", "username"],
+      },
+    },
     sequelize,
     modelName: "User",
   });

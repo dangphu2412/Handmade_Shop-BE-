@@ -6,10 +6,6 @@ class PaymentService extends CoreService {
         super();
         this.repository = PaymentRepository;
     }
-
-    getBanks(query) {
-        return this.repository.getMany(query, null, ["id", "name", "slug"]);
-    }
 }
 
 export default new PaymentService();

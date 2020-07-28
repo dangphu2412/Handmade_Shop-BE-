@@ -6,42 +6,67 @@ export default class Repository {
         this.serverMessageError = "Server is crashing ! Pleas check your input before calling handling";
     }
 
-    getMany({ page = 1, amount = 10 }, where = null, attributes = null, include = null) {
-        return this.model.findAll({
+    /**
+     *
+     * @param {Object} query.filter
+     * - filter = {
+     *    page: 0,
+     *    amount: 10
+     *    order: [["createdAt"]]
+     * }
+     * @param {String} scope
+     * - scope is define in model
+     * - Example: scope("defaultScope") if not redefine it will get all fields
+     * - Model: User -> scope: {
+     *  privateUser: {
+     *      attributes: ["id", "username", "name", "password", "roleId"],
+     *  }
+     * }
+     * @param {Object} where
+     * - Conditions where
+     * - where = {
+     *    name: "abc"
+     *   }
+     * @param transaction
+     * - Optionals with sql, usually used when having insert or update
+     * - It will rollback when sql query is failed
+     */
+    getMany({ filter = { page: 0, amount: 10, order: null } },
+    scope = "defaultScope", where = null, transaction = null) {
+        const filterSCope = (scope === "defaultScope") ? scope : [...scope];
+        return this.model.scope(filterSCope).findAll({
+            limit: filter.amount,
+            amount: (filter.page - 1) * filter.amount,
+            order: filter.order,
             where,
-            attributes,
-            limit: amount,
-            amount: (page - 1) * amount,
-            include,
+            transaction,
         });
     }
 
-    getOne(id, include = null, attributes = null) {
-        return this.model.findByPk(id, {
-            attributes,
-            include,
+    getByPk(id, scope = "defaultScope", transaction = null) {
+        return this.model.scope(scope).findByPk(id, {
+            transaction,
         });
     }
 
-    getOneWithConditions(conditions, include = null, attributes = null) {
-        return this.model.findOne({
+    getOne(conditions, scope = "defaultScope", transaction = null) {
+        return this.model.scope(scope).findOne({
             where: conditions,
-            attributes,
-            include,
+            transaction,
         });
     }
 
-    getRecursive(alias, attributes = null) {
-        return this.model.findAll({
-            attributes,
-            include: [{
-                attributes,
-                model: this.model,
-                as: alias,
-                nested: true,
-            }],
-        });
-    }
+    // getRecursive(alias, attributes = null) {
+    //     return this.model.findAll({
+    //         attributes,
+    //         include: [{
+    //             attributes,
+    //             model: this.model,
+    //             as: alias,
+    //             nested: true,
+    //         }],
+    //     });
+    // }
 
     async create(payload, transaction = null, attributes = null, include = null) {
         try {

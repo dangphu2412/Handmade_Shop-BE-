@@ -35,8 +35,8 @@ class ProductpHandler {
 
     softDeleteProduct() {
         return [
-            this.authorize.WithScope(),
-            this.controller.call("createProduct"),
+            this.authorize.WithScope(ROLE.SHOP_KEEPER, METHOD.DELETE, MODULE.SHOP_KEEPER_PRODUCT),
+            this.controller.call("disableProduct"),
         ];
     }
 }

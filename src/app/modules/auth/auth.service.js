@@ -43,7 +43,7 @@ class AuthService extends CoreService {
 
         const transporter = MailService.createTransport(MailService.getTransportOptions());
         const sendMailOptions = MailService.getSendMailOptions(username, verifyToken);
-        await MailService.sendMail(transporter, sendMailOptions);
+        MailService.sendMail(transporter, sendMailOptions);
     }
 
     async verify(token) {
@@ -51,7 +51,8 @@ class AuthService extends CoreService {
         const tokenCredentials = TokenService.decode(verifyToken);
         const { id, email, status } = tokenCredentials;
 
-        const userInfo = await this.repository.getOne(id);
+        const userInfo = await this.repository.getByPk(id);
+
         if (userInfo.status || userInfo.status !== status) {
             throw new LogicError("Your email has already been verified");
         }
@@ -65,6 +66,9 @@ class AuthService extends CoreService {
             slug: userInfo.slug,
         };
         const signToken = TokenService.sign(signPayload);
+
+        delete userInfo.status;
+
         const dataResponse = {
             userInfo,
             token: signToken,
@@ -74,8 +78,8 @@ class AuthService extends CoreService {
 
     async signin(payload) {
         const { username, password } = payload;
-        const userInfo = await this.repository.getOneWithConditions({ username, status: true }, null,
-            ["id", "username", "name", "slug", "password", "avatar", "shopActive"]);
+        const conditions = { username, status: true };
+        const userInfo = await this.repository.getOne(conditions);
 
         if (!userInfo) {
             throw new LogicError("Your account is not valid");
@@ -85,6 +89,7 @@ class AuthService extends CoreService {
         }
 
         delete userInfo.password;
+        delete userInfo.status;
 
         const signPayload = {
             id: userInfo.id,

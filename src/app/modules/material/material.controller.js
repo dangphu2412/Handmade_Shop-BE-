@@ -7,19 +7,6 @@ class MaterialController extends CoreController {
         super();
         this.service = MaterialService;
     }
-
-    async getMaterials(request, response) {
-        try {
-            const { query } = request;
-            const data = await this.service.getMaterials(query);
-            return response.json({
-                status: httpStatus.OK,
-                data,
-            });
-        } catch (error) {
-            return this.ErrorHandler(response, error);
-        }
-    }
 }
 
 export default new MaterialController();

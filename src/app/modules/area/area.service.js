@@ -15,7 +15,10 @@ class AreaService extends CoreService {
 
     getDistrictsByCityId(params, query) {
         const { id } = params;
-        return this.districtRepository.getMany(query, { cityId: id });
+        const conditions = {
+            cityId: id,
+        };
+        return this.districtRepository.getMany(query, "defaultScope", conditions);
     }
 }
 
