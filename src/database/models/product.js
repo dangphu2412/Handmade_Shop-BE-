@@ -29,6 +29,53 @@ export default (sequelize, DataTypes) => {
         as: "gallery",
         foreignKey: "productId",
       });
+      // With scopes
+      Product.addScope("category", {
+        include: [
+          {
+            model: models.Category,
+            as: "category",
+            attributes: ["id", "name", "slug"],
+            required: false,
+            where: { status: true },
+          },
+        ],
+      });
+      Product.addScope("materials", {
+        include: [
+          {
+            model: models.Material,
+            as: "materials",
+            through: { attributes: [] },
+            attributes: ["id", "name", "slug"],
+            required: false,
+            where: { status: true },
+          },
+        ],
+      });
+      Product.addScope("transports", {
+        include: [
+          {
+            model: models.Transport,
+            as: "transports",
+            through: { attributes: [] },
+            attributes: ["id", "brand"],
+            required: false,
+            where: { status: true },
+          },
+        ],
+      });
+      Product.addScope("gallery", {
+        include: [
+          {
+            model: models.Gallery,
+            as: "gallery",
+            attributes: ["id", "src", "kind"],
+            required: false,
+            where: { status: true },
+          },
+        ],
+      });
     }
   }
   Product.init({
@@ -42,6 +89,13 @@ export default (sequelize, DataTypes) => {
     restAmount: DataTypes.NUMBER,
     status: DataTypes.BOOLEAN,
   }, {
+    scopes: {
+      fetchWithSlug(slug) {
+        return {
+          where: { slug },
+        };
+      },
+    },
     sequelize,
     modelName: "Product",
   });

@@ -23,4 +23,10 @@ router.use(shopRoute);
 router.use(paymentRoute);
 router.use(productRoute);
 
+router.get("/test", async (req, res) => {
+    return res.json({
+        message: "TEST router, useful to debug !",
+    });
+});
+
 export default router;

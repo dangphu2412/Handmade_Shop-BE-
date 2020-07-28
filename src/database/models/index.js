@@ -1,4 +1,4 @@
-import CoreDatabase, { DataTypes } from "sequelize";
+import { Sequelize as DatabaseInstance, DataTypes } from "sequelize";
 import loadingConfig from "../../config/database";
 
 import UserModel from "./user";
@@ -18,7 +18,12 @@ const _env = process.env.NODE_ENV || "development";
 const config = loadingConfig[_env];
 const models = {};
 
-const sequelize = new CoreDatabase(config.database, config.username, config.password, config);
+export const sequelize = new DatabaseInstance(
+  config.database,
+  config.username,
+  config.password,
+  config,
+);
 
 models.User = UserModel(sequelize, DataTypes);
 models.Role = RoleModel(sequelize, DataTypes);
@@ -43,4 +48,4 @@ export default sequelize;
 
 export const Models = models;
 
-export const Sequelize = CoreDatabase;
+export const Sequelize = DatabaseInstance;

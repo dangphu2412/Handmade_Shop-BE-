@@ -16,7 +16,7 @@ class ProductController extends CoreController {
 
             return response.status(httpStatus.OK).json({
                 status: httpStatus.OK,
-                message: "Create Product success",
+                message: "Get detail succcess",
                 data,
             });
         } catch (error) {

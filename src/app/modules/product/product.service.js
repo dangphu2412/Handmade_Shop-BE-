@@ -12,8 +12,11 @@ class ProductService extends CoreService {
     }
 
     fetchProductDetail(slug) {
-        const conditions = { slug };
-        return this.repository.getOneWithConditions(conditions, ["category", "materials", "transports", "gallery"]);
+        // return this.repository.getOneWithConditions(conditions, ["category", "materials", "transports", "gallery"]);
+        return this.repository.model.scope(
+            "category", "materials", "transports", "gallery",
+            { method: ["fetchWithSlug", slug] },
+        ).findAll();
     }
 
     async createProduct(payload) {

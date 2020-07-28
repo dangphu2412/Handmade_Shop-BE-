@@ -12,7 +12,6 @@ export default (sequelize, DataTypes) => {
         through: "RolePermissions",
         foreignKey: "roleId",
         otherKey: "permissionId",
-        timestamps: false,
       });
     }
   }
