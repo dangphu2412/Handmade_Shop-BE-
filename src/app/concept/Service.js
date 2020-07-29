@@ -20,7 +20,7 @@ export default class Service {
     async getOne(conditions) {
         const result = await this.repository.getOne(conditions);
         if (!result) {
-            throw new LogicError("Can't get by this id");
+            throw new LogicError("Can't get by this conditions");
         }
         return result;
     }

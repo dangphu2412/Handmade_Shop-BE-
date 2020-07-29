@@ -31,13 +31,15 @@ export default class Repository {
      * - Optionals with sql, usually used when having insert or update
      * - It will rollback when sql query is failed
      */
-    getMany({ filter = { page: 0, amount: 10, order: null } },
-    scope = "defaultScope", where = null, transaction = null) {
+    getMany({
+            page = 0, amount = 10, order = "createdAt", by = "DESC",
+        },
+        scope = "defaultScope", where = null, transaction = null) {
         const filterSCope = (scope === "defaultScope") ? scope : [...scope];
         return this.model.scope(filterSCope).findAll({
-            limit: filter.amount,
-            amount: (filter.page - 1) * filter.amount,
-            order: filter.order,
+            limit: amount,
+            amount: (page - 1) * amount,
+            order: [[order, by]],
             where,
             transaction,
         });
@@ -55,18 +57,6 @@ export default class Repository {
             transaction,
         });
     }
-
-    // getRecursive(alias, attributes = null) {
-    //     return this.model.findAll({
-    //         attributes,
-    //         include: [{
-    //             attributes,
-    //             model: this.model,
-    //             as: alias,
-    //             nested: true,
-    //         }],
-    //     });
-    // }
 
     async create(payload, transaction = null, attributes = null, include = null) {
         try {

@@ -9,6 +9,7 @@ import MailService from "../../../services/Mailer";
 
 import AuthRepository from "./auth.repository";
 
+import AuthenError from "../../../errors/Authen.error";
 import LogicError from "../../../errors/Logic.error";
 
 class AuthService extends CoreService {
@@ -49,6 +50,11 @@ class AuthService extends CoreService {
     async verify(token) {
         const verifyToken = token.slice(0, -4);
         const tokenCredentials = TokenService.decode(verifyToken);
+
+        if (!tokenCredentials) {
+            throw new AuthenError("Your token is out of date");
+        }
+
         const { id, email, status } = tokenCredentials;
 
         const userInfo = await this.repository.getByPk(id);
