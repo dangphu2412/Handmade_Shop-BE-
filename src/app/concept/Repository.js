@@ -32,7 +32,7 @@ export default class Repository {
      * - It will rollback when sql query is failed
      */
     getMany({
-            page = 0, amount = 10, order = "createdAt", by = "DESC",
+            page = 1, amount = 10, order = "createdAt", by = "DESC",
         },
         scope = "defaultScope", where = null, transaction = null) {
         const filterSCope = (scope === "defaultScope") ? scope : [...scope];
