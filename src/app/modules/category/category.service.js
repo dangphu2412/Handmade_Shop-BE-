@@ -11,7 +11,10 @@ class CategoryService extends CoreService {
         query.order = "id";
         query.by = "ASC";
         const scopes = ["treeCategory"];
-        return this.repository.getMany(query, scopes);
+        const conditions = {
+            parentId: null,
+        };
+        return this.repository.getMany(query, scopes, conditions);
     }
 }
 
