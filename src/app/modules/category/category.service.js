@@ -8,6 +8,8 @@ class CategoryService extends CoreService {
     }
 
     getTreeCategories(query) {
+        query.order = "id";
+        query.by = "ASC";
         const scopes = ["treeCategory"];
         return this.repository.getMany(query, scopes);
     }
