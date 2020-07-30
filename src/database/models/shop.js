@@ -25,6 +25,7 @@ export default (sequelize, DataTypes) => {
         include: [{
           model: models.Product,
           as: "products",
+          required: false,
           where: {
               restAmount: 0,
           },
@@ -70,6 +71,9 @@ export default (sequelize, DataTypes) => {
     scopes: {
       getInfo: {
         attributes: ["id", "name", "slug", "description", "thumbnail"],
+      },
+      getIdForeign: {
+        attributes: ["id", "userId", "districtId", "bankId"],
       },
     },
     sequelize,

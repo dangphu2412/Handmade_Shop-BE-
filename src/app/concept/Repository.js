@@ -87,12 +87,14 @@ export default class Repository {
         }
     }
 
-    async updateOne(payload, id, transaction = null, attributes = null) {
+    async updateOne(payload, id, transaction = null, attributes = null, include = null) {
         try {
             const response = await this.model.update(payload, {
                 where: { id },
                 transaction,
                 attributes,
+                include,
+                returning: true,
             });
             return response;
         } catch (error) {

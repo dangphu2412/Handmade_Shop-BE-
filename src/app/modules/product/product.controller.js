@@ -24,11 +24,45 @@ class ProductController extends CoreController {
         }
     }
 
+    async fetchProductDetailById(request, response) {
+        try {
+            const { id } = request.params;
+            const { userId } = this.getCredentialInfo(request);
+            const data = await this.service.fetchProductDetailById(id, userId);
+
+            return response.status(httpStatus.OK).json({
+                status: httpStatus.OK,
+                message: "Get detail succcess",
+                data,
+            });
+        } catch (error) {
+            return this.ErrorHandler(response, error);
+        }
+    }
+
     async createProduct(request, response) {
         try {
             const payload = request.body;
 
             const data = await this.service.createProduct(payload);
+
+            return response.status(httpStatus.OK).json({
+                status: httpStatus.OK,
+                message: "Create Product success",
+                data,
+            });
+        } catch (error) {
+            return this.ErrorHandler(response, error);
+        }
+    }
+
+    async updateProduct(request, response) {
+        try {
+            const payload = request.body;
+            const { slug } = request.params;
+
+            payload.slug = slug;
+            const data = await this.service.updateProduct(payload);
 
             return response.status(httpStatus.OK).json({
                 status: httpStatus.OK,

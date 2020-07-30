@@ -1,14 +1,17 @@
+/* eslint-disable max-len */
 import slugTransfer from "speakingurl";
 
 import CoreService from "../../concept/Service";
 import ProductRepository from "./product.repository";
-import ServerError from "../../../errors/Server.error";
+import ShopRepository from "../shop/shop.repository";
+import LogicError from "../../../errors/Logic.error";
 import database from "../../../database/models/index";
 
 class ProductService extends CoreService {
     constructor() {
         super();
         this.repository = ProductRepository;
+        this.shopRepository = ShopRepository;
     }
 
     fetchProductDetail(slug) {
@@ -17,6 +20,21 @@ class ProductService extends CoreService {
         };
         const scopes = ["category", "materials", "transports", "gallery"];
         return this.repository.getOne(conditions, scopes);
+    }
+
+    async fetchProductDetailById(id) {
+        const scopes = ["category", "materials", "transports", "gallery"];
+        const product = await this.repository.getByPk(id, scopes);
+
+        const { shopId } = product;
+        const authorScopes = ["getIdForeign"];
+        const isAuthor = await this.shopRepository.getByPk(shopId, authorScopes);
+
+        if (!isAuthor) {
+            throw new LogicError("You are not the author of this product");
+        }
+
+        return product;
     }
 
     async createProduct(payload) {
@@ -29,23 +47,44 @@ class ProductService extends CoreService {
                 ...productPayload
             } = payload;
             let include = ["gallery"];
-
-            productPayload.slug = slugTransfer(productPayload.name);
+            const date = Date.now();
+            productPayload.slug = slugTransfer(productPayload.name + date);
             productPayload.restAmount = productPayload.amount;
             if (!productPayload.gallery) {
                 include = null;
             }
 
             const productInfo = await this.repository.create(productPayload, transaction, null, include);
-
-            await productInfo.addMaterials(materialIds, { transaction });
-            await productInfo.addTransports(transportIds, { transaction });
+            await this.repository._addRelationProductAndMaterial(productInfo, materialIds, transaction);
+            await this.repository._addRelationProductAndTransport(productInfo, transportIds, transaction);
             await transaction.commit();
             return productInfo;
         } catch (error) {
             console.log(error);
             await transaction.rollback();
-            throw new ServerError("Server is crashing");
+            throw error;
+        }
+    }
+
+    async updateProduct({ gallery, materialIds, transportIds, ...productPayload }) {
+        const transaction = await database.transaction();
+
+        try {
+            const include = ["gallery"];
+            const { id } = productPayload;
+
+            const [, response] = await this.repository.updateOne(productPayload, id, transaction, null, include);
+
+            const productInfo = response[0];
+
+            await this.repository._setRelationProductAndMaterial(productInfo, materialIds, transaction);
+            await this.repository._setRelationProductAndTransport(productInfo, transportIds, transaction);
+            await transaction.commit();
+            return productInfo;
+        } catch (error) {
+            console.log(error);
+            await transaction.rollback();
+            throw error;
         }
     }
 }

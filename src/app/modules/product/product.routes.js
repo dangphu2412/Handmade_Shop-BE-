@@ -7,7 +7,11 @@ router.get("/products", ProductHandler["fetchProducts"]());
 
 router.get("/products/:slug", ProductHandler["fetchProductDetail"]());
 
+router.get("/users/shop/products/:id", ProductHandler["fetchProductDetailById"]());
+
 router.post("/users/shop/products", ProductHandler["createProduct"]());
+
+router.put("/users/shop/products/:slug", ProductHandler["updateProduct"]());
 
 router.delete("/users/shop/products/:slug", ProductHandler["softDeleteProduct"]());
 

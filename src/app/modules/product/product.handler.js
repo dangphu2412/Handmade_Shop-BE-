@@ -25,11 +25,27 @@ class ProductpHandler {
         ];
     }
 
+    fetchProductDetailById() {
+        return [
+            this.authen.call("verify"),
+            this.authorize.WithScope(ROLE.SHOP_KEEPER, METHOD.GET, MODULE.SHOP_KEEPER_PRODUCT),
+            this.controller.call("fetchProductDetailById"),
+        ];
+    }
+
     createProduct() {
         return [
             this.validator.checkCreateProduct(),
             this.validator.catchValidateErrors,
             this.controller.call("createProduct"),
+        ];
+    }
+
+    updateProduct() {
+        return [
+            this.validator.checkCreateProduct(),
+            this.validator.catchValidateErrors,
+            this.controller.call("updateProduct"),
         ];
     }
 
