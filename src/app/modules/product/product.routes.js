@@ -11,9 +11,9 @@ router.get("/users/shop/products/:id", ProductHandler["fetchProductDetailById"](
 
 router.post("/users/shop/products", ProductHandler["createProduct"]());
 
-router.put("/users/shop/products/:slug", ProductHandler["updateProduct"]());
+router.put("/users/shop/products/:id", ProductHandler["updateProduct"]());
 
-router.delete("/users/shop/products/:slug", ProductHandler["softDeleteProduct"]());
+router.delete("/users/shop/products/:id", ProductHandler["softDeleteProduct"]());
 
 export default router;
 

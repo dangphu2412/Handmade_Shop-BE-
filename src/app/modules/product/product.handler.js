@@ -45,13 +45,16 @@ class ProductpHandler {
         return [
             this.validator.checkCreateProduct(),
             this.validator.catchValidateErrors,
+            this.authen.call("verify"),
+            this.authorize.WithScope(ROLE.SHOP_KEEPER, METHOD.PUT, MODULE.PRODUCT),
             this.controller.call("updateProduct"),
         ];
     }
 
     softDeleteProduct() {
         return [
-            this.authorize.WithScope(ROLE.SHOP_KEEPER, METHOD.DELETE, MODULE.SHOP_KEEPER_PRODUCT),
+            this.authen.call("verify"),
+            this.authorize.WithScope(ROLE.SHOP_KEEPER, METHOD.DELETE, MODULE.PRODUCT),
             this.controller.call("disableProduct"),
         ];
     }

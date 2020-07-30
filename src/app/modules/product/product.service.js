@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 /* eslint-disable max-len */
 import slugTransfer from "speakingurl";
 
@@ -73,6 +74,11 @@ class ProductService extends CoreService {
             const include = ["gallery"];
             const { id } = productPayload;
 
+            // Not update slug
+            if (productPayload.slug) {
+                delete productPayload.slug;
+            }
+
             const [, response] = await this.repository.updateOne(productPayload, id, transaction, null, include);
 
             const productInfo = response[0];
@@ -86,6 +92,23 @@ class ProductService extends CoreService {
             await transaction.rollback();
             throw error;
         }
+    }
+
+    async disableProduct(idProduct, userId) {
+        const scopes = ["getIdForeign"];
+        const product = await this.repository.getByPk(idProduct, scopes);
+
+        const { shopId } = product;
+        const authorScopes = ["getIdForeign"];
+        const isAuthor = await this.shopRepository.getByPk(shopId, authorScopes);
+
+        if (!isAuthor) {
+            throw new LogicError("You are not the author of this product");
+        }
+
+        product.status = false;
+        product.deletedAt = new Date().toISOString();
+        await product.save();
     }
 }
 

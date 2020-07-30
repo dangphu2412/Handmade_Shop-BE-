@@ -59,9 +59,8 @@ class ProductController extends CoreController {
     async updateProduct(request, response) {
         try {
             const payload = request.body;
-            const { slug } = request.params;
-
-            payload.slug = slug;
+            const { id } = request.params;
+            payload.id = id;
             const data = await this.service.updateProduct(payload);
 
             return response.status(httpStatus.OK).json({
@@ -76,14 +75,14 @@ class ProductController extends CoreController {
 
     async disableProduct(request, response) {
         try {
-            const payload = request.body;
+            const { id: idProduct } = request.params;
+            const { userId } = this.getCredentialInfo(request);
 
-            const data = await this.service.fetchProductDetail(payload);
+            await this.service.disableProduct(idProduct, userId);
 
             return response.status(httpStatus.OK).json({
                 status: httpStatus.OK,
-                message: "Create Product success",
-                data,
+                message: "Disable product success",
             });
         } catch (error) {
             return this.ErrorHandler(response, error);

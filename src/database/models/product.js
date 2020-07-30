@@ -89,13 +89,11 @@ export default (sequelize, DataTypes) => {
     restAmount: DataTypes.NUMBER,
     status: DataTypes.BOOLEAN,
   }, {
-    // scopes: {
-    //   fetchWithSlug(slug) {
-    //     return {
-    //       where: { slug },
-    //     };
-    //   },
-    // },
+    scopes: {
+      getIdForeign: {
+        attributes: ["id", "shopId", "categoryId"],
+      },
+    },
     defaultScope: {
       where: { status: true },
       attributes: ["id", "name", "slug", "description", "price", "amount", "restAmount"],
