@@ -14,7 +14,6 @@ export default (sequelize, DataTypes) => {
     slug: DataTypes.STRING,
   }, {
     defaultScope: {
-      where: { status: true },
       attributes: ["id", "name", "slug"],
     },
     sequelize,

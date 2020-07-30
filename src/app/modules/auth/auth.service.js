@@ -85,8 +85,10 @@ class AuthService extends CoreService {
     async signin(payload) {
         const { username, password } = payload;
         const conditions = { username, status: true };
-        const userInfo = await this.repository.getOne(conditions);
-
+        const shopScopes = ["getInfo", "getBank", "getDistrict"];
+        const method = { method: ["getShopDetail", shopScopes] };
+        const scopes = [method];
+        const userInfo = await this.repository.getOne(conditions, scopes);
         if (!userInfo) {
             throw new LogicError("Your account is not valid");
         }
