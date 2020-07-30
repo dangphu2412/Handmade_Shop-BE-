@@ -54,7 +54,8 @@ export default (sequelize, DataTypes) => {
         }],
       });
     }
-  };
+  }
+
   Shop.init({
     userId: DataTypes.STRING,
     districtId: DataTypes.STRING,
@@ -64,7 +65,7 @@ export default (sequelize, DataTypes) => {
     description: DataTypes.STRING,
     thumbnail: DataTypes.STRING,
     cardNumber: DataTypes.STRING,
-    bankAccount: DataTypes.STRING
+    bankAccount: DataTypes.STRING,
   }, {
     scopes: {
       getInfo: {

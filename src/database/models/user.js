@@ -25,16 +25,14 @@ export default (sequelize, DataTypes) => {
           }],
         }],
       });
-      User.addScope("getShopDetail", (scopes) => {
-        return {
+      User.addScope("getShopDetail", (scopes) => ({
           include: [{
             model: models.Shop.scope(scopes),
             as: "shop",
             where: { status: true },
             required: false,
           }],
-        };
-      });
+        }));
     }
   }
 
