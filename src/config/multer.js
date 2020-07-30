@@ -20,4 +20,4 @@ const storage = {
   },
 };
 
-export default multer(storage).single("image");
+export default multer(storage).array("image", 5);

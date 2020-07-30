@@ -10,8 +10,8 @@ class GalleryController extends CoreController {
 
     async uploadImage(request, response) {
         try {
-            const { file } = request;
-            const url = await this.service.upload(file);
+            const { files } = request;
+            const url = await this.service.upload(files);
 
             return response.status(httpStatus.OK).json({
                 status: httpStatus.OK,

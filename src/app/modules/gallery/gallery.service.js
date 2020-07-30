@@ -11,13 +11,21 @@ class GalleryService extends CoreService {
         this.repository = GalleryRepository;
     }
 
-    async upload(file) {
+    async upload(files) {
         try {
-            const imgInfo = await UploadService.uploadImg(file.path);
+            const pendingUploads = files.map((file) => {
+                const { path } = file;
+                return UploadService.uploadImg(path);
+            });
 
-            fs.unlinkSync(file.path);
+            const uploadResponse = await Promise.all(pendingUploads);
 
-            return imgInfo.url;
+            files.forEach((file) => {
+                fs.unlinkSync(file.path);
+            });
+
+            const mappingUrls = uploadResponse.map((info) => info.url);
+            return mappingUrls;
         } catch (error) {
             throw new ServerError("Service third pary is out of credit");
         }
