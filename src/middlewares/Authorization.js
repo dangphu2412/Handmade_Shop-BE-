@@ -2,7 +2,7 @@ import httpStatus from "http-status";
 import AuthorizeError from "../errors/Authorize.error";
 import { Models } from "../database/models";
 
-const { User, Role, Permission } = Models;
+const { User } = Models;
 
 class Authentication {
     WithScope(role, method, module) {
@@ -30,6 +30,7 @@ class Authentication {
             const userScope = await User.scope("authorize").findOne({
                 where: { id },
             });
+
             const { role: roleRequired, method: methodRequired, module: moduleRequired } = required;
             const { role } = userScope;
             const { permissions, rolename } = role;

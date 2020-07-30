@@ -4,12 +4,18 @@ export default (sequelize, DataTypes) => {
   class District extends Model {
     static associate(models) {
       District.belongsTo(models.City, {
-        as: "cities",
+        as: "city",
         foreignKey: "cityId",
       });
       District.hasMany(models.Shop, {
         as: "shops",
         foreignKey: "districtId",
+      });
+      District.addScope("getCity", {
+        include: [{
+          model: models.City,
+          as: "city",
+        }],
       });
     }
   }

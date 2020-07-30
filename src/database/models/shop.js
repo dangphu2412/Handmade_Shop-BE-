@@ -14,11 +14,11 @@ export default (sequelize, DataTypes) => {
         foreignKey: "shopId",
       });
       Shop.belongsTo(models.District, {
-        as: "districts",
+        as: "district",
         foreignKey: "districtId",
       });
       Shop.belongsTo(models.Bank, {
-        as: "banks",
+        as: "bank",
         foreignKey: "bankId",
       });
       Shop.addScope("productSoldOut", {
@@ -41,6 +41,18 @@ export default (sequelize, DataTypes) => {
           },
         }],
       });
+      Shop.addScope("getDistrict", {
+        include: [{
+          model: models.District.scope("getCity"),
+          as: "district",
+        }],
+      });
+      Shop.addScope("getBank", {
+        include: [{
+          model: models.Bank,
+          as: "bank",
+        }],
+      });
     }
   };
   Shop.init({
@@ -54,6 +66,11 @@ export default (sequelize, DataTypes) => {
     cardNumber: DataTypes.STRING,
     bankAccount: DataTypes.STRING
   }, {
+    scopes: {
+      getInfo: {
+        attributes: ["id", "name", "slug", "description", "thumbnail"],
+      },
+    },
     sequelize,
     modelName: "Shop",
   });
