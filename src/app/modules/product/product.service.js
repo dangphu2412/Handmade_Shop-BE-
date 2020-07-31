@@ -53,6 +53,9 @@ class ProductService extends CoreService {
             const date = Date.now();
             productPayload.slug = slugTransfer(productPayload.name + date);
             productPayload.restAmount = productPayload.amount;
+            // Get first element to thumbnail
+            productPayload.thumbnail = productPayload.gallery[0].src;
+
             if (!productPayload.gallery) {
                 include = null;
             }

@@ -83,6 +83,7 @@ export default (sequelize, DataTypes) => {
     categoryId: DataTypes.INTEGER,
     name: DataTypes.STRING,
     slug: DataTypes.STRING,
+    thumbnail: DataTypes.STRING,
     description: DataTypes.STRING,
     price: DataTypes.NUMBER,
     amount: DataTypes.NUMBER,

@@ -21,6 +21,7 @@ export default (sequelize, DataTypes) => {
         as: "bank",
         foreignKey: "bankId",
       });
+      // Scopes
       Shop.addScope("productSoldOut", (scopes = "defaultScope") => ({
           include: [{
             model: models.Product.scope(scopes),

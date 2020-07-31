@@ -28,8 +28,7 @@ class ShopController extends CoreController {
         try {
             const { query } = request;
             const { userId } = this.getCredentialInfo(request);
-            const shop = await this.service.fetchOwnerProducts(query, userId);
-            const data = shop[0]?.products || [];
+            const data = await this.service.fetchOwnerProducts(query, userId);
             return response.json({
                 status: httpStatus.OK,
                 data,
@@ -43,8 +42,7 @@ class ShopController extends CoreController {
         try {
             const { params, query } = request;
             const { slug } = params;
-            const shop = await this.service.fetchProductsByShopSlug(query, slug);
-            const data = shop[0]?.products || [];
+            const data = await this.service.fetchProductsByShopSlug(query, slug);
             return response.json({
                 status: httpStatus.OK,
                 data,
