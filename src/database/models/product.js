@@ -70,7 +70,7 @@ export default (sequelize, DataTypes) => {
           {
             model: models.Gallery,
             as: "gallery",
-            attributes: ["id", "src", "kind"],
+            attributes: ["id", "src", "kind", "status"],
             required: false,
             where: { status: true },
           },
@@ -93,10 +93,13 @@ export default (sequelize, DataTypes) => {
       getIdForeign: {
         attributes: ["id", "shopId", "categoryId"],
       },
-    },
-    defaultScope: {
-      where: { status: true },
-      attributes: ["id", "name", "slug", "description", "price", "amount", "restAmount"],
+      getDetail: {
+        where: { status: true },
+        attributes: ["id", "name", "slug", "description", "price", "amount", "restAmount"],
+      },
+      withSoftDelete: {
+        attributes: ["status", "deletedAt"],
+      },
     },
     sequelize,
     modelName: "Product",

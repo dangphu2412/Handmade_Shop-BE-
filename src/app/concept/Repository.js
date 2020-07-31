@@ -6,6 +6,10 @@ export default class Repository {
         this.serverMessageError = "Server is crashing ! Pleas check your input before calling handling";
     }
 
+    customQuery() {
+        return this.model;
+    }
+
     /**
      *
      * @param {Object} query.filter
@@ -87,13 +91,12 @@ export default class Repository {
         }
     }
 
-    async updateOne(payload, id, transaction = null, attributes = null, include = null) {
+    async updateOne(payload, id, transaction = null, attributes = null) {
         try {
             const response = await this.model.update(payload, {
                 where: { id },
                 transaction,
                 attributes,
-                include,
                 returning: true,
             });
             return response;
@@ -129,6 +132,18 @@ export default class Repository {
                 attributes,
             });
             return response;
+        } catch (error) {
+            console.log(error);
+            throw new ServerError(this.serverMessageError);
+        }
+    }
+
+    bulkUpdate(items, fieldUpdate = ["id"], transaction = null) {
+        try {
+            return this.model.bulkCreate(items, {
+                updateOnDuplicate: [...fieldUpdate],
+                transaction,
+            });
         } catch (error) {
             console.log(error);
             throw new ServerError(this.serverMessageError);

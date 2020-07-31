@@ -61,12 +61,11 @@ class ProductController extends CoreController {
             const payload = request.body;
             const { id } = request.params;
             payload.id = id;
-            const data = await this.service.updateProduct(payload);
+            await this.service.updateProduct(payload);
 
             return response.status(httpStatus.OK).json({
                 status: httpStatus.OK,
-                message: "Create Product success",
-                data,
+                message: "Update Product success",
             });
         } catch (error) {
             return this.ErrorHandler(response, error);

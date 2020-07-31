@@ -27,6 +27,7 @@ export default (sequelize, DataTypes) => {
           as: "products",
           required: false,
           where: {
+              status: true,
               restAmount: 0,
           },
         }],
@@ -36,6 +37,7 @@ export default (sequelize, DataTypes) => {
           model: models.Product,
           as: "products",
           where: {
+            status: true,
             restAmount: {
               [Op.gt]: 0,
           },
