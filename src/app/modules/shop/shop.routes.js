@@ -7,6 +7,8 @@ router.get("/users/shop", ShopHandler["getOwnerShop"]());
 
 router.get("/users/shop/products", ShopHandler["fetchOwnerProducts"]());
 
+router.get("/shop/:slug/products", ShopHandler["fetchProductsByShopSlug"]());
+
 router.post("/users/shop", ShopHandler["createShop"]());
 
 export default router;

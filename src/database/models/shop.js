@@ -21,20 +21,20 @@ export default (sequelize, DataTypes) => {
         as: "bank",
         foreignKey: "bankId",
       });
-      Shop.addScope("productSoldOut", {
+      Shop.addScope("productSoldOut", (scopes = "defaultScope") => ({
+          include: [{
+            model: models.Product.scope(scopes),
+            as: "products",
+            required: false,
+            where: {
+                status: true,
+                restAmount: 0,
+            },
+          }],
+        }));
+      Shop.addScope("productInventory", (scopes = "defaultScope") => ({
         include: [{
-          model: models.Product,
-          as: "products",
-          required: false,
-          where: {
-              status: true,
-              restAmount: 0,
-          },
-        }],
-      });
-      Shop.addScope("productInventory", {
-        include: [{
-          model: models.Product,
+          model: models.Product.scope(scopes),
           as: "products",
           where: {
             status: true,
@@ -43,7 +43,7 @@ export default (sequelize, DataTypes) => {
           },
           },
         }],
-      });
+      }));
       Shop.addScope("getDistrict", {
         include: [{
           model: models.District.scope("getCity"),

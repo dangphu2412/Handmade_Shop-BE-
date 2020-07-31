@@ -29,6 +29,12 @@ class ShopHandler {
         ];
     }
 
+    fetchProductsByShopSlug() {
+        return [
+            this.controller.call("fetchProductsByShopSlug"),
+        ];
+    }
+
     createShop() {
         return [
             this.validator.checkCreateShop(),

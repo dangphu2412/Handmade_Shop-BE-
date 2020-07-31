@@ -25,14 +25,34 @@ class ShopService extends CoreService {
     fetchOwnerProducts({ key, value, ...query }, userId) {
         let response;
         const conditions = { userId };
-        let scopes = ["productInventory"];
+        const productScopes = ["category"];
+        const scopes = [{ method: ["productInventory", productScopes] }];
         switch (key) {
             case "sold-out":
-                scopes = ["productSoldOut"];
+                scopes[0].method[0] = "productSoldOut";
                 response = this.repository.getMany(query, scopes, conditions);
                 break;
             case "inventory":
-                scopes = ["productInventory"];
+                response = this.repository.getMany(query, scopes, conditions);
+                break;
+            default:
+                response = this.repository.getMany(query, scopes, conditions);
+                break;
+        }
+        return response;
+    }
+
+    fetchProductsByShopSlug({ key, value, ...query }, slug) {
+        let response;
+        const conditions = { slug };
+        const productScopes = ["category"];
+        const scopes = [{ method: ["productInventory", productScopes] }];
+        switch (key) {
+            case "sold-out":
+                scopes[0].method[0] = "productSoldOut";
+                response = this.repository.getMany(query, scopes, conditions);
+                break;
+            case "inventory":
                 response = this.repository.getMany(query, scopes, conditions);
                 break;
             default:

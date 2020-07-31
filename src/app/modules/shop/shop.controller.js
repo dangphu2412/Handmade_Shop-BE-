@@ -39,6 +39,21 @@ class ShopController extends CoreController {
         }
     }
 
+    async fetchProductsByShopSlug(request, response) {
+        try {
+            const { params, query } = request;
+            const { slug } = params;
+            const shop = await this.service.fetchProductsByShopSlug(query, slug);
+            const data = shop[0]?.products || [];
+            return response.json({
+                status: httpStatus.OK,
+                data,
+            });
+        } catch (error) {
+            return this.ErrorHandler(response, error);
+        }
+    }
+
     async createShop(request, response) {
         try {
             const payload = request.body;
