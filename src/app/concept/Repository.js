@@ -12,7 +12,7 @@ export default class Repository {
 
     /**
      *
-     * @param {Object} query.filter
+     * @param {Object} query
      * - filter = {
      *    page: 0,
      *    amount: 10
@@ -31,9 +31,10 @@ export default class Repository {
      * - where = {
      *    name: "abc"
      *   }
-     * @param transaction
+     * @param {any} transaction
      * - Optionals with sql, usually used when having insert or update
      * - It will rollback when sql query is failed
+     * - Not required, call from sequelize instance
      */
     getMany({
             page = 1, amount = 10, order = "createdAt", by = "DESC",
@@ -49,12 +50,51 @@ export default class Repository {
         });
     }
 
+    /**
+     *
+     * @param {Number} id
+     * - Primary key to find
+     * @param {Array} scope
+     * - Scope is define in model
+     * - Example: scope("defaultScope") if not redefine it will get all fields
+     * - Model: User -> scope: {
+     *  privateUser: {
+     *      attributes: ["id", "username", "name", "password", "roleId"],
+     *  }
+     * }
+     * @param {any} transaction
+     * - Optionals with sql, usually used when having insert or update
+     * - It will rollback when sql query is failed
+     * - Not required, call from sequelize instance
+     */
     getByPk(id, scope = "defaultScope", transaction = null) {
         return this.model.scope(scope).findByPk(id, {
             transaction,
         });
     }
 
+    /**
+     *
+     * @param {Object} conditions
+     * - Object of conditions
+     * - Example:
+     * {
+     *   id: 2
+     *   name: "Jesus"
+     * }
+     * @param {Array} scope
+     * - Scope is define in model
+     * - Example: scope("defaultScope") if not redefine it will get all fields
+     * - Model: User -> scope: {
+     *  privateUser: {
+     *      attributes: ["id", "username", "name", "password", "roleId"],
+     *  }
+     * }
+     * @param {any} transaction
+     * - Optionals with sql, usually used when having insert or update
+     * - It will rollback when sql query is failed
+     * - Not required, call from sequelize instance
+     */
     getOne(conditions, scope = "defaultScope", transaction = null) {
         return this.model.scope(scope).findOne({
             where: conditions,
@@ -62,6 +102,27 @@ export default class Repository {
         });
     }
 
+    /**
+     *
+     * @param {Object} payload
+     * - Object of data to create
+     * - Example:
+     * - {
+     *  name: "Jesus",
+     *  age: 12
+     * }
+     * @param {any} transaction
+     * - Optionals with sql, usually used when having insert or update
+     * - It will rollback when sql query is failed
+     * - Not required, call from sequelize instance
+     * @param {Array} attributes
+     * - Array of attributes to be returned
+     * - Example: ["id", "name"]
+     * @param {Array} include
+     * - Option to create relation table
+     * - Example: include = ["Shop"]
+     * - In payload will contain object like Shop: {}
+     */
     async create(payload, transaction = null, attributes = null, include = null) {
         try {
             const response = await this.model.create(payload, {
@@ -76,6 +137,30 @@ export default class Repository {
         }
     }
 
+    /**
+     *
+     * @param {Object} payload
+     * - Object of data to create
+     * - Example:
+     * - {
+     *  name: "Jesus",
+     *  age: 12
+     * }
+     * @param {Array} conditions
+     * - Object of conditions
+     * - Example:
+     * {
+     *   id: 2
+     *   name: "Jesus"
+     * }
+     * @param {any} transaction
+     * - Optionals with sql, usually used when having insert or update
+     * - It will rollback when sql query is failed
+     * - Not required, call from sequelize instance
+     * @param {Array} attributes
+     * - Array of attributes to be returned
+     * - Example: ["id", "name"]
+     */
     async findNotThenCreate(payload, conditions = null, transaction = null, attributes = null) {
         try {
             const response = await this.model.findOrCreate({
@@ -91,6 +176,25 @@ export default class Repository {
         }
     }
 
+    /**
+     *
+     * @param {Object} payload
+     * - Object of data to create
+     * - Example:
+     * - {
+     *  name: "Jesus",
+     *  age: 12
+     * }
+     * @param {Number} id
+     * - Primary key to find
+     * @param {any} transaction
+     * - Optionals with sql, usually used when having insert or update
+     * - It will rollback when sql query is failed
+     * - Not required, call from sequelize instance
+     * @param {Array} attributes
+     * - Array of attributes to be returned
+     * - Example: ["id", "name"]
+     */
     async updateOne(payload, id, transaction = null, attributes = null) {
         try {
             const response = await this.model.update(payload, {
@@ -119,6 +223,20 @@ export default class Repository {
         }
     }
 
+    /**
+     *
+     * @param {Number} id
+     * - Primary key to find
+     * @param {Boolean} status
+     * - Status to update
+     * @param {any} transaction
+     * - Optionals with sql, usually used when having insert or update
+     * - It will rollback when sql query is failed
+     * - Not required, call from sequelize instance
+     * @param {Array} attributes
+     * - Array of attributes to be returned
+     * - Example: ["id", "name"]
+     */
     async softDeleteOrActiveOne(id, status = false, transaction = null, attributes = null) {
         try {
             const response = await this.model.update({

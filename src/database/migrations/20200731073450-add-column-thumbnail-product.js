@@ -11,7 +11,6 @@ module.exports = {
     });
 
     const products = await Product.scope("gallery").findAll();
-    console.log(products);
     await Promise.all(
       products.map((product) => {
         const { gallery } = product;
