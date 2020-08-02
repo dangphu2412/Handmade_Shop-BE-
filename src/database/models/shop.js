@@ -37,6 +37,7 @@ export default (sequelize, DataTypes) => {
         include: [{
           model: models.Product.scope(scopes),
           as: "products",
+          required: false,
           where: {
             status: true,
             restAmount: {
