@@ -1,4 +1,6 @@
-import { Model } from "sequelize";
+import Sequelize, { Model } from "sequelize";
+
+const { Op } = Sequelize;
 
 export default (sequelize, DataTypes) => {
   class Product extends Model {
@@ -33,46 +35,46 @@ export default (sequelize, DataTypes) => {
       Product.addScope("category", {
         include: [
           {
-            model: models.Category,
+            model: models.Category.scope("defaultScope"),
             as: "category",
-            attributes: ["id", "name", "slug"],
             required: false,
-            where: { status: true },
           },
         ],
       });
       Product.addScope("materials", {
         include: [
           {
-            model: models.Material,
+            model: models.Material.scope("defaultScope"),
             as: "materials",
             through: { attributes: [] },
-            attributes: ["id", "name", "slug"],
             required: false,
-            where: { status: true },
           },
         ],
       });
       Product.addScope("transports", {
         include: [
           {
-            model: models.Transport,
+            model: models.Transport.scope("valid"),
             as: "transports",
             through: { attributes: [] },
-            attributes: ["id", "brand"],
             required: false,
-            where: { status: true },
           },
         ],
       });
       Product.addScope("gallery", {
         include: [
           {
-            model: models.Gallery,
+            model: models.Gallery.scope("defaultScope"),
             as: "gallery",
-            attributes: ["id", "src", "kind", "status"],
             required: false,
-            where: { status: true },
+          },
+        ],
+      });
+      Product.addScope("shop", {
+        include: [
+          {
+            model: models.Shop.scope("getInfo"),
+            as: "shop",
           },
         ],
       });
@@ -100,6 +102,29 @@ export default (sequelize, DataTypes) => {
       },
       withSoftDelete: {
         attributes: ["status", "deletedAt"],
+      },
+      fetchWithSlug(slug) {
+        return {
+          where: {
+            slug: {
+              [Op.iLike]: `%${slug}%`,
+            },
+          },
+        };
+      },
+      productSoldOut: {
+        where: {
+          status: true,
+          restAmount: 0,
+        },
+      },
+      productInventory: {
+        where: {
+          status: true,
+          restAmount: {
+            [Op.gt]: 0,
+          },
+        },
       },
     },
     sequelize,

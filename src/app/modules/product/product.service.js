@@ -6,6 +6,7 @@ import CoreService from "../../concept/Service";
 import ProductRepository from "./product.repository";
 import ShopRepository from "../shop/shop.repository";
 import GalleryRepository from "../gallery/gallery.repository";
+import NotFoundError from "../../../errors/NotFound.error";
 import LogicError from "../../../errors/Logic.error";
 import database from "../../../database/models/index";
 
@@ -21,13 +22,17 @@ class ProductService extends CoreService {
         const conditions = {
             slug,
         };
-        const scopes = ["getDetail", "category", "materials", "transports", "gallery"];
+        const scopes = ["getDetail", "shop", "category", "materials", "transports", "gallery"];
         return this.repository.getOne(conditions, scopes);
     }
 
     async fetchProductDetailById(id, userId) {
         const scopes = ["category", "materials", "transports", "gallery"];
         const product = await this.repository.getByPk(id, scopes);
+
+        if (!product) {
+            throw new NotFoundError("Not found this product");
+        }
 
         const { shopId } = product;
         const authorScopes = ["getIdForeign"];

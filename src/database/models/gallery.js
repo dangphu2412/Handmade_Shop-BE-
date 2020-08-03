@@ -17,7 +17,7 @@ export default (sequelize, DataTypes) => {
   }, {
     defaultScope: {
       where: { status: true },
-      attributes: ["src", "kind"],
+      attributes: ["id", "src", "kind", "status"],
     },
     sequelize,
     modelName: "Gallery",

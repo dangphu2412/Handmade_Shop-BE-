@@ -17,6 +17,12 @@ export default (sequelize, DataTypes) => {
     fee: DataTypes.FLOAT,
     status: DataTypes.BOOLEAN,
   }, {
+    scopes: {
+      valid: {
+        where: { status: true },
+        attributes: ["id", "brand"],
+      },
+    },
     sequelize,
     modelName: "Transport",
   });

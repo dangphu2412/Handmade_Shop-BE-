@@ -25,14 +25,24 @@ class ShopService extends CoreService {
     fetchOwnerProducts({ key, value, ...query }, userId) {
         let response;
         const conditions = { userId };
-        const productScopes = ["category"];
-        const scopes = [{ method: ["productInventory", productScopes] }];
+        let productScopes = ["category", "productInventory"];
+        const scopes = [{ method: ["products", productScopes] }];
         switch (key) {
             case "sold-out":
-                scopes[0].method[0] = "productSoldOut";
+                productScopes = ["category", "productSoldOut"];
+                scopes[0].method[1] = productScopes;
                 response = this.repository.getMany(query, scopes, conditions);
                 break;
             case "inventory":
+                response = this.repository.getMany(query, scopes, conditions);
+                break;
+            case "search":
+                if (!value) {
+                    throw new LogicError("Can't let value empty when search");
+                }
+                const fetchWithSlug = ["fetchWithSlug", value];
+                productScopes = ["category", { method: fetchWithSlug }];
+                scopes[0].method[1] = productScopes;
                 response = this.repository.getMany(query, scopes, conditions);
                 break;
             default:

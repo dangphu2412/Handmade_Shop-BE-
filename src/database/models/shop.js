@@ -1,6 +1,4 @@
-import Sequelize, { Model } from "sequelize";
-
-const { Op } = Sequelize;
+import { Model } from "sequelize";
 
 export default (sequelize, DataTypes) => {
   class Shop extends Model {
@@ -22,28 +20,11 @@ export default (sequelize, DataTypes) => {
         foreignKey: "bankId",
       });
       // Scopes
-      Shop.addScope("productSoldOut", (scopes = "defaultScope") => ({
-          include: [{
-            model: models.Product.scope(scopes),
-            as: "products",
-            required: false,
-            where: {
-                status: true,
-                restAmount: 0,
-            },
-          }],
-        }));
-      Shop.addScope("productInventory", (scopes = "defaultScope") => ({
+      Shop.addScope("products", (scopes = "defaultScope") => ({
         include: [{
           model: models.Product.scope(scopes),
           as: "products",
           required: false,
-          where: {
-            status: true,
-            restAmount: {
-              [Op.gt]: 0,
-          },
-          },
         }],
       }));
       Shop.addScope("getDistrict", {
