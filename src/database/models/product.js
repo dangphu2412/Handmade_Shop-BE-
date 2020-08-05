@@ -98,7 +98,7 @@ export default (sequelize, DataTypes) => {
       },
       getDetail: {
         where: { status: true },
-        attributes: ["id", "name", "slug", "description", "price", "amount", "restAmount"],
+        attributes: ["id", "name", "slug", "description", "thumbnail", "price", "amount", "restAmount"],
       },
       withSoftDelete: {
         attributes: ["status", "deletedAt"],
