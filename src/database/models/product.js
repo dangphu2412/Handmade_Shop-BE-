@@ -88,6 +88,7 @@ export default (sequelize, DataTypes) => {
     thumbnail: DataTypes.STRING,
     description: DataTypes.STRING,
     price: DataTypes.NUMBER,
+    weight: DataTypes.NUMBER,
     amount: DataTypes.NUMBER,
     restAmount: DataTypes.NUMBER,
     status: DataTypes.BOOLEAN,
@@ -98,7 +99,7 @@ export default (sequelize, DataTypes) => {
       },
       getDetail: {
         where: { status: true },
-        attributes: ["id", "name", "slug", "description", "thumbnail", "price", "amount", "restAmount"],
+        attributes: ["id", "name", "slug", "description", "thumbnail", "price", "amount", "weight", "restAmount"],
       },
       withSoftDelete: {
         attributes: ["status", "deletedAt"],

@@ -13,6 +13,9 @@ import MaterialModel from "./material";
 import ProductModel from "./product";
 import ShopModel from "./shop";
 import TransportModel from "./transport";
+import AddressModel from "./address";
+import OrderModel from "./order";
+import OrderDetailModel from "./orderdetail";
 
 const _env = process.env.NODE_ENV || "development";
 const config = loadingConfig[_env];
@@ -37,6 +40,9 @@ models.Material = MaterialModel(sequelize, DataTypes);
 models.Product = ProductModel(sequelize, DataTypes);
 models.Shop = ShopModel(sequelize, DataTypes);
 models.Transport = TransportModel(sequelize, DataTypes);
+models.Address = AddressModel(sequelize, DataTypes);
+models.Order = OrderModel(sequelize, DataTypes);
+models.OrderDetail = OrderDetailModel(sequelize, DataTypes);
 
 Object.keys(models).forEach((modelName) => {
   if (models[modelName].associate) {

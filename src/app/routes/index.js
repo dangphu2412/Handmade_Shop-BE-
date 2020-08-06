@@ -9,6 +9,8 @@ import areaRoute from "../modules/area/area.routes";
 import shopRoute from "../modules/shop/shop.routes";
 import paymentRoute from "../modules/payment/payment.routes";
 import productRoute from "../modules/product/product.routes";
+import orderRoute from "../modules/order/order.routes";
+import addressRoute from "../modules/address/address.routes";
 
 const router = express.Router();
 
@@ -22,6 +24,8 @@ router.use(areaRoute);
 router.use(shopRoute);
 router.use(paymentRoute);
 router.use(productRoute);
+router.use(orderRoute);
+router.use(addressRoute);
 
 router.get("/test", async (req, res) => {
     return res.json({

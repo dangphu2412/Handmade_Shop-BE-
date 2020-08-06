@@ -23,6 +23,7 @@
     "migrate:latest": "sequelize-cli db:migrate",
     "migrate:rollback": "sequelize-cli db:migrate:undo:all",
     "migrate:reset": "yarn migrate:rollback && yarn migrate:latest",
+    "seed:one": "sequelize db:seed",
     "seed:run": "sequelize db:seed:all",
     "seed:down": "sequelize db:seed:undo"
   },

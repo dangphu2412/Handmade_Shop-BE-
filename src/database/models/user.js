@@ -11,6 +11,11 @@ export default (sequelize, DataTypes) => {
         as: "shop",
         foreignKey: "userId",
       });
+      User.hasMany(models.Address, {
+        as: "addresses",
+        foreignKey: "userId",
+      });
+      // Scopes
       User.addScope("authorize", {
         include: [{
           model: models.Role,

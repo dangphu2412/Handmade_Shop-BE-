@@ -10,6 +10,10 @@ export default (sequelize, DataTypes) => {
         otherKey: "productId",
         timestamps: false,
       });
+      Transport.hasMany(models.Order, {
+        as: "orders",
+        foreignKey: "transportId",
+      });
     }
   }
   Transport.init({

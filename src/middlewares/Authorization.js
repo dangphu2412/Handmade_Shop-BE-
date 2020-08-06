@@ -34,7 +34,6 @@ class Authentication {
             const { role: roleRequired, method: methodRequired, module: moduleRequired } = required;
             const { role } = userScope;
             const { permissions, rolename } = role;
-
             for (let index = 0; index < permissions.length; index += 1) {
                 const permission = permissions[index].get({ plain: true });
                 if (permission.method === methodRequired && permission.module === moduleRequired) {

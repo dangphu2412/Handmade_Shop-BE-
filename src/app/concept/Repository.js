@@ -129,6 +129,7 @@ export default class Repository {
                 transaction,
                 attributes,
                 include,
+                returning: true,
             });
             return response;
         } catch (error) {
