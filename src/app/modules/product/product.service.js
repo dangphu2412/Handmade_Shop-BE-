@@ -88,6 +88,9 @@ class ProductService extends CoreService {
                 delete productPayload.slug;
             }
 
+            const itemThumbnail = gallery.find((item) => (item.status));
+            productPayload.thumbnail = itemThumbnail.src;
+
             const [, response] = await this.repository.updateOne(productPayload, id, transaction);
 
             const productInfo = response[0];
