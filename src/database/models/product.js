@@ -127,6 +127,10 @@ export default (sequelize, DataTypes) => {
           },
         },
       },
+      // Migration options
+      withoutWeightToMigrate: {
+        attributes: ["id", "thumbnail"],
+      },
     },
     sequelize,
     modelName: "Product",

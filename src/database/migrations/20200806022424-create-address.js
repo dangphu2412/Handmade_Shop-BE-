@@ -15,8 +15,16 @@ module.exports = {
         },
         onUpdate: "CASCADE",
       },
+      districtId: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: "Districts",
+          key: "id",
+        },
+        onUpdate: "CASCADE",
+      },
       location: {
-        type: Sequelize.STRING,
+        type: Sequelize.TEXT,
       },
       phone: {
         type: Sequelize.INTEGER,
