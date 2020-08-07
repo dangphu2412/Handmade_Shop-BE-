@@ -10,7 +10,10 @@ class AddressService extends CoreService {
     getAddresses(query, userId) {
         // eslint-disable-next-line no-param-reassign
         query.order = "id";
-        const scopes = ["defaultScope"];
+        const districtScopes = {
+            method: ["getDistrict", "getCity"],
+        };
+        const scopes = ["defaultScope", districtScopes];
         const conditions = {
             userId,
         };

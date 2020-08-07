@@ -23,6 +23,9 @@ module.exports = {
         },
         onUpdate: "CASCADE",
       },
+      name: {
+        type: Sequelize.STRING,
+      },
       location: {
         type: Sequelize.TEXT,
       },

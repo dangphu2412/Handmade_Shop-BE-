@@ -6,6 +6,8 @@ class AddressValidator extends CoreValidator {
         return checkSchema({
             location: this.checkExistsOnly(["body"], "location"),
             phone: this.checkExistsOnly(["body"], "phone"),
+            districtId: this.checkExistsOnly(["body"], "districtId"),
+            name: this.checkExistsOnly(["body"], "name"),
         });
     }
 }

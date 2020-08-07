@@ -7,10 +7,24 @@ export default (sequelize, DataTypes) => {
         as: "user",
         foreignKey: "userId",
       });
+      Address.belongsTo(models.District, {
+        as: "district",
+        foreignKey: "districtId",
+      });
+      Address.addScope("getDistrict", (scopes) => {
+        return {
+          include: [{
+            model: models.District.scope(scopes),
+            as: "district",
+          }],
+        };
+      });
     }
   }
   Address.init({
     userId: DataTypes.INTEGER,
+    districtId: DataTypes.INTEGER,
+    name: DataTypes.STRING,
     location: DataTypes.STRING,
     phone: DataTypes.NUMBER,
   }, {
