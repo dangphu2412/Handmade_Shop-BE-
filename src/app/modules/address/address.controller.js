@@ -2,6 +2,7 @@ import httpStatus from "http-status";
 import CoreController from "../../concept/Controller";
 import AddressService from "./address.service";
 import CreateAddressDto from "./dto/create-address-dto";
+import DeleteAddressDto from "./dto/delete-address-dto";
 
 class AddressController extends CoreController {
     constructor() {
@@ -35,6 +36,22 @@ class AddressController extends CoreController {
                 status: httpStatus.OK,
                 message: "Create success",
                 data,
+            });
+        } catch (error) {
+            return this.ErrorHandler(response, error);
+        }
+    }
+
+    async deleteAddress(request, response) {
+        try {
+            const { userId } = this.getCredentialInfo(request);
+            const { body } = request;
+            body.userId = userId;
+            const payload = new DeleteAddressDto(body);
+            await this.service.deleteAddress(payload);
+            return response.status(httpStatus.OK).json({
+                status: httpStatus.OK,
+                message: "Delete success",
             });
         } catch (error) {
             return this.ErrorHandler(response, error);

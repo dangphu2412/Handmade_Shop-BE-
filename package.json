@@ -21,6 +21,7 @@
     "model": "sequelize-cli model:generate --name",
     "seed": "sequelize-cli seed:generate --name",
     "migrate:generate": "sequelize-cli migration:generate --name",
+    "migrate:revert": "sequelize-cli db:migrate:undo --name",
     "migrate:latest": "sequelize-cli db:migrate",
     "migrate:rollback": "sequelize-cli db:migrate:undo:all",
     "migrate:reset": "yarn migrate:rollback && yarn migrate:latest",

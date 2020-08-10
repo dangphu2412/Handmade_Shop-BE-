@@ -26,6 +26,13 @@ class AddresspHandler {
             this.controller.call("createAddress"),
         ];
     }
+
+    deleteAddress() {
+        return [
+            this.authen.call("verify"),
+            this.controller.call("deleteAddress"),
+        ];
+    }
 }
 
 export default new AddresspHandler();
