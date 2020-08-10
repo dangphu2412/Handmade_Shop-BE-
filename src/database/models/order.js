@@ -20,14 +20,14 @@ export default (sequelize, DataTypes) => {
         foreignKey: "userId",
       });
       Order.hasMany(models.OrderDetail, {
-        as: "details",
+        as: "products",
         foreignKey: "orderId",
       });
       // Scopes
       Order.addScope("getOrderDetail", (scopes = ["overview", "getProductOverview"]) => ({
           include: [{
             model: models.OrderDetail.scope(scopes),
-            as: "details",
+            as: "products",
             foreignKey: "orderId",
           }],
       }));
