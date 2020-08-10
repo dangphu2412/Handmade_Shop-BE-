@@ -19,34 +19,7 @@ class OrderService extends CoreService {
         };
 
         const scopes = ["overview", "getShop", "getOrderDetail"];
-        const response = await this.repository.getMany(query, scopes, conditions);
-
-        const shops = [];
-
-        response.forEach(res => {
-            const plain = res.get({ plain: true });
-            const { totalBillAndShip, shop, details } = plain;
-            const isExisted = shops.findIndex(item => item.shop.id === shop.id);
-
-            if (isExisted !== -1) {
-                shops[isExisted].products.push(details);
-            }
-            if (isExisted === -1) {
-                shops.push({
-                    products: [],
-                    totalBillAndShip,
-                    shop,
-                });
-            }
-        });
-
-        return shops.map(shop => {
-            const { products, ...data } = shop;
-            return {
-                products: shop.products.flat(),
-                ...data,
-            };
-        });
+        return this.repository.getMany(query, scopes, conditions);
     }
 
     /**

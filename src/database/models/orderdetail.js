@@ -11,6 +11,13 @@ export default (sequelize, DataTypes) => {
         as: "product",
         foreignKey: "productId",
       });
+      OrderDetail.addScope("getProductOverview", (scopes = "withThumbnail") => ({
+        include: [{
+          model: models.Product.scope(scopes),
+          as: "product",
+          foreignKey: "productId",
+        }],
+      }));
     }
   }
   OrderDetail.init({

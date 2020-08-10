@@ -10,7 +10,7 @@ module.exports = {
       type: Sequelize.STRING,
     });
 
-    const products = await Product.scope("gallery", "withoutWeightToMigrate").findAll();
+    const products = await Product.scope("gallery", "withThumbnail").findAll();
     await Promise.all(
       products.map((product) => {
         const { gallery } = product;

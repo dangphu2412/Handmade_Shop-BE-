@@ -24,7 +24,7 @@ export default (sequelize, DataTypes) => {
         foreignKey: "orderId",
       });
       // Scopes
-      Order.addScope("getOrderDetail", (scopes = "overview") => ({
+      Order.addScope("getOrderDetail", (scopes = ["overview", "getProductOverview"]) => ({
           include: [{
             model: models.OrderDetail.scope(scopes),
             as: "details",
