@@ -10,7 +10,7 @@ class OrderService extends CoreService {
         super();
         this.repository = OrderRepository;
         this.oderDetailRepository = OderDetailRepository;
-        this.productRepository = ProductRepository
+        this.productRepository = ProductRepository;
     }
 
     /**
@@ -34,10 +34,9 @@ class OrderService extends CoreService {
 
     async createOrder(order, transaction) {
         const { products, ...payload } = order;
-console.log("====1=====");
-console.log(payload);
+
         const response = await this.repository.create(payload, transaction);
-        console.log(response)
+
         const { id: orderId } = response;
         // Handle products
         const [orderAvailable, orderFailed] = await this.isGoodsHaving(

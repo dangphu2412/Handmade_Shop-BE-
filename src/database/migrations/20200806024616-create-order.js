@@ -34,7 +34,7 @@ module.exports = {
       transportId: {
         type: Sequelize.INTEGER,
         references: {
-          model: "Products",
+          model: "Transports",
           key: "id",
         },
         onUpdate: "CASCADE",

@@ -20,6 +20,7 @@
     "build": "babel ./src --out-dir dist --copy-files",
     "model": "sequelize-cli model:generate --name",
     "seed": "sequelize-cli seed:generate --name",
+    "migrate:generate": "sequelize-cli migration:generate --name",
     "migrate:latest": "sequelize-cli db:migrate",
     "migrate:rollback": "sequelize-cli db:migrate:undo:all",
     "migrate:reset": "yarn migrate:rollback && yarn migrate:latest",

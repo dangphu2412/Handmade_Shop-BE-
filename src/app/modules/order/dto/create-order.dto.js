@@ -4,6 +4,9 @@ export default class CreateOrderDto {
         this.userId = input.userId;
         this.addressId = input.addressId;
         this.transportId = input.transportId;
+        this.totalShip = input.totalShip;
+        this.totalBill = input.totalBill;
+        this.totalBillAndShip = input.totalBillAndShip;
         this.products = input.products;
     }
 }

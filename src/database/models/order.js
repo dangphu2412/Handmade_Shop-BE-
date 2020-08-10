@@ -7,6 +7,10 @@ export default (sequelize, DataTypes) => {
         as: "address",
         foreignKey: "addressId",
       });
+      Order.belongsTo(models.Transport, {
+        as: "transport",
+        foreignKey: "transportId",
+      });
       Order.belongsTo(models.User, {
         as: "user",
         foreignKey: "userId",
@@ -22,6 +26,9 @@ export default (sequelize, DataTypes) => {
     shopId: DataTypes.INTEGER,
     addressId: DataTypes.INTEGER,
     transportId: DataTypes.INTEGER,
+    totalShip: DataTypes.INTEGER,
+    totalBill: DataTypes.INTEGER,
+    totalBillAndShip: DataTypes.INTEGER,
     status: DataTypes.BOOLEAN,
     receivedAt: DataTypes.DATE,
   }, {
