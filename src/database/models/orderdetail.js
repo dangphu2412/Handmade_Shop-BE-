@@ -16,11 +16,20 @@ export default (sequelize, DataTypes) => {
   OrderDetail.init({
     orderId: DataTypes.INTEGER,
     productId: DataTypes.INTEGER,
+    name: DataTypes.STRING,
     amount: DataTypes.INTEGER,
     weight: DataTypes.INTEGER,
     cost: DataTypes.INTEGER,
     status: DataTypes.BOOLEAN,
   }, {
+    scopes: {
+      overview: {
+        attributes: ["id", "name", "cost", "amount"],
+        where: {
+          status: true,
+        },
+      },
+    },
     paranoid: true,
     sequelize,
     modelName: "OrderDetail",

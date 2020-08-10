@@ -11,6 +11,23 @@ class OrderController extends CoreController {
         this.service = OrderService;
     }
 
+    async getUserOrders(request, response) {
+        try {
+            const { userId } = this.getCredentialInfo(request);
+            const { query } = request;
+
+            const data = await this.service.getUserOrders(query, userId);
+
+            return response.status(httpStatus.OK).json({
+                status: httpStatus.OK,
+                message: "Get success",
+                data,
+            });
+        } catch (error) {
+            return this.ErrorHandler(response, error);
+        }
+    }
+
     async createNewOrders(request, response) {
         try {
             const { userId } = this.getCredentialInfo(request);
