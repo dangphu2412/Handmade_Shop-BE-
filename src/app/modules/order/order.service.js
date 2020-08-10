@@ -71,13 +71,23 @@ class OrderService extends CoreService {
             transaction,
         );
 
-        const productIdsAvailabel = productsAvailable.map((product) => product.id);
-
         // eslint-disable-next-line array-callback-return
-        cancelOrderDetail = details.filter((detail) => {
-            const available = productIdsAvailabel.find((idAvailable) => detail.id === idAvailable);
+        cancelOrderDetail = details
+        .map((detail) => {
+            // eslint-disable-next-line max-len
+            const available = productsAvailable.find((productsFound) => detail.id === productsFound.id);
             if (!available) {
-                return detail;
+                return {
+                    restAmount: 0,
+                    ...detail,
+                };
+            }
+
+            if (available.restAmount < detail.amount) {
+                return {
+                    restAmount: available.restAmount,
+                    ...detail,
+                };
             }
 
             delete detail.id;
@@ -87,7 +97,10 @@ class OrderService extends CoreService {
                 productId: available.id,
                 ...detail,
             });
-        });
+
+            return null;
+        })
+        .filter((cancel) => cancel !== null);
 
         return [
             pendingCreateDetails,
