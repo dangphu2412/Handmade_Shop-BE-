@@ -31,7 +31,7 @@ export default (sequelize, DataTypes) => {
   }, {
     scopes: {
       validAddresses: {
-        attributes: ["name", "location", "phone"],
+        attributes: ["id", "name", "location", "phone"],
         where: {
           deletedAt: {
             [Op.eq]: null,
