@@ -1,14 +1,15 @@
-/* eslint-disable no-param-reassign */
-/* eslint-disable max-len */
-import slugTransfer from "speakingurl";
-
 import CoreService from "../../concept/Service";
 import ProductRepository from "./product.repository";
 import ShopRepository from "../shop/shop.repository";
 import GalleryRepository from "../gallery/gallery.repository";
+import CategoryRepository from "../category/category.repository";
+
 import NotFoundError from "../../../errors/NotFound.error";
 import LogicError from "../../../errors/Logic.error";
 import database from "../../../database/models/index";
+import FilterDto from "./dto/filter.dto";
+import CreateProductDto from "./dto/create-product-dto";
+import UpdateProductDto from "./dto/update-product-dto";
 
 class ProductService extends CoreService {
     constructor() {
@@ -16,18 +17,63 @@ class ProductService extends CoreService {
         this.repository = ProductRepository;
         this.shopRepository = ShopRepository;
         this.galleryRepository = GalleryRepository;
+        this.categoryRepository = CategoryRepository;
+    }
+
+    fetchProducts(query) {
+        const filterDto = new FilterDto(query);
+        const { key, value, ...prefix } = filterDto;
+        let products = {};
+        const scopes = ["category", "materials", "gallery"];
+        let conditions = {
+            status: true,
+        };
+        switch (key) {
+            case "category":
+                {
+                    conditions = {
+                        slug: value,
+                    };
+                    const categoryScopes = [
+                        {
+                            method: ["getProducts", scopes],
+                        },
+                    ];
+
+                    products = this.categoryRepository.getOne(conditions, categoryScopes);
+                }
+                break;
+            case "best-seller":
+                break;
+            case "search":
+                {
+                    if (!value) {
+                        throw new LogicError("Can't let value empty when search");
+                    }
+                    const searchByName = {
+                        method: ["searchByName", value],
+                    };
+                    scopes.push(searchByName);
+                    products = this.repository.getMany(query, scopes, conditions);
+                }
+                break;
+            default:
+                products = this.repository.getMany(prefix, scopes);
+                break;
+        }
+        return products;
     }
 
     fetchProductDetail(slug) {
         const conditions = {
             slug,
         };
-        const scopes = ["getDetail", "shop", "category", "materials", "transports", "gallery"];
+        const scopes = ["getDetail", "shop", "category", "materials", "gallery"];
         return this.repository.getOne(conditions, scopes);
     }
 
     async fetchProductDetailById(id, userId) {
-        const scopes = ["category", "materials", "transports", "gallery"];
+        const scopes = ["category", "materials", "gallery"];
         const product = await this.repository.getByPk(id, scopes);
 
         if (!product) {
@@ -47,27 +93,23 @@ class ProductService extends CoreService {
 
     async createProduct(payload) {
         const transaction = await database.transaction();
-
+        const createProductDto = new CreateProductDto(payload);
         try {
-            const {
-                materialIds,
-                transportIds,
-                ...productPayload
-            } = payload;
+            const { materialIds } = payload;
             let include = ["gallery"];
-            const date = Date.now();
-            productPayload.slug = slugTransfer(productPayload.name + date);
-            productPayload.restAmount = productPayload.amount;
-            // Get first element to thumbnail
-            productPayload.thumbnail = productPayload.gallery[0].src;
 
-            if (!productPayload.gallery) {
+            if (!createProductDto.gallery.length) {
                 include = null;
             }
 
-            const productInfo = await this.repository.create(productPayload, transaction, null, include);
-            await this.repository._addRelationProductAndMaterial(productInfo, materialIds, transaction);
-            await this.repository._addRelationProductAndTransport(productInfo, transportIds, transaction);
+            const productInfo = await this.repository.create(
+                createProductDto, transaction, null, include,
+            );
+
+            await this.repository._addRelationProductAndMaterial(
+                productInfo, materialIds, transaction,
+            );
+
             await transaction.commit();
             return productInfo;
         } catch (error) {
@@ -77,27 +119,23 @@ class ProductService extends CoreService {
         }
     }
 
-    async updateProduct({ gallery, materialIds, transportIds, ...productPayload }) {
+    async updateProduct(payload) {
         const transaction = await database.transaction();
-
+        const updateProductDto = new UpdateProductDto(payload);
+        const { gallery, materialIds } = payload;
         try {
-            const { id } = productPayload;
+            const { id } = updateProductDto;
 
-            // Not update slug
-            if (productPayload.slug) {
-                delete productPayload.slug;
-            }
-
-            const itemThumbnail = gallery.find((item) => (item.status));
-            productPayload.thumbnail = itemThumbnail.src;
-
-            const [, response] = await this.repository.updateOne(productPayload, id, transaction);
+            const [, response] = await this.repository.updateOne(
+                updateProductDto, id, transaction,
+            );
 
             const productInfo = response[0];
 
             await this.updateGallery(productInfo, gallery, transaction);
-            await this.repository._setRelationProductAndMaterial(productInfo, materialIds, transaction);
-            await this.repository._setRelationProductAndTransport(productInfo, transportIds, transaction);
+            await this.repository._setRelationProductAndMaterial(
+                productInfo, materialIds, transaction,
+            );
             return transaction.commit();
         } catch (error) {
             console.log(error);

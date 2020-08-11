@@ -56,9 +56,9 @@ class ShopController extends CoreController {
         try {
             const payload = request.body;
 
-            const credentials = this.getCredentialInfo(request);
+            const { userId } = this.getCredentialInfo(request);
 
-            payload.userId = credentials.userId;
+            payload.userId = userId;
 
             const data = await this.service.createShop(payload);
 

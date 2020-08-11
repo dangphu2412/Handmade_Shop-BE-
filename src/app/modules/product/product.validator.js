@@ -11,8 +11,7 @@ class ProductValidator extends CoreValidator {
             price: this.checkNumber(["body"], "Price"),
             amount: this.checkNumber(["body"], "Amount"),
             materialIds: this.checkExistsOnly(["body"], "MaterialIds"),
-            transportIds: this.checkExistsOnly(["body"], "TransportIds"),
-            // gallery: this.checkArray(["body"], "Gallery"),
+            gallery: this.checkArray(["body"], "Gallery"),
         });
     }
 }

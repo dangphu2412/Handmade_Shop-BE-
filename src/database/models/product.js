@@ -12,13 +12,6 @@ export default (sequelize, DataTypes) => {
         otherKey: "materialId",
         timestamps: false,
       });
-      Product.belongsToMany(models.Transport, {
-        as: "transports",
-        through: "ProductTransports",
-        foreignKey: "productId",
-        otherKey: "transportId",
-        timestamps: false,
-      });
       Product.belongsTo(models.Shop, {
         as: "shop",
         foreignKey: "shopId",
@@ -32,52 +25,42 @@ export default (sequelize, DataTypes) => {
         foreignKey: "productId",
       });
       // With scopes
-      Product.addScope("category", {
-        include: [
-          {
-            model: models.Category.scope("defaultScope"),
-            as: "category",
-            required: false,
-          },
-        ],
-      });
-      Product.addScope("materials", {
-        include: [
-          {
-            model: models.Material.scope("defaultScope"),
-            as: "materials",
-            through: { attributes: [] },
-            required: false,
-          },
-        ],
-      });
-      Product.addScope("transports", {
-        include: [
-          {
-            model: models.Transport.scope("valid"),
-            as: "transports",
-            through: { attributes: [] },
-            required: false,
-          },
-        ],
-      });
-      Product.addScope("gallery", {
-        include: [
-          {
-            model: models.Gallery.scope("defaultScope"),
-            as: "gallery",
-            required: false,
-          },
-        ],
-      });
-      Product.addScope("shop", {
-        include: [
-          {
-            model: models.Shop.scope("getInfo"),
-            as: "shop",
-          },
-        ],
-      });
+      Product.addScope("category", (scopes = "defaultScope") => ({
+          include: [
+            {
+              model: models.Category.scope(scopes),
+              as: "category",
+              required: false,
+            },
+          ],
+        }));
+      Product.addScope("materials", (scopes = "defaultScope") => ({
+          include: [
+            {
+              model: models.Material.scope(scopes),
+              as: "materials",
+              through: { attributes: [] },
+              required: false,
+            },
+          ],
+        }));
+      Product.addScope("gallery", (scopes = "defaultScope") => ({
+          include: [
+            {
+              model: models.Gallery.scope(scopes),
+              as: "gallery",
+              required: false,
+            },
+          ],
+        }));
+      Product.addScope("shop", (scopes = "getInfo") => ({
+          include: [
+            {
+              model: models.Shop.scope(scopes),
+              as: "shop",
+            },
+          ],
+        }));
     }
   }
   Product.init({
@@ -104,11 +87,11 @@ export default (sequelize, DataTypes) => {
       withSoftDelete: {
         attributes: ["status", "deletedAt"],
       },
-      fetchWithSlug(slug) {
+      searchByName(name) {
         return {
           where: {
-            slug: {
-              [Op.iLike]: `%${slug}%`,
+            name: {
+              [Op.iLike]: `%${name}%`,
             },
           },
         };

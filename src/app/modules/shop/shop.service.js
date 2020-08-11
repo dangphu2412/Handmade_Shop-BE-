@@ -1,12 +1,10 @@
-/* eslint-disable no-case-declarations */
-/* eslint-disable no-param-reassign */
-import slugTransfer from "speakingurl";
-
 import CoreService from "../../concept/Service";
 import ShopRepository from "./shop.repository";
 import AuthRepository from "../auth/auth.repository";
 import LogicError from "../../../errors/Logic.error";
 import { ROLE } from "../../../constants/role";
+import CreateShopDto from "./dto/create-shop-dto";
+import database from "../../../database/models";
 
 class ShopService extends CoreService {
     constructor() {
@@ -37,13 +35,15 @@ class ShopService extends CoreService {
                 response = this.repository.getMany(query, scopes, conditions);
                 break;
             case "search":
-                if (!value) {
-                    throw new LogicError("Can't let value empty when search");
+                {
+                    if (!value) {
+                        throw new LogicError("Can't let value empty when search");
+                    }
+                    const searchByName = ["searchByName", value];
+                    productScopes = ["category", { method: searchByName }];
+                    scopes[0].method[1] = productScopes;
+                    response = this.repository.getMany(query, scopes, conditions);
                 }
-                const fetchWithSlug = ["fetchWithSlug", value];
-                productScopes = ["category", { method: fetchWithSlug }];
-                scopes[0].method[1] = productScopes;
-                response = this.repository.getMany(query, scopes, conditions);
                 break;
             default:
                 response = this.repository.getMany(query, scopes, conditions);
@@ -67,13 +67,15 @@ class ShopService extends CoreService {
                 response = this.repository.getMany(query, scopes, conditions);
                 break;
             case "search":
-                if (!value) {
-                    throw new LogicError("Can't let value empty when search");
+                {
+                    if (!value) {
+                        throw new LogicError("Can't let value empty when search");
+                    }
+                    const searchByName = ["searchByName", value];
+                    productScopes = ["category", { method: searchByName }];
+                    scopes[0].method[1] = productScopes;
+                    response = this.repository.getMany(query, scopes, conditions);
                 }
-                const fetchWithSlug = ["fetchWithSlug", value];
-                productScopes = ["category", { method: fetchWithSlug }];
-                scopes[0].method[1] = productScopes;
-                response = this.repository.getMany(query, scopes, conditions);
                 break;
             default:
                 response = this.repository.getMany(query, scopes, conditions);
@@ -83,24 +85,36 @@ class ShopService extends CoreService {
     }
 
     async createShop(payload) {
-        const { name, userId } = payload;
+        const transaction = await database.transaction();
+        try {
+            const createShopDto = new CreateShopDto(payload);
+            const { transportIds } = payload;
+            const { userId } = createShopDto;
 
-        payload.slug = slugTransfer(name);
+            const isExist = await this.authRepository.getByPk(userId, "defaultScope", transaction);
 
-        const isExist = await this.authRepository.getByPk(userId);
+            if (isExist.shopActive) {
+                throw new LogicError("Shop has been created");
+            }
 
-        if (isExist.shopActive) {
-            throw new LogicError("Shop has been created");
+            const response = await this.repository.create(createShopDto, transaction);
+
+            await this.repository._addRelationShopAndTransport(
+                response, transportIds, transaction,
+            );
+
+            await this.authRepository.updateOne({
+                roleId: ROLE.SHOP_KEEPER.key,
+                shopActive: true,
+            }, userId, transaction);
+
+            await transaction.commit();
+
+            return response;
+        } catch (error) {
+            await transaction.rollback();
+            throw error;
         }
-
-        const response = await this.repository.create(payload);
-
-        await this.authRepository.updateOne({
-            roleId: ROLE.SHOP_KEEPER.key,
-            shopActive: true,
-        }, payload.userId);
-
-        return response;
     }
 }
 

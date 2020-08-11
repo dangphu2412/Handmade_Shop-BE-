@@ -45,9 +45,9 @@ class AddressController extends CoreController {
     async deleteAddress(request, response) {
         try {
             const { userId } = this.getCredentialInfo(request);
-            const { body } = request;
-            body.userId = userId;
-            const payload = new DeleteAddressDto(body);
+            const { id } = request.params;
+
+            const payload = new DeleteAddressDto({ userId, id });
             await this.service.deleteAddress(payload);
             return response.status(httpStatus.OK).json({
                 status: httpStatus.OK,

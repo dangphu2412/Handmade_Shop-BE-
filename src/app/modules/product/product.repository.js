@@ -18,16 +18,6 @@ class ProductRepository extends CoreRepository {
         }
     }
 
-    _addRelationProductAndTransport(product, transport, transaction = null) {
-        try {
-            return product.addTransports(transport, {
-                transaction,
-            });
-        } catch (error) {
-            throw new ServerError("Your transports is not valid");
-        }
-    }
-
     _setRelationProductAndMaterial(product, materials, transaction = null) {
         try {
             return product.setMaterials(materials, {
@@ -36,17 +26,6 @@ class ProductRepository extends CoreRepository {
         } catch (error) {
             console.log(error);
             throw new ServerError("Your materials is not valid");
-        }
-    }
-
-    _setRelationProductAndTransport(product, transport, transaction = null) {
-        try {
-            return product.setTransports(transport, {
-                transaction,
-            });
-        } catch (error) {
-            console.log(error);
-            throw new ServerError("Your transports is not valid");
         }
     }
 }

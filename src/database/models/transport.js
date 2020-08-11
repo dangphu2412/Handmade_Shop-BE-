@@ -3,11 +3,10 @@ import { Model } from "sequelize";
 export default (sequelize, DataTypes) => {
   class Transport extends Model {
     static associate(models) {
-      Transport.belongsToMany(models.Product, {
-        as: "products",
-        through: "ProductTransports",
-        foreignKey: "transportId",
-        otherKey: "productId",
+      Transport.belongsToMany(models.Shop, {
+        as: "shops",
+        through: "ShopTransports",
+        foreignKey: "shopId",
         timestamps: false,
       });
       Transport.hasMany(models.Order, {

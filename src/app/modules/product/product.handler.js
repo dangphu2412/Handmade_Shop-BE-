@@ -15,7 +15,7 @@ class ProductpHandler {
 
     fetchProducts() {
         return [
-            this.controller.call("getMany"),
+            this.controller.call("fetchProducts"),
         ];
     }
 

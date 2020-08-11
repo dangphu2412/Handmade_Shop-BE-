@@ -8,6 +8,22 @@ class ProductController extends CoreController {
         this.service = ProductService;
     }
 
+    async fetchProducts(request, response) {
+        try {
+            const { query } = request;
+
+            const data = await this.service.fetchProducts(query);
+
+            return response.status(httpStatus.OK).json({
+                status: httpStatus.OK,
+                message: "Get detail succcess",
+                data,
+            });
+        } catch (error) {
+            return this.ErrorHandler(response, error);
+        }
+    }
+
     async fetchProductDetail(request, response) {
         try {
             const { slug } = request.params;

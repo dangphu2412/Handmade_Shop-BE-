@@ -19,6 +19,13 @@ export default (sequelize, DataTypes) => {
         as: "bank",
         foreignKey: "bankId",
       });
+      Shop.belongsToMany(models.Transport, {
+        as: "transports",
+        through: "ShopTransports",
+        foreignKey: "shopId",
+        otherKey: "transportId",
+        timestamps: false,
+      });
       // Scopes
       Shop.addScope("products", (scopes = "defaultScope") => ({
         include: [{
@@ -39,6 +46,16 @@ export default (sequelize, DataTypes) => {
           as: "bank",
         }],
       });
+      Shop.addScope("transports", (scopes = "valid") => ({
+        include: [
+          {
+            model: models.Transport.scope(scopes),
+            as: "transports",
+            through: { attributes: [] },
+            required: false,
+          },
+        ],
+      }));
     }
   }
 

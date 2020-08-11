@@ -1,4 +1,5 @@
-import { Model } from "sequelize";
+import Sequelize, { Model } from "sequelize";
+const { Op } = Sequelize;
 
 export default (sequelize, DataTypes) => {
   class Category extends Model {
@@ -6,6 +7,10 @@ export default (sequelize, DataTypes) => {
       Category.hasMany(models.Category, {
         as: "children",
         foreignKey: "parentId",
+      });
+      Category.hasMany(models.Product, {
+        as: "products",
+        foreignKey: "categoryId",
       });
       Category.addScope("treeCategory", {
         attributes: ["id", "name", "slug", "parentId"],
@@ -16,6 +21,13 @@ export default (sequelize, DataTypes) => {
             nested: true,
         }],
       });
+      Category.addScope("getProducts", (scopes = "defaultScope") => ({
+        include: [{
+          model: models.Product.scope(scopes),
+          as: "products",
+          foreignKey: "categoryId",
+        }],
+      }));
     }
   }
   Category.init({
@@ -26,6 +38,15 @@ export default (sequelize, DataTypes) => {
   }, {
     defaultScope: {
       attributes: ["id", "name", "slug", "parentId"],
+    },
+    scopes: {
+      withCategorySlug(value) {
+        return {
+          where: {
+            slug: value,
+          },
+        };
+      },
     },
     sequelize,
     modelName: "Category",
