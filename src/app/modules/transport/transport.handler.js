@@ -15,7 +15,7 @@ class TransportpHandler {
         return [
             // this.validator.checkGetTransports(),
             // this.validator.catchValidateErrors,
-            this.controller.call("getMany"),
+            this.controller.call("getTransports"),
         ];
     }
 }

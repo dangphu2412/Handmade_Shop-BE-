@@ -6,7 +6,8 @@ export default (sequelize, DataTypes) => {
       Transport.belongsToMany(models.Shop, {
         as: "shops",
         through: "ShopTransports",
-        foreignKey: "shopId",
+        foreignKey: "transportId",
+        otherKey: "shopId",
         timestamps: false,
       });
       Transport.hasMany(models.Order, {

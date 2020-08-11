@@ -1,5 +1,6 @@
 import CoreRepository from "../../concept/Repository";
 import { Models } from "../../../database/models/index";
+import ServerError from "../../../errors/Server.error";
 
 class ShopRepository extends CoreRepository {
     constructor() {
@@ -7,9 +8,9 @@ class ShopRepository extends CoreRepository {
         super(Shop);
     }
 
-    _addRelationShopAndTransport(shop, transport, transaction = null) {
+    _addRelationShopAndTransport(shop, transportIds, transaction = null) {
         try {
-            return shop.addTransports(transport, {
+            return shop.addTransports(transportIds, {
                 transaction,
             });
         } catch (error) {

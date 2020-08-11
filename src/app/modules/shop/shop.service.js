@@ -13,6 +13,13 @@ class ShopService extends CoreService {
         this.authRepository = AuthRepository;
     }
 
+    toTransports(shopId, transportIds) {
+        return transportIds.map((transportId) => ({
+            transportId,
+            shopId,
+        }));
+    }
+
     async getOwnerShop(userId) {
         const conditions = {
             userId,
