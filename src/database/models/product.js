@@ -71,6 +71,8 @@ export default (sequelize, DataTypes) => {
     thumbnail: DataTypes.STRING,
     description: DataTypes.STRING,
     price: DataTypes.NUMBER,
+    reduce: DataTypes.NUMBER,
+    percent: DataTypes.NUMBER,
     weight: DataTypes.NUMBER,
     amount: DataTypes.NUMBER,
     restAmount: DataTypes.NUMBER,

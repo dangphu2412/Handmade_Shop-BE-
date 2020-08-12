@@ -8,6 +8,8 @@ export default class CreateProductDto {
       this.categoryId = input.categoryId;
       this.description = input.description;
       this.price = input.price;
+      this.reduce = input.reduce;
+      this.percent = input.percent;
       this.amount = input.amount;
       this.restAmount = input.amount;
       this.weight = input.weight;

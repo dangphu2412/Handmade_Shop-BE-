@@ -40,6 +40,14 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false,
       },
+      reduce: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+      },
+      percent: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+      },
       amount: {
         type: Sequelize.INTEGER,
         allowNull: false,

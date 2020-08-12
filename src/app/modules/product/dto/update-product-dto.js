@@ -5,6 +5,8 @@ export default class UpdateProductDto {
       this.categoryId = input.categoryId;
       this.description = input.description;
       this.price = input.price;
+      this.reduce = input.reduce;
+      this.percent = input.percent;
       this.amount = input.amount;
       this.restAmount = input.restAmount;
       this.weight = input.weight;
