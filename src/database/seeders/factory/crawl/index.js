@@ -1,7 +1,7 @@
 /* eslint-disable no-undef */
 const puppeteer = require("puppeteer");
 
-const electronicUrl = "https://nshopvn.com/";
+const electronicUrl = "https://shopee.vn/Th%E1%BB%9Di-Trang-Nam-cat.78?page=0";
 (async () => {
   try {
     const browser = await puppeteer.launch({ headless: true });
@@ -9,16 +9,18 @@ const electronicUrl = "https://nshopvn.com/";
     await page.goto(electronicUrl);
 
     const returnData = await page.evaluate(() => {
-      const products = document.querySelectorAll(".product");
-      console.log(products);
+      const products = document.querySelectorAll(".shopee-search-item-result__item");
       const data = [];
       products.forEach((product) => {
-        console.log(product);
-        const img = product.querySelector(".image > img").src;
-        const title = product.querySelector(".product-title").innerText;
+        const thumbnail = product.querySelector("._3ZDC1p _1tDEiO > ._1T9dHf _3XaILN").src;
+        // const percent = product.querySelector("._2N1Tif > .percent").innerText;
+        // const name = product.querySelector("._3eufr2 > .O6wiAW > div").innerText;
+        // const money = product.querySelector("._3eufr2 > ._2lBkmX > div._1w9jLI").innerText;
         data.push({
-          img,
-          title,
+          name,
+          thumbnail,
+          percent,
+          money,
         });
       });
 

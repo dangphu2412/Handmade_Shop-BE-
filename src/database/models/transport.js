@@ -18,13 +18,14 @@ export default (sequelize, DataTypes) => {
   }
   Transport.init({
     brand: DataTypes.STRING,
+    slug: DataTypes.STRING,
     fee: DataTypes.FLOAT,
     status: DataTypes.BOOLEAN,
   }, {
     scopes: {
       valid: {
         where: { status: true },
-        attributes: ["id", "brand", "fee"],
+        attributes: ["id", "brand", "slug", "fee"],
       },
     },
     sequelize,
