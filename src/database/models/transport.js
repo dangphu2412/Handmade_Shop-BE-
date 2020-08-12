@@ -24,7 +24,7 @@ export default (sequelize, DataTypes) => {
     scopes: {
       valid: {
         where: { status: true },
-        attributes: ["id", "brand"],
+        attributes: ["id", "brand", "fee"],
       },
     },
     sequelize,

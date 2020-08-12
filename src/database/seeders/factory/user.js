@@ -4,16 +4,16 @@ import { Models } from "../../models";
 const { User } = Models;
 
 export default class SeedUser {
-  static userSeeding() {
+  static userSeeding(roleId) {
     const result = [];
-
+    const pwd = SeedUser.getPwdHash();
     for (let i = 0; i < 30; i += 1) {
       const data = {
         username: `admin${i}@gmail.com`,
         name: `admin${i}`,
         slug: `admin${i}`,
-        password: SeedUser.getPwdHash(),
-        roleId: 3,
+        password: pwd,
+        roleId,
       };
       result.push(data);
     }
@@ -21,16 +21,16 @@ export default class SeedUser {
     return result;
   }
 
-  static shopkeeperSeeding() {
+  static shopkeeperSeeding(roleId) {
     const result = [];
-
+    const pwd = SeedUser.getPwdHash();
     for (let i = 31; i < 100; i += 1) {
       const data = {
         username: `admin${i}@gmail.com`,
         name: `admin${i}`,
         slug: `admin${i}`,
-        password: SeedUser.getPwdHash(),
-        roleId: 2,
+        password: pwd,
+        roleId,
       };
       result.push(data);
     }
@@ -38,13 +38,13 @@ export default class SeedUser {
     return result;
   }
 
-  static adminSeeding() {
+  static adminSeeding(roleId) {
     return {
       username: "phu2412@gmail.com",
       name: "phu",
       slug: "phu",
       password: SeedUser.getPwdHash(),
-      roleId: 1,
+      roleId,
     };
   }
 
@@ -53,11 +53,13 @@ export default class SeedUser {
     return hash.hashSync(password, 10);
   }
 
-  static start() {
+  static start(transaction, roleIds) {
     const data = [];
-    data.push(SeedUser.userSeeding);
-    data.push(SeedUser.shopkeeperSeeding);
-    data.push(SeedUser.adminSeeding);
-    return User.bulkCreate(data.flat());
+    const { userId, shopkeeperId, adminId } = roleIds;
+    data.push(SeedUser.userSeeding(userId));
+    data.push(SeedUser.shopkeeperSeeding(shopkeeperId));
+    data.push(SeedUser.adminSeeding(adminId));
+    console.log("====== Migrating User ==========");
+    return User.bulkCreate(data.flat(), { transaction });
   }
 }

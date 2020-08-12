@@ -41,7 +41,7 @@ class Authentication {
                 }
             }
 
-            throw new AuthorizeError(`Your role ${rolename} is not allowed to do this action. You should be ${roleRequired.value}`);
+            throw new AuthorizeError(`Your role ${rolename} is not allowed to do this action. You should be ${roleRequired}`);
         } catch (error) {
             console.log(error);
             return response.status(httpStatus.OK).json({

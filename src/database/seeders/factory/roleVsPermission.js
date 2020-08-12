@@ -1,15 +1,19 @@
+import Sequelize from "sequelize";
 import { Models } from "../../models";
+import { METHOD, MODULE, ROLE } from "../../../constants/role";
 
+const { Op } = Sequelize;
 const { Role, Permission } = Models;
 
 export default class SeedRoleAndPermission {
-  static async start() {
-    await SeedRoleAndPermission.createRole();
-    await SeedRoleAndPermission.createPermissions();
+  static async start(transaction) {
+    await SeedRoleAndPermission.createRole(transaction);
+    await SeedRoleAndPermission.createPermissions(transaction);
+    return SeedRoleAndPermission.setRoleVsPermissions(transaction);
   }
 
-  static createPermissions() {
-    return Permission.bulkInsert(
+  static createPermissions(transaction) {
+    return Permission.bulkCreate(
     [{
         method: "GET",
         module: "USER",
@@ -302,10 +306,11 @@ export default class SeedRoleAndPermission {
         description: "Admin delete shop'",
       },
     ],
+    { transaction },
     );
   }
 
-  static createRole() {
+  static createRole(transaction) {
     const data = [
       {
         rolename: "Admin",
@@ -317,6 +322,186 @@ export default class SeedRoleAndPermission {
         rolename: "User",
       },
     ];
-    return Role.bulkCreate(data);
+    return Role.bulkCreate(data, { transaction });
+  }
+
+  static async setRoleVsPermissions(transaction) {
+    const admin = await Role.findOne({
+      where: {
+        rolename: ROLE.ADMIN,
+      },
+      transaction,
+    });
+    const creator = await Role.findOne({
+      where: {
+        rolename: ROLE.SHOP_KEEPER,
+      },
+      transaction,
+    });
+    const user = await Role.findOne({
+      where: {
+        rolename: ROLE.USER,
+      },
+      transaction,
+     });
+    const userPermissions = await Permission.findAll({
+      where: {
+        [Op.or]: [
+          {
+            method: METHOD.GET,
+            module: MODULE.PRODUCT,
+          },
+          {
+            method: METHOD.POST,
+            module: MODULE.SHOP,
+          },
+          {
+            method: METHOD.POST,
+            module: MODULE.ORDER,
+          },
+        ],
+      },
+      transaction,
+    });
+
+    const creatorPermissions = await Permission.findAll({
+      where: {
+        [Op.or]: [
+          {
+            method: METHOD.POST,
+            module: MODULE.PRODUCT,
+          },
+          {
+            method: METHOD.GET,
+            module: MODULE.SHOP_KEEPER_PRODUCT,
+          },
+          {
+            method: METHOD.PUT,
+            module: MODULE.PRODUCT,
+          },
+          {
+            method: METHOD.DELETE,
+            module: MODULE.PRODUCT,
+          },
+          {
+            method: METHOD.GET,
+            module: MODULE.ORDER,
+          },
+          {
+            method: METHOD.GET,
+            module: MODULE.ORDER_DETAIL,
+          },
+          {
+            method: METHOD.PUT,
+            module: MODULE.ORDER,
+          },
+          {
+            method: METHOD.PUT,
+            module: MODULE.ORDER_DETAIL,
+          },
+          {
+            method: METHOD.DELETE,
+            module: MODULE.ORDER,
+          },
+          {
+            method: METHOD.DELETE,
+            module: MODULE.ORDER_DETAIL,
+          },
+        ],
+      },
+      transaction,
+    });
+
+    const adminPermissions = await Permission.findAll({
+      where: {
+        [Op.or]: [
+          {
+            method: METHOD.GET,
+            module: MODULE.USER,
+          },
+          {
+            method: METHOD.POST,
+            module: MODULE.CATEGORY,
+          },
+          {
+            method: METHOD.POST,
+            module: MODULE.CITY,
+          },
+          {
+            method: METHOD.POST,
+            module: MODULE.DISTRICT,
+          },
+          {
+            method: METHOD.POST,
+            module: MODULE.MATERIAl,
+          },
+          {
+            method: METHOD.POST,
+            module: MODULE.PAYMENT,
+          },
+          {
+            method: METHOD.POST,
+            module: MODULE.TRANSPORT,
+          },
+          {
+            method: METHOD.PUT,
+            module: MODULE.CATEGORY,
+          },
+          {
+            method: METHOD.PUT,
+            module: MODULE.CITY,
+          },
+          {
+            method: METHOD.PUT,
+            module: MODULE.DISTRICT,
+          },
+          {
+            method: METHOD.PUT,
+            module: MODULE.MATERIAl,
+          },
+          {
+            method: METHOD.PUT,
+            module: MODULE.PAYMENT,
+          },
+          {
+            method: METHOD.PUT,
+            module: MODULE.TRANSPORT,
+          },
+          {
+            method: METHOD.DELETE,
+            module: MODULE.CATEGORY,
+          },
+          {
+            method: METHOD.DELETE,
+            module: MODULE.CITY,
+          },
+          {
+            method: METHOD.DELETE,
+            module: MODULE.DISTRICT,
+          },
+          {
+            method: METHOD.DELETE,
+            module: MODULE.MATERIAl,
+          },
+          {
+            method: METHOD.DELETE,
+            module: MODULE.PAYMENT,
+          },
+          {
+            method: METHOD.DELETE,
+            module: MODULE.TRANSPORT,
+          },
+        ],
+      },
+      transaction,
+    });
+    await creator.addPermissions(creatorPermissions, { transaction });
+    await user.addPermissions(userPermissions, { transaction });
+    await admin.addPermissions(adminPermissions, { transaction });
+    return {
+      adminId: admin.id,
+      shopkeeperId: creator.id,
+      userId: user.id,
+    };
   }
 }

@@ -1,16 +1,7 @@
 export const ROLE = {
-    ADMIN: {
-        key: 1,
-        value: "admin",
-    },
-    SHOP_KEEPER: {
-        key: 2,
-        value: "shop keeper",
-    },
-    USER: {
-        key: 3,
-        value: "user",
-    },
+    ADMIN: "Admin",
+    SHOP_KEEPER: "Shop keeper",
+    USER: "User",
 };
 
 export const METHOD = {
