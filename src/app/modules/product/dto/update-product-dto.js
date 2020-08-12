@@ -6,7 +6,7 @@ export default class UpdateProductDto {
       this.description = input.description;
       this.price = input.price;
       this.amount = input.amount;
-      this.restAmount = input.amount;
+      this.restAmount = input.restAmount;
       this.weight = input.weight;
       this.districtId = input.districtId;
       this.thumbnail = this.getThumbnail(input.gallery);
