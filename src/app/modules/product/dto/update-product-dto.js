@@ -8,6 +8,7 @@ export default class CreateShopDto {
       this.price = input.price;
       this.amount = input.amount;
       this.restAmount = input.amount;
+      this.weight = input.weight;
       this.districtId = input.districtId;
       this.thumbnail = this.getThumbnail(input.gallery);
   }
