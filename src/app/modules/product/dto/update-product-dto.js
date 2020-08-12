@@ -1,8 +1,7 @@
-export default class CreateShopDto {
+export default class UpdateProductDto {
   constructor(input) {
       this.id = input.id;
       this.name = input.name;
-      this.shopId = input.shopId;
       this.categoryId = input.categoryId;
       this.description = input.description;
       this.price = input.price;

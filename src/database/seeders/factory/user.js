@@ -12,6 +12,7 @@ export default class SeedUser {
         username: `admin${i}@gmail.com`,
         name: `admin${i}`,
         slug: `admin${i}`,
+        status: true,
         password: pwd,
         roleId,
       };
@@ -29,6 +30,7 @@ export default class SeedUser {
         username: `admin${i}@gmail.com`,
         name: `admin${i}`,
         slug: `admin${i}`,
+        status: true,
         password: pwd,
         roleId,
       };
@@ -43,6 +45,7 @@ export default class SeedUser {
       username: "phu2412@gmail.com",
       name: "phu",
       slug: "phu",
+      status: true,
       password: SeedUser.getPwdHash(),
       roleId,
     };

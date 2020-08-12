@@ -1,6 +1,6 @@
 import slugTransfer from "speakingurl";
 
-export default class CreateShopDto {
+export default class CreateProductDto {
   constructor(input) {
       this.name = input.name;
       this.slug = slugTransfer(input.name + Date.now());
@@ -9,8 +9,8 @@ export default class CreateShopDto {
       this.description = input.description;
       this.price = input.price;
       this.amount = input.amount;
-      this.weight = input.weight;
       this.restAmount = input.amount;
+      this.weight = input.weight;
       this.districtId = input.districtId;
       this.thumbnail = input.gallery[0].src;
       this.gallery = input.gallery;
