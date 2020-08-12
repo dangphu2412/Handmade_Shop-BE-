@@ -4,7 +4,9 @@ import AuthRepository from "../auth/auth.repository";
 import LogicError from "../../../errors/Logic.error";
 import { ROLE } from "../../../constants/role";
 import CreateShopDto from "./dto/create-shop-dto";
-import database from "../../../database/models";
+import database, { Models } from "../../../database/models";
+
+const { Role } = Models;
 
 class ShopService extends CoreService {
     constructor() {
@@ -110,8 +112,13 @@ class ShopService extends CoreService {
                 response, transportIds, transaction,
             );
 
+            const { id: roleId } = await Role.findOne({
+                where: {
+                    rolename: ROLE.SHOP_KEEPER,
+                },
+            });
             await this.authRepository.updateOne({
-                roleId: ROLE.SHOP_KEEPER.key,
+                roleId,
                 shopActive: true,
             }, userId, transaction);
 
