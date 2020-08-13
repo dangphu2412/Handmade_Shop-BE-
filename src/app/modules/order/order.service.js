@@ -4,6 +4,10 @@ import OrderRepository from "./order.repository";
 import OderDetailRepository from "../orderDetail/orderDetail.repository";
 import ProductRepository from "../product/product.repository";
 import database from "../../../database/models";
+import orderStatus from "../../../constants/enum/order-status.enum";
+import LogicError from "../../../errors/Logic.error";
+import AuthorizeError from "../../../errors/Authorize.error";
+import NotFoundError from "../../../errors/NotFound.error";
 
 class OrderService extends CoreService {
     constructor() {
@@ -115,6 +119,45 @@ class OrderService extends CoreService {
             pendingCreateDetails,
             cancelOrderDetail,
         ];
+    }
+
+    async patchOrderStatus(payload) {
+        const { userId, id, status } = payload;
+        console.log(payload);
+        const scopes = [{
+            method: ["getShop", "getIdForeign"],
+        }];
+        const order = await this.repository.getByPk(id, scopes);
+
+        if (!order) {
+            throw new NotFoundError("This order is not exist");
+        }
+
+        const isOrderShopkeeper = order.shop && order.shop.userId === userId;
+
+        if (!isOrderShopkeeper) {
+            throw new AuthorizeError("You are not shop owner");
+        }
+
+        if (status !== orderStatus.PENDING_CONFIRM
+         && status !== orderStatus.DELIVERING
+         && status !== orderStatus.CANCEL
+         && status !== orderStatus.DELIVERED
+        ) {
+            throw new LogicError("Status update is not valid");
+        }
+
+        order.status = status;
+        order.updatedAt = new Date().toISOString();
+
+        if (status === orderStatus.DELIVERED) {
+            order.receivedAt = new Date().toISOString();
+        }
+        if (status === orderStatus.CANCEL) {
+            order.deletedAt = new Date().toISOString();
+        }
+
+        return order.save();
     }
 }
 

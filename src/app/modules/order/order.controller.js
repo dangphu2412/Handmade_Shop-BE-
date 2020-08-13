@@ -3,6 +3,8 @@ import httpStatus from "http-status";
 import CoreController from "../../concept/Controller";
 import OrderService from "./order.service";
 import CreateOrderDto from "./dto/create-order.dto";
+import PatchStatusOrderDto from "./dto/patch-order.dto";
+
 import { OrderMessages } from "../../../constants/message";
 
 class OrderController extends CoreController {
@@ -44,6 +46,24 @@ class OrderController extends CoreController {
                 status: httpStatus.OK,
                 message,
                 orderFailed,
+            });
+        } catch (error) {
+            return this.ErrorHandler(response, error);
+        }
+    }
+
+    async patchStatusOrder(request, response) {
+        try {
+            const { userId } = this.getCredentialInfo(request);
+            const { query, params } = request;
+
+            const payload = new PatchStatusOrderDto(userId, params, query);
+
+            await this.service.patchOrderStatus(payload);
+
+            return response.status(httpStatus.OK).json({
+                status: httpStatus.OK,
+                message: "Update success",
             });
         } catch (error) {
             return this.ErrorHandler(response, error);

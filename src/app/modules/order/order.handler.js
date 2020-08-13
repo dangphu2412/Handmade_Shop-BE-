@@ -39,9 +39,8 @@ class OrderpHandler {
     patchStatus() {
         return [
             this.authen.call("verify"),
-            // this.validator.checkPostOrders(),
-            this.authorize.WithScope(ROLE.USER, METHOD.POST, MODULE.ORDER),
-            this.controller.call("createNewOrders"),
+            this.authorize.WithScope(ROLE.SHOP_KEEPER, METHOD.PUT, MODULE.ORDER),
+            this.controller.call("patchStatusOrder"),
         ]
     }
 }
