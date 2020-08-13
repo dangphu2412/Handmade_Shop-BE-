@@ -21,7 +21,6 @@ class AddresspHandler {
     createAddress() {
         return [
             this.validator.checkCreateAddress(),
-            this.validator.catchValidateErrors,
             this.authen.call("verify"),
             this.controller.call("createAddress"),
         ];

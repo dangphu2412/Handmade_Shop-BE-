@@ -21,7 +21,6 @@ class AreaHandler {
     getDistrictsByCity() {
         return [
             this.validator.checkParamsId(),
-            this.validator.catchValidateErrors,
             this.controller.call("getDistrictsByCityId"),
         ];
     }

@@ -1,13 +1,13 @@
-import { checkSchema } from "express-validator";
 import CoreValidator from "../../concept/Validator";
 
 class OrderValidator extends CoreValidator {
-    checkGetOrders() {
-        return checkSchema({
-            addressId: this.checkNumber(["body"], "addressId"),
-            transportId: this.checkNumber(["body"], "transportId"),
-            details: this.checkArray(["body"], "details"),
-        });
+    checkPostOrders() {
+        const objectValidator = {
+            addressId: this.isInt(["body"], "addressId"),
+            transportId: this.isInt(["body"], "transportId"),
+            details: this.isArray(["body"], "details"),
+        };
+        return this.start(objectValidator);
     }
 }
 

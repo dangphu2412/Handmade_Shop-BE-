@@ -38,7 +38,6 @@ class ShopHandler {
     createShop() {
         return [
             this.validator.checkCreateShop(),
-            this.validator.catchValidateErrors,
             this.authen.call("verify"),
             this.authorize.WithScope(ROLE.USER, METHOD.POST, MODULE.SHOP),
             this.controller.call("createShop"),

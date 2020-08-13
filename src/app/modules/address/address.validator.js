@@ -1,14 +1,15 @@
-import { checkSchema } from "express-validator";
 import CoreValidator from "../../concept/Validator";
 
 class AddressValidator extends CoreValidator {
     checkCreateAddress() {
-        return checkSchema({
-            location: this.checkExistsOnly(["body"], "location"),
-            phone: this.checkExistsOnly(["body"], "phone"),
-            districtId: this.checkExistsOnly(["body"], "districtId"),
-            name: this.checkExistsOnly(["body"], "name"),
-        });
+        const objectValidator = {
+            location: this.isExist(["body"], "location"),
+            phone: this.isExist(["body"], "phone"),
+            districtId: this.isExist(["body"], "districtId"),
+            name: this.isExist(["body"], "name"),
+        };
+
+        return this.start(objectValidator);
     }
 }
 

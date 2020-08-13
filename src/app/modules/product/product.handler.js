@@ -36,7 +36,6 @@ class ProductpHandler {
     createProduct() {
         return [
             this.validator.checkCreateProduct(),
-            this.validator.catchValidateErrors,
             this.controller.call("createProduct"),
         ];
     }
@@ -44,7 +43,6 @@ class ProductpHandler {
     updateProduct() {
         return [
             this.validator.checkCreateProduct(),
-            this.validator.catchValidateErrors,
             this.authen.call("verify"),
             this.authorize.WithScope(ROLE.SHOP_KEEPER, METHOD.PUT, MODULE.PRODUCT),
             this.controller.call("updateProduct"),

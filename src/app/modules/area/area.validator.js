@@ -1,11 +1,11 @@
-import { checkSchema } from "express-validator";
 import CoreValidator from "../../concept/Validator";
 
 class AreaValidator extends CoreValidator {
     checkParamsId() {
-        return checkSchema({
-            id: this.checkNumber(["params"], "Id"),
-        });
+        const objectValditor = {
+            id: this.isInt(["params"], "Id"),
+        };
+        return this.start(objectValditor);
     }
 }
 

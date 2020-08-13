@@ -3,24 +3,27 @@ import CoreValidator from "../../concept/Validator";
 
 class AuthValidator extends CoreValidator {
     checkSignUpData() {
-        return checkSchema({
-            username: this.checkEmail(["body"], "Username"),
-            name: this.checkExistsOnly(["body"], "Name"),
-            password: this.checkWithLength(["body"], "Password", { max: 15, min: 6 }),
-        });
+        const objectValidator = {
+            username: this.isEmail(["body"], "Username"),
+            name: this.isExist(["body"], "Name"),
+            password: this.matchLength(["body"], "Password", { max: 15, min: 6 }),
+        };
+        return this.start(objectValidator);
     }
 
     checkSignInData() {
-        return checkSchema({
-            username: this.checkEmail(["body"], "Username"),
-            password: this.checkWithLength(["body"], "Password", { max: 15, min: 6 }),
-        });
+        const objectValidator = {
+            username: this.isEmail(["body"], "Username"),
+            password: this.matchLength(["body"], "Password", { max: 15, min: 6 }),
+        };
+        return this.start(objectValidator);
     }
 
     checkQueryVerifyToken() {
-        return checkSchema({
-            token: this.checkExistsOnly(["query"], "Token "),
-        });
+        const objectValidator = {
+            token: this.isExist(["query"], "Token "),
+        };
+        return this.start(objectValidator);
     }
 }
 

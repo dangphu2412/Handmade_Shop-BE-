@@ -1,7 +1,14 @@
-import { validationResult } from "express-validator";
+import { checkSchema, validationResult } from "express-validator";
 
 class Validator {
-    checkNumber(options, param, exists = true) {
+    start(validatorObject) {
+        return [
+            checkSchema(validatorObject),
+            this.catchValidateErrors,
+        ];
+    }
+
+    isInt(options, param, exists = true) {
         return {
             in: [...options],
             errorMessage: `Your ${param} is not format like a number`,
@@ -10,7 +17,7 @@ class Validator {
         };
     }
 
-    checkEmail(options, param) {
+    isEmail(options, param) {
         return {
             in: [...options],
             errorMessage: `Your ${param} is not format as a email`,
@@ -20,7 +27,7 @@ class Validator {
         };
     }
 
-    checkWithLength(options, param, { max, min }, exists = true, trim = true) {
+    matchLength(options, param, { max, min }, exists = true, trim = true) {
         return {
             in: [...options],
             errorMessage: `${param} is missing`,
@@ -33,7 +40,7 @@ class Validator {
         };
     }
 
-    checkExistsOnly(options, param) {
+    isExist(options, param) {
         return {
             in: [...options],
             errorMessage: `Your ${param} is missing in ${options}`,
@@ -41,7 +48,7 @@ class Validator {
         };
     }
 
-    checkArray(options, param) {
+    isArray(options, param) {
         return {
             in: [...options],
             errorMessage: `Your ${param} is missing or not format as an array`,

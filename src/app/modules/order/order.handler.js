@@ -15,7 +15,7 @@ class OrderpHandler {
     getOrders() {
         return [
             this.authen.call("verify"),
-            // this.authorize.WithScope(ROLE.SHOP_KEEPER, METHOD.GET, MODULE.ORDER),
+            this.authorize.WithScope(ROLE.SHOP_KEEPER, METHOD.GET, MODULE.ORDER),
             this.controller.call("getMany"),
         ];
     }
@@ -30,7 +30,8 @@ class OrderpHandler {
     postOrder() {
         return [
             this.authen.call("verify"),
-            // this.authorize.WithScope(ROLE.USER, METHOD.POST, MODULE.ORDER),
+            // this.validator.checkPostOrders(),
+            this.authorize.WithScope(ROLE.USER, METHOD.POST, MODULE.ORDER),
             this.controller.call("createNewOrders"),
         ];
     }

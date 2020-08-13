@@ -16,7 +16,6 @@ class AuthHandler {
     signup() {
         return [
             this.validator.checkSignUpData(),
-            this.validator.catchValidateErrors,
             this.controller.call("signup"),
         ];
     }
@@ -24,7 +23,6 @@ class AuthHandler {
     verifyAccount() {
         return [
             this.validator.checkQueryVerifyToken(),
-            this.validator.catchValidateErrors,
             this.controller.call("verifyAccount"),
         ];
     }
@@ -32,7 +30,6 @@ class AuthHandler {
     signin() {
         return [
             this.validator.checkSignInData(),
-            this.validator.catchValidateErrors,
             this.controller.call("signin"),
         ];
     }
