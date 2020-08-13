@@ -5,6 +5,7 @@ import OderDetailRepository from "../orderDetail/orderDetail.repository";
 import ProductRepository from "../product/product.repository";
 import ShopRepository from "../shop/shop.repository";
 import database from "../../../database/models";
+import FilterDto from "../../resource/filter.dto";
 
 import orderStatus from "../../../constants/enum/order-status.enum";
 import LogicError from "../../../errors/Logic.error";
@@ -21,13 +22,34 @@ class OrderService extends CoreService {
     }
 
     async getShopOrders(query, userId) {
+        const filter = new FilterDto(query);
+        const { key, value, ...prefix } = filter;
         const { id: shopId } = await this.shopRepository.getOne({ userId }, ["getIdOnly"]);
         const conditions = {
             shopId,
         };
-
         const scopes = ["overview", "getShop", "getOrderDetail", "getUser"];
-        return this.repository.getMany(query, scopes, conditions);
+        switch (key) {
+            case orderStatus.PENDING_GOOD:
+                conditions.status = orderStatus.PENDING_GOOD;
+                break;
+            case orderStatus.PENDING_CONFIRM:
+                conditions.status = orderStatus.PENDING_CONFIRM;
+                break;
+            case orderStatus.DELIVERING:
+                conditions.status = orderStatus.DELIVERING;
+                break;
+            case orderStatus.DELIVERED:
+                conditions.status = orderStatus.DELIVERED;
+                break;
+            case orderStatus.CANCEL:
+                conditions.status = orderStatus.CANCEL;
+                break;
+            default:
+                break;
+        }
+
+        return this.repository.getMany(prefix, scopes, conditions);
     }
 
     async getUserOrders(query, userId) {

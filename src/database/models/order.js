@@ -60,7 +60,7 @@ export default (sequelize, DataTypes) => {
   }, {
     scopes: {
       overview: {
-        attributes: ["id", "totalBillAndShip", "createdAt", "updatedAt"],
+        attributes: ["id", "totalBillAndShip", "status", "createdAt", "updatedAt"],
       },
     },
     paranoid: true,
