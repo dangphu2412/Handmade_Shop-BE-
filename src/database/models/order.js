@@ -38,6 +38,13 @@ export default (sequelize, DataTypes) => {
           foreignKey: "shopId",
         }],
       }));
+      Order.addScope("getUser", (scopes = "overview") => ({
+        include: [{
+          model: models.User.scope(scopes),
+          as: "user",
+          foreignKey: "userId",
+        }],
+      }));
     }
   }
   Order.init({

@@ -54,8 +54,8 @@ export default (sequelize, DataTypes) => {
       attributes: ["id", "username", "name", "slug", "password", "avatar", "shopActive", "status"],
     },
     scopes: {
-      test: {
-        attributes: ["id", "username"],
+      overview: {
+        attributes: ["id", "name", "avatar"],
       },
     },
     sequelize,

@@ -26,7 +26,7 @@ class OrderService extends CoreService {
             shopId,
         };
 
-        const scopes = ["overview", "getShop", "getOrderDetail"];
+        const scopes = ["overview", "getShop", "getOrderDetail", "getUser"];
         return this.repository.getMany(query, scopes, conditions);
     }
 
@@ -35,7 +35,7 @@ class OrderService extends CoreService {
             userId,
         };
 
-        const scopes = ["overview", "getShop", "getOrderDetail"];
+        const scopes = ["overview", "getShop", "getOrderDetail", "getUser"];
         return this.repository.getMany(query, scopes, conditions);
     }
 
