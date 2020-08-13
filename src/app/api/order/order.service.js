@@ -3,7 +3,9 @@ import CoreService from "../../concept/Service";
 import OrderRepository from "./order.repository";
 import OderDetailRepository from "../orderDetail/orderDetail.repository";
 import ProductRepository from "../product/product.repository";
+import ShopRepository from "../shop/shop.repository";
 import database from "../../../database/models";
+
 import orderStatus from "../../../constants/enum/order-status.enum";
 import LogicError from "../../../errors/Logic.error";
 import AuthorizeError from "../../../errors/Authorize.error";
@@ -15,6 +17,17 @@ class OrderService extends CoreService {
         this.repository = OrderRepository;
         this.oderDetailRepository = OderDetailRepository;
         this.productRepository = ProductRepository;
+        this.shopRepository = ShopRepository;
+    }
+
+    async getShopOrders(query, userId) {
+        const { id: shopId } = await this.shopRepository.getOne({ userId }, ["getIdOnly"]);
+        const conditions = {
+            shopId,
+        };
+
+        const scopes = ["overview", "getShop", "getOrderDetail"];
+        return this.repository.getMany(query, scopes, conditions);
     }
 
     async getUserOrders(query, userId) {

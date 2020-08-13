@@ -16,7 +16,7 @@ class OrderpHandler {
         return [
             this.authen.call("verify"),
             this.authorize.WithScope(ROLE.SHOP_KEEPER, METHOD.GET, MODULE.ORDER),
-            this.controller.call("getMany"),
+            this.controller.call("getShopOrders"),
         ];
     }
 
