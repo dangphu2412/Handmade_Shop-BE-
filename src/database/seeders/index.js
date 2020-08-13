@@ -7,6 +7,8 @@ import seedingCityAndDistrict from "./factory/cityAndDistrict";
 import seedingMaterial from "./factory/material";
 import seedingTransport from "./factory/transport";
 import seedingProduct from "./factory/product";
+import seedingAddress from "./factory/address";
+import seedingOrder from "./factory/order";
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
@@ -21,6 +23,8 @@ module.exports = {
       await seedingCityAndDistrict.start(transaction);
       await seedingShop.start(transaction);
       await seedingProduct.start(transaction);
+      await seedingAddress.start(transaction);
+      await seedingOrder.start(transaction);
 
       await transaction.commit();
     } catch (error) {

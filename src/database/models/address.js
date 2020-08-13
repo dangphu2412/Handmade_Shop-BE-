@@ -26,7 +26,7 @@ export default (sequelize, DataTypes) => {
     districtId: DataTypes.INTEGER,
     name: DataTypes.STRING,
     location: DataTypes.STRING,
-    phone: DataTypes.NUMBER,
+    phone: DataTypes.STRING,
     deletedAt: DataTypes.DATE,
   }, {
     scopes: {
