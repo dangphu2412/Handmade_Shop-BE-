@@ -35,6 +35,15 @@ class OrderpHandler {
             this.controller.call("createNewOrders"),
         ];
     }
+
+    patchStatus() {
+        return [
+            this.authen.call("verify"),
+            // this.validator.checkPostOrders(),
+            this.authorize.WithScope(ROLE.USER, METHOD.POST, MODULE.ORDER),
+            this.controller.call("createNewOrders"),
+        ]
+    }
 }
 
 export default new OrderpHandler();

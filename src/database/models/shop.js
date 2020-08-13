@@ -77,6 +77,9 @@ export default (sequelize, DataTypes) => {
       getIdForeign: {
         attributes: ["id", "userId", "districtId", "bankId"],
       },
+      getIdOnly: {
+        attributes: ["id"],
+      },
     },
     sequelize,
     modelName: "Shop",

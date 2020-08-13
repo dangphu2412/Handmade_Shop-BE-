@@ -9,4 +9,6 @@ router.get("/users/orders", OrderHandler["getUserOrders"]());
 
 router.post("/users/orders", OrderHandler["postOrder"]());
 
+router.patch("/user/orders", OrderHandler["patchStatus"]());
+
 export default router;

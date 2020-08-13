@@ -1,11 +1,14 @@
 import CoreService from "../../concept/Service";
 import ShopRepository from "./shop.repository";
 import AuthRepository from "../auth/auth.repository";
+import ProductRepository from "../product/product.repository";
+import CategoryRepository from "../category/category.repository";
+
 import LogicError from "../../../errors/Logic.error";
-import { ROLE } from "../../../constants/role";
 import CreateShopDto from "./dto/create-shop-dto";
 import database, { Models } from "../../../database/models";
 import { pagination } from "../../../utils/array";
+import { ROLE } from "../../../constants/role";
 
 const { Role } = Models;
 
@@ -14,6 +17,8 @@ class ShopService extends CoreService {
         super();
         this.repository = ShopRepository;
         this.authRepository = AuthRepository;
+        this.productRepository = ProductRepository;
+        this.categoryRepository = CategoryRepository;
     }
 
     toTransports(shopId, transportIds) {
@@ -73,29 +78,18 @@ class ShopService extends CoreService {
     async fetchProductsByShopSlug({ key, value, ...query }, slug) {
         let response;
         const conditions = { slug };
-        let productScopes = ["category", "productInventory"];
+        const productScopes = ["category", "productInventory"];
         const scopes = [{ method: ["products", productScopes] }];
         switch (key) {
-            case "sold-out":
+            case "all":
                 {
-                    productScopes = ["category", "productSoldOut"];
-                    scopes[0].method[1] = productScopes;
-                    const shop = await this.repository.getOne(conditions, scopes);
-                    shop.dataValues.products = {
-                        count: shop.products.length,
-                        rows: pagination(query, shop.dataValues.products),
+                    const { id: shopId } = await this.repository.getOne(conditions, ["getIdOnly"]);
+                    const prodConditions = {
+                        shopId,
                     };
-                    response = shop;
-                }
-                break;
-            case "inventory":
-                {
-                    const shop = await this.repository.getOne(conditions, scopes);
-                    shop.dataValues.products = {
-                        count: shop.products.length,
-                        rows: pagination(query, shop.dataValues.products),
-                    };
-                    response = shop;
+                    response = await this.productRepository.getManyAndCountAll(
+                        query, productScopes, prodConditions,
+                    );
                 }
                 break;
             case "search":
@@ -103,15 +97,32 @@ class ShopService extends CoreService {
                     if (!value) {
                         throw new LogicError("Can't let value empty when search");
                     }
-                    const searchByName = ["searchByName", value];
-                    productScopes = ["category", { method: searchByName }];
-                    scopes[0].method[1] = productScopes;
-                    const shop = await this.repository.getOne(conditions, scopes);
-                    shop.dataValues.products = {
-                        count: shop.products.length,
-                        rows: pagination(query, shop.dataValues.products),
+                    const { id: shopId } = await this.repository.getOne(conditions, ["getIdOnly"]);
+                    const prodConditions = {
+                        shopId,
                     };
-                    response = shop;
+                    const searchMethod = {
+                        method: ["searchByName", value],
+                    };
+                    productScopes.push(searchMethod);
+                    response = await this.productRepository.getManyAndCountAll(
+                        query, productScopes, prodConditions,
+                    );
+                }
+                break;
+            case "category":
+                {
+                    if (!value) {
+                        throw new LogicError("Can't let value empty when search");
+                    }
+                    const { id: shopId } = await this.repository.getOne(conditions, ["getIdOnly"]);
+                    const prodConditions = {
+                        shopId,
+                        categoryId: value,
+                    };
+                    response = await this.productRepository.getManyAndCountAll(
+                        query, productScopes, prodConditions,
+                    );
                 }
                 break;
             default:
