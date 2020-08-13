@@ -19,8 +19,8 @@ export default class SeedingMaterial {
         slug: "vai",
       },
       {
-        name: "Cotton",
-        slug: "cotton",
+        name: "Vải Cotton",
+        slug: "vai-cotton",
       },
       {
         name: "Da",
@@ -33,6 +33,22 @@ export default class SeedingMaterial {
       {
         name: "Gỗ",
         slug: "go",
+      },
+      {
+        name: "Ruby",
+        slug: "ruby",
+      },
+      {
+        name: "Vải kaki",
+        slug: "vai-kaki",
+      },
+      {
+        name: "Vải Jean",
+        slug: "vai-jean",
+      },
+      {
+        name: "Vải len",
+        slug: "vai-len",
       },
     ];
   }

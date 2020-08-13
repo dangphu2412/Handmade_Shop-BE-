@@ -5,6 +5,7 @@ import LogicError from "../../../errors/Logic.error";
 import { ROLE } from "../../../constants/role";
 import CreateShopDto from "./dto/create-shop-dto";
 import database, { Models } from "../../../database/models";
+import { pagination } from "../../../utils/array";
 
 const { Role } = Models;
 
@@ -29,19 +30,24 @@ class ShopService extends CoreService {
         return this.repository.getOne(conditions);
     }
 
-    fetchOwnerProducts({ key, value, ...query }, userId) {
+    async fetchOwnerProducts({ key, value, ...query }, userId) {
         let response;
         const conditions = { userId };
         let productScopes = ["category", "productInventory"];
         const scopes = [{ method: ["products", productScopes] }];
         switch (key) {
             case "sold-out":
-                productScopes = ["category", "productSoldOut"];
-                scopes[0].method[1] = productScopes;
-                response = this.repository.getMany(query, scopes, conditions);
+                {
+                    productScopes = ["category", "productSoldOut"];
+                    scopes[0].method[1] = productScopes;
+                    const shop = await this.repository.getOne(conditions, scopes);
+                    shop.dataValues.total = shop.products.length;
+                    shop.dataValues.products = pagination(query, shop.dataValues.products);
+                    response = shop;
+                }
                 break;
             case "inventory":
-                response = this.repository.getMany(query, scopes, conditions);
+                response = await this.repository.getOne(conditions, scopes);
                 break;
             case "search":
                 {
@@ -51,29 +57,42 @@ class ShopService extends CoreService {
                     const searchByName = ["searchByName", value];
                     productScopes = ["category", { method: searchByName }];
                     scopes[0].method[1] = productScopes;
-                    response = this.repository.getMany(query, scopes, conditions);
+                    const shop = this.repository.getOne(conditions, scopes);
+                    shop.dataValues.total = shop.products.length;
+                    shop.dataValues.products = pagination(query, shop.dataValues.products);
+                    response = shop;
                 }
                 break;
             default:
-                response = this.repository.getMany(query, scopes, conditions);
+                response = this.repository.getOne(conditions, scopes);
                 break;
         }
         return response;
     }
 
-    fetchProductsByShopSlug({ key, value, ...query }, slug) {
+    async fetchProductsByShopSlug({ key, value, ...query }, slug) {
         let response;
         const conditions = { slug };
         let productScopes = ["category", "productInventory"];
         const scopes = [{ method: ["products", productScopes] }];
         switch (key) {
             case "sold-out":
-                productScopes = ["category", "productSoldOut"];
-                scopes[0].method[1] = productScopes;
-                response = this.repository.getMany(query, scopes, conditions);
+                {
+                    productScopes = ["category", "productSoldOut"];
+                    scopes[0].method[1] = productScopes;
+                    const shop = await this.repository.getOne(conditions, scopes);
+                    shop.dataValues.total = shop.products.length;
+                    shop.dataValues.products = pagination(query, shop.dataValues.products);
+                    response = shop;
+                }
                 break;
             case "inventory":
-                response = this.repository.getMany(query, scopes, conditions);
+                {
+                    const shop = await this.repository.getOne(conditions, scopes);
+                    shop.dataValues.total = shop.products.length;
+                    shop.dataValues.products = pagination(query, shop.dataValues.products);
+                    response = shop;
+                }
                 break;
             case "search":
                 {
@@ -83,11 +102,19 @@ class ShopService extends CoreService {
                     const searchByName = ["searchByName", value];
                     productScopes = ["category", { method: searchByName }];
                     scopes[0].method[1] = productScopes;
-                    response = this.repository.getMany(query, scopes, conditions);
+                    const shop = await this.repository.getOne(conditions, scopes);
+                    shop.dataValues.total = shop.products.length;
+                    shop.dataValues.products = pagination(query, shop.dataValues.products);
+                    response = shop;
                 }
                 break;
             default:
-                response = this.repository.getMany(query, scopes, conditions);
+                {
+                    const shop = await this.repository.getOne(conditions, scopes);
+                    shop.dataValues.total = shop.products.length;
+                    shop.dataValues.products = pagination(query, shop.dataValues.products);
+                    response = shop;
+                }
                 break;
         }
         return response;

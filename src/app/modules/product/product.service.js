@@ -11,6 +11,8 @@ import FilterDto from "./dto/filter.dto";
 import CreateProductDto from "./dto/create-product-dto";
 import UpdateProductDto from "./dto/update-product-dto";
 
+import { pagination } from "../../../utils/array";
+
 class ProductService extends CoreService {
     constructor() {
         super();
@@ -20,7 +22,7 @@ class ProductService extends CoreService {
         this.categoryRepository = CategoryRepository;
     }
 
-    fetchProducts(query) {
+    async fetchProducts(query) {
         const filterDto = new FilterDto(query);
         const { key, value, ...prefix } = filterDto;
         let products = {};
@@ -40,7 +42,8 @@ class ProductService extends CoreService {
                         },
                     ];
 
-                    products = this.categoryRepository.getOne(conditions, categoryScopes);
+                    const category = await this.categoryRepository.getOne(conditions, categoryScopes);
+                    products = pagination(query, category.products);
                 }
                 break;
             case "best-seller":
@@ -54,11 +57,11 @@ class ProductService extends CoreService {
                         method: ["searchByName", value],
                     };
                     scopes.push(searchByName);
-                    products = this.repository.getMany(query, scopes, conditions);
+                    products = this.repository.getManyAndCountAll(query, scopes, conditions);
                 }
                 break;
             default:
-                products = this.repository.getMany(prefix, scopes);
+                products = this.repository.getManyAndCountAll(prefix, scopes);
                 break;
         }
         return products;

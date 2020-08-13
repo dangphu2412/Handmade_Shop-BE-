@@ -15,6 +15,7 @@ export default class SeedUser {
         status: true,
         password: pwd,
         roleId,
+        shopActive: false,
       };
       result.push(data);
     }
@@ -33,6 +34,7 @@ export default class SeedUser {
         status: true,
         password: pwd,
         roleId,
+        shopActive: true,
       };
       result.push(data);
     }
@@ -48,6 +50,7 @@ export default class SeedUser {
       status: true,
       password: SeedUser.getPwdHash(),
       roleId,
+      shopActive: true,
     };
   }
 

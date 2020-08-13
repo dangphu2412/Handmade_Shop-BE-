@@ -1,10 +1,12 @@
 import seedingUser from "./factory/user";
 import seedingRoleVsPer from "./factory/roleVsPermission";
+import seedingShop from "./factory/shop";
 import seedingBank from "./factory/bank";
 import seedingCategory from "./factory/category";
 import seedingCityAndDistrict from "./factory/cityAndDistrict";
 import seedingMaterial from "./factory/material";
 import seedingTransport from "./factory/transport";
+import seedingProduct from "./factory/product";
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
@@ -17,6 +19,8 @@ module.exports = {
       await seedingMaterial.start(transaction);
       await seedingTransport.start(transaction);
       await seedingCityAndDistrict.start(transaction);
+      await seedingShop.start(transaction);
+      await seedingProduct.start(transaction);
 
       await transaction.commit();
     } catch (error) {

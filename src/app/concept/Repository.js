@@ -50,6 +50,46 @@ export default class Repository {
         });
     }
 
+        /**
+     *
+     * @param {Object} query
+     * - filter = {
+     *    page: 0,
+     *    amount: 10
+     *    order: [["createdAt"]]
+     * }
+     * @param {String} scope
+     * - scope is define in model
+     * - Example: scope("defaultScope") if not redefine it will get all fields
+     * - Model: User -> scope: {
+     *  privateUser: {
+     *      attributes: ["id", "username", "name", "password", "roleId"],
+     *  }
+     * }
+     * @param {Object} where
+     * - Conditions where
+     * - where = {
+     *    name: "abc"
+     *   }
+     * @param {any} transaction
+     * - Optionals with sql, usually used when having insert or update
+     * - It will rollback when sql query is failed
+     * - Not required, call from sequelize instance
+     */
+    getManyAndCountAll({
+        page = 1, amount = 10, order = "createdAt", by = "DESC",
+    },
+    scope = "defaultScope", where = null, transaction = null) {
+    const filterSCope = (scope === "defaultScope") ? scope : [...scope];
+    return this.model.scope(filterSCope).findAndCountAll({
+        limit: amount,
+        amount: (page - 1) * amount,
+        order: [[order, by]],
+        where,
+        transaction,
+    });
+}
+
     /**
      *
      * @param {Number} id

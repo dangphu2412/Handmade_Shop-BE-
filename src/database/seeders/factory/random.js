@@ -1,6 +1,6 @@
 export default class Ramdom {
   static randomNumber(start, end) {
-    return Math.floor(Math.random() * end) + start;
+    return Math.floor(Math.random() * (end - start)) + start;
   }
 
   static randomDate(start, end) {

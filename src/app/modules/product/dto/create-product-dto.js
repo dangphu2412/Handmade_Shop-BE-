@@ -10,8 +10,8 @@ export default class CreateProductDto {
       this.price = input.price;
       this.reduce = input.reduce;
       this.percent = input.percent;
-      this.amount = input.amount;
-      this.restAmount = input.amount;
+      this.restAmount = input.restAmount;
+      this.sold = 0;
       this.weight = input.weight;
       this.districtId = input.districtId;
       this.thumbnail = input.gallery[0].src;

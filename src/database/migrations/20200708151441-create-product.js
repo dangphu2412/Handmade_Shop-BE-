@@ -48,13 +48,14 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false,
       },
-      amount: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-      },
       restAmount: {
         type: Sequelize.INTEGER,
         allowNull: false,
+      },
+      sold: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        defaultValue: 0,
       },
       status: {
         type: Sequelize.BOOLEAN,

@@ -7,7 +7,6 @@ export default class UpdateProductDto {
       this.price = input.price;
       this.reduce = input.reduce;
       this.percent = input.percent;
-      this.amount = input.amount;
       this.restAmount = input.restAmount;
       this.weight = input.weight;
       this.districtId = input.districtId;
