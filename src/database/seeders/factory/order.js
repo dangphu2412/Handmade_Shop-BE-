@@ -1,4 +1,3 @@
-import slugTransfer from "speakingurl";
 import { Models } from "../../models";
 import Random from "./random";
 
