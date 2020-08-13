@@ -75,6 +75,7 @@ export default (sequelize, DataTypes) => {
     percent: DataTypes.NUMBER,
     weight: DataTypes.NUMBER,
     restAmount: DataTypes.NUMBER,
+    sold: DataTypes.NUMBER,
     status: DataTypes.BOOLEAN,
   }, {
     scopes: {

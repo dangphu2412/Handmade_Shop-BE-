@@ -42,7 +42,9 @@ class ProductService extends CoreService {
                         },
                     ];
 
-                    const category = await this.categoryRepository.getOne(conditions, categoryScopes);
+                    const category = await this.categoryRepository.getOne(
+                        conditions, categoryScopes,
+                    );
                     products = {
                         count: category.products.length,
                         rows: pagination(query, category.products),

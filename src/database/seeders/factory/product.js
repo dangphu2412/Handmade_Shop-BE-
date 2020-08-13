@@ -34,6 +34,7 @@ export default class SeedingProduct {
   }
 
   static loadProducts(products, categoryId) {
+    const prefixThumb = "https://cf.shopee.vn/file/8126c2a895c8161d535a2a5153a40278_tn";
     return products
     .map((product) => {
       if (product.name === "") {
@@ -54,11 +55,11 @@ export default class SeedingProduct {
         sold,
         weight: 50,
         districtId: Random.randomNumber(1, 500),
-        thumbnail: product.thumbnail,
+        thumbnail: product.thumbnail ? product.thumbnail : prefixThumb,
         gallery: [
           {
             type: "image",
-            src: product.thumbnail,
+            src: product.thumbnail ? product.thumbnail : prefixThumb,
           },
           {
             type: "image",
