@@ -9,7 +9,6 @@ class ProductValidator extends CoreValidator {
             name: this.checkExistsOnly(["body"], "Name"),
             description: this.checkExistsOnly(["body"], "Description"),
             price: this.checkNumber(["body"], "Price"),
-            amount: this.checkNumber(["body"], "Amount"),
             materialIds: this.checkExistsOnly(["body"], "MaterialIds"),
             gallery: this.checkArray(["body"], "Gallery"),
         });
