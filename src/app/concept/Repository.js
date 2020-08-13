@@ -43,14 +43,14 @@ export default class Repository {
         const filterSCope = (scope === "defaultScope") ? scope : [...scope];
         return this.model.scope(filterSCope).findAll({
             limit: amount,
-            amount: (page - 1) * amount,
+            offset: (page - 1) * amount,
             order: [[order, by]],
             where,
             transaction,
         });
     }
 
-        /**
+    /**
      *
      * @param {Object} query
      * - filter = {
@@ -83,7 +83,7 @@ export default class Repository {
     const filterSCope = (scope === "defaultScope") ? scope : [...scope];
     return this.model.scope(filterSCope).findAndCountAll({
         limit: amount,
-        amount: (page - 1) * amount,
+        offset: (page - 1) * amount,
         order: [[order, by]],
         where,
         transaction,

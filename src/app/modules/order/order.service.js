@@ -123,7 +123,6 @@ class OrderService extends CoreService {
 
     async patchOrderStatus(payload) {
         const { userId, id, status } = payload;
-        console.log(payload);
         const scopes = [{
             method: ["getShop", "getIdForeign"],
         }];
