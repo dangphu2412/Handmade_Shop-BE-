@@ -81,16 +81,20 @@ class ShopService extends CoreService {
                     productScopes = ["category", "productSoldOut"];
                     scopes[0].method[1] = productScopes;
                     const shop = await this.repository.getOne(conditions, scopes);
-                    shop.dataValues.total = shop.products.length;
-                    shop.dataValues.products = pagination(query, shop.dataValues.products);
+                    shop.dataValues.products = {
+                        count: shop.products.length,
+                        rows: pagination(query, shop.dataValues.products),
+                    };
                     response = shop;
                 }
                 break;
             case "inventory":
                 {
                     const shop = await this.repository.getOne(conditions, scopes);
-                    shop.dataValues.total = shop.products.length;
-                    shop.dataValues.products = pagination(query, shop.dataValues.products);
+                    shop.dataValues.products = {
+                        count: shop.products.length,
+                        rows: pagination(query, shop.dataValues.products),
+                    };
                     response = shop;
                 }
                 break;
@@ -103,16 +107,20 @@ class ShopService extends CoreService {
                     productScopes = ["category", { method: searchByName }];
                     scopes[0].method[1] = productScopes;
                     const shop = await this.repository.getOne(conditions, scopes);
-                    shop.dataValues.total = shop.products.length;
-                    shop.dataValues.products = pagination(query, shop.dataValues.products);
+                    shop.dataValues.products = {
+                        count: shop.products.length,
+                        rows: pagination(query, shop.dataValues.products),
+                    };
                     response = shop;
                 }
                 break;
             default:
                 {
                     const shop = await this.repository.getOne(conditions, scopes);
-                    shop.dataValues.total = shop.products.length;
-                    shop.dataValues.products = pagination(query, shop.dataValues.products);
+                    shop.dataValues.products = {
+                        count: shop.products.length,
+                        rows: pagination(query, shop.dataValues.products),
+                    };
                     response = shop;
                 }
                 break;
