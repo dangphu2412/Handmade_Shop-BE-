@@ -4,7 +4,7 @@ const puppeteer = require("puppeteer");
 const fs = require("fs");
 
 const pathToJson = "D:/Languages/Nodejs/BaseExpress/src/database/seeders/factory/json/";
-const path = `${pathToJson}products-accessories.json`;
+const path = `${pathToJson}products-toys.json`;
 
 async function autoScroll(page) {
   await page.evaluate(async () => {
@@ -27,7 +27,7 @@ async function autoScroll(page) {
 
 (async () => {
   try {
-    const crawlUrl = `https://shopee.vn/Ph%E1%BB%A5-Ki%E1%BB%87n-Th%E1%BB%9Di-Trang-cat.80?page=${1}`;
+    const crawlUrl = `https://shopee.vn/%C4%90%E1%BB%93-Ch%C6%A1i-cat.13242?page=${1}`;
 
     const browser = await puppeteer.launch({ headless: true });
     const page = await browser.newPage();
@@ -61,7 +61,7 @@ async function autoScroll(page) {
       return data;
     });
     console.log("Finish crawling");
-    const oldData = require("../json/products-accessories.json");
+    const oldData = require("../json/products-toys.json");
     console.log("Pushing into new ...");
     const newData = [...oldData, ...returnData];
     fs.writeFileSync(path, JSON.stringify(newData));

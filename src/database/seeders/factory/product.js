@@ -2,8 +2,10 @@ import slugTransfer from "speakingurl";
 import { Models } from "../../models";
 import Random from "./random";
 import clothes from "./json/products.json";
+import femaleClothes from "./json/products-female-clothes.json";
 import shoes from "./json/products-shoes.json";
 import accessories from "./json/products-accessories.json";
+import toys from "./json/products-toys.json";
 
 const { Product } = Models;
 
@@ -20,6 +22,11 @@ export default class SeedingProduct {
       transaction,
       include: ["gallery"],
     });
+    const femaleClothesProd = await Product.bulkCreate(SeedingProduct.loadProducts(femaleClothes, 6), {
+      returning: true,
+      transaction,
+      include: ["gallery"],
+    });
     const shoesProd = await Product.bulkCreate(SeedingProduct.loadProducts(shoes, Random.randomNumber(7, 8)), {
       returning: true,
       transaction,
@@ -30,7 +37,12 @@ export default class SeedingProduct {
       transaction,
       include: ["gallery"],
     });
-    return [...clothesProd, ...shoesProd, ...acsrProd];
+    const toysProd = await Product.bulkCreate(SeedingProduct.loadProducts(toys, 15), {
+      returning: true,
+      transaction,
+      include: ["gallery"],
+    });
+    return [...clothesProd, ...shoesProd, ...acsrProd, ...femaleClothesProd, ...toysProd];
   }
 
   static loadProducts(products, categoryId) {
