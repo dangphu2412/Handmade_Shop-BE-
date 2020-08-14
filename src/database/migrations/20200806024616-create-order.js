@@ -40,7 +40,7 @@ module.exports = {
         onUpdate: "CASCADE",
       },
       status: {
-        defaultValue: "pending confirm",
+        defaultValue: "pending_confirm",
         type: Sequelize.STRING,
       },
       createdAt: {

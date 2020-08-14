@@ -21,7 +21,8 @@
     "lint": "eslint --fix --ext .js .",
     "dev": "nodemon --exec babel-node ./src/bin/www.js",
     "start": "node ./dist/bin/www.js",
-    "build": "babel ./src --out-dir dist --copy-files",
+    "clean": "rm -rf dist && mkdir dist",
+    "build": "npm run clean && babel ./src --out-dir dist --copy-files",
     "model": "sequelize-cli model:generate --name",
     "seed": "sequelize-cli seed:generate --name",
     "migrate:generate": "sequelize-cli migration:generate --name",
@@ -33,7 +34,7 @@
     "seed:run": "sequelize db:seed:all",
     "seed:down": "sequelize db:seed:undo",
     "crawl:start": "node ./src/database/seeders/factory/crawl/index.js",
-    "heroku-postbuild": "yarn install && yarn run build && yarn run migrate:reset"
+    "heroku-postbuild": "npm install && npm run migrate:reset"
   },
   "dependencies": {
     "bcrypt": "^5.0.0",
