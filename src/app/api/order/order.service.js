@@ -94,15 +94,15 @@ class OrderService extends CoreService {
 
         switch (key) {
             case userEnum.CLIENT:
+                conditions.userId = userId;
+                break;
+            case userEnum.MANAGE:
                 {
                     const { id: shopId } = await this.shopRepository.getOne(
                         { userId }, ["getIdOnly"],
                     );
                     conditions.shopId = shopId;
                 }
-                break;
-            case userEnum.MANAGE:
-                conditions.userId = userId;
                 break;
             default:
                 break;
