@@ -13,7 +13,7 @@
   ],
   "author": "Đặng Phú",
   "license": "MIT",
-    "engines": {
+  "engines": {
     "node": "12.x"
   },
   "scripts": {
@@ -69,7 +69,7 @@
     "@babel/plugin-transform-runtime": "^7.10.4",
     "@babel/preset-env": "^7.10.4",
     "@babel/register": "^7.10.5",
-    "@babel/runtime": "^7.10.4",
+    "@babel/runtime": "^7.11.2",
     "babel-eslint": "^10.1.0",
     "babel-plugin-transform-runtime": "^6.23.0",
     "eslint": "^7.3.1",
