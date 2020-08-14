@@ -33,7 +33,7 @@
     "seed:run": "sequelize db:seed:all",
     "seed:down": "sequelize db:seed:undo",
     "crawl:start": "node ./src/database/seeders/factory/crawl/index.js",
-    "heroku-postbuild": "npm install --production && npm run build && npm run migrate:reset"
+    "heroku-postbuild": "yarn install && yarn run build && yarn run migrate:reset"
   },
   "dependencies": {
     "bcrypt": "^5.0.0",
