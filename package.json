@@ -22,19 +22,20 @@
     "dev": "nodemon --exec babel-node ./src/bin/www.js",
     "start": "node ./dist/bin/www.js",
     "clean": "rm -rf dist && mkdir dist",
-    "build": "npm run clean && babel ./src --out-dir dist --copy-files",
+    "build:babel": "babel ./src --out-dir dist --copy-files",
+    "build": "yarn run clean && yarn run build:babel",
     "model": "sequelize-cli model:generate --name",
     "seed": "sequelize-cli seed:generate --name",
     "migrate:generate": "sequelize-cli migration:generate --name",
     "migrate:revert": "sequelize-cli db:migrate:undo --name",
     "migrate:latest": "sequelize-cli db:migrate",
     "migrate:rollback": "sequelize-cli db:migrate:undo:all",
-    "migrate:reset": "npm migrate:rollback && npm migrate:latest && npm seed:run",
+    "migrate:reset": "yarn migrate:rollback && yarn migrate:latest && yarn seed:run",
     "seed:one": "sequelize db:seed",
     "seed:run": "sequelize db:seed:all",
     "seed:down": "sequelize db:seed:undo",
     "crawl:start": "node ./src/database/seeders/factory/crawl/index.js",
-    "heroku-postbuild": "npm install && npm run migrate:reset"
+    "heroku-postbuild": "yarn install && yarn migrate:reset"
   },
   "dependencies": {
     "bcrypt": "^5.0.0",
