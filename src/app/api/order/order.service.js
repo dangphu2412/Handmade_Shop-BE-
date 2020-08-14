@@ -49,7 +49,7 @@ class OrderService extends CoreService {
                 break;
         }
 
-        return this.repository.getMany(prefix, scopes, conditions);
+        return this.repository.getManyAndCountAll(prefix, scopes, conditions);
     }
 
     async getUserOrders(query, userId) {
@@ -80,7 +80,7 @@ class OrderService extends CoreService {
                 break;
         }
 
-        return this.repository.getMany(prefix, scopes, conditions);
+        return this.repository.getManyAndCountAll(prefix, scopes, conditions);
     }
 
     /**
@@ -214,7 +214,7 @@ class OrderService extends CoreService {
             order.deletedAt = new Date().toISOString();
         }
 
-        return order.save();
+        await order.save();
     }
 }
 
