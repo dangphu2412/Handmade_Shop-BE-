@@ -3,10 +3,12 @@ import ProductRepository from "./product.repository";
 import ShopRepository from "../shop/shop.repository";
 import GalleryRepository from "../gallery/gallery.repository";
 import CategoryRepository from "../category/category.repository";
+import database from "../../../database/models/index";
 
 import NotFoundError from "../../../errors/NotFound.error";
 import LogicError from "../../../errors/Logic.error";
-import database from "../../../database/models/index";
+import productEnum from "../../../constants/enum/product.enum";
+
 import FilterDto from "./dto/filter.dto";
 import CreateProductDto from "./dto/create-product-dto";
 import UpdateProductDto from "./dto/update-product-dto";
@@ -31,7 +33,7 @@ class ProductService extends CoreService {
             status: true,
         };
         switch (key) {
-            case "category":
+            case productEnum.CATEGORY:
                 {
                     conditions = {
                         slug: value,
@@ -51,10 +53,10 @@ class ProductService extends CoreService {
                     };
                 }
                 break;
-            case "best-seller":
-                products = this.repository.getManyAndCountAll(prefix, scopes, conditions);
+            case productEnum.BEST_SELLER:
+                products = await this.getBestSellerProducts(scopes, conditions);
                 break;
-            case "search":
+            case productEnum.SEARCH:
                 {
                     if (!value) {
                         throw new LogicError("Can't let value empty when search");
@@ -63,11 +65,11 @@ class ProductService extends CoreService {
                         method: ["searchByName", value],
                     };
                     scopes.push(searchByName);
-                    products = this.repository.getManyAndCountAll(prefix, scopes, conditions);
+                    products = await this.repository.getManyAndCountAll(prefix, scopes, conditions);
                 }
                 break;
             default:
-                products = this.repository.getManyAndCountAll(prefix, scopes);
+                products = await this.repository.getManyAndCountAll(prefix, scopes);
                 break;
         }
         return products;
@@ -211,6 +213,18 @@ class ProductService extends CoreService {
             console.log(error);
             throw new LogicError("Update gallery got problem");
         }
+    }
+
+    async getBestSellerProducts(scopes, conditions) {
+        const currentTime = new Date(Date.now());
+        const currentYear = currentTime.getFullYear();
+        const currentMonth = currentTime.getMonth();
+        const currentDay = currentTime.getDay();
+        const products = await this.repository.getMany(
+            { page: 1, amount: null },
+            scopes,
+            conditions,
+        );
     }
 }
 

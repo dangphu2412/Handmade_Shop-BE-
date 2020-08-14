@@ -87,12 +87,27 @@ class OrderService extends CoreService {
     }
 
     async getOrderDetail(filterDto) {
-        const { id, userId, ...prefix } = filterDto;
-        const { id: shopId } = await this.shopRepository.getOne({ userId }, ["getIdOnly"]);
+        const { id, userId, key, ...prefix } = filterDto;
         const conditions = {
             id,
-            shopId,
         };
+
+        switch (key) {
+            case userEnum.CLIENT:
+                {
+                    const { id: shopId } = await this.shopRepository.getOne(
+                        { userId }, ["getIdOnly"],
+                    );
+                    conditions.shopId = shopId;
+                }
+                break;
+            case userEnum.MANAGE:
+                conditions.userId = userId;
+                break;
+            default:
+                break;
+        }
+
         const scopes = ["overview", "getShop", "getOrderDetail", "getUser"];
 
         const response = await this.repository.getOne(conditions, scopes);
