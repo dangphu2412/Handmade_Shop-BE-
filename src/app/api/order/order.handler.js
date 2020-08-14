@@ -27,6 +27,13 @@ class OrderpHandler {
         ];
     }
 
+    getUserOrderDetail() {
+        return [
+            this.authen.call("verify"),
+            this.controller.call("getOrderDetail"),
+        ];
+    }
+
     postOrder() {
         return [
             this.authen.call("verify"),

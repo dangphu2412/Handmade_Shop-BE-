@@ -4,6 +4,7 @@ import CoreController from "../../concept/Controller";
 import OrderService from "./order.service";
 import CreateOrderDto from "./dto/create-order.dto";
 import PatchStatusOrderDto from "./dto/patch-order.dto";
+import FilterDetailDto from "./dto/filter-order-detail";
 
 import { OrderMessages } from "../../../constants/message";
 
@@ -46,6 +47,25 @@ class OrderController extends CoreController {
             return this.ErrorHandler(response, error);
         }
     }
+
+    async getOrderDetail(request, response) {
+        try {
+            const { userId } = this.getCredentialInfo(request);
+            const { params, query } = request;
+
+            const filterDto = new FilterDetailDto(userId, params, query);
+            const data = await this.service.getOrderDetail(filterDto);
+
+            return response.status(httpStatus.OK).json({
+                status: httpStatus.OK,
+                message: "Get success",
+                data,
+            });
+        } catch (error) {
+            return this.ErrorHandler(response, error);
+        }
+    }
+
 
     async createNewOrders(request, response) {
         try {

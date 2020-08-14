@@ -5,9 +5,12 @@ import OderDetailRepository from "../orderDetail/orderDetail.repository";
 import ProductRepository from "../product/product.repository";
 import ShopRepository from "../shop/shop.repository";
 import database from "../../../database/models";
-import FilterDto from "../../resource/filter.dto";
+import { pagination } from "../../../utils/array";
 
-import orderStatus from "../../../constants/enum/order-status.enum";
+import FilterDto from "../../resource/filter.dto";
+import userEnum from "../../../constants/enum/user.enum";
+import orderStatusEnum from "../../../constants/enum/order-status.enum";
+
 import LogicError from "../../../errors/Logic.error";
 import AuthorizeError from "../../../errors/Authorize.error";
 import NotFoundError from "../../../errors/NotFound.error";
@@ -30,20 +33,20 @@ class OrderService extends CoreService {
         };
         const scopes = ["overview", "getShop", "getOrderDetail", "getUser"];
         switch (key) {
-            case orderStatus.PENDING_GOOD:
-                conditions.status = orderStatus.PENDING_GOOD;
+            case orderStatusEnum.PENDING_GOOD:
+                conditions.status = orderStatusEnum.PENDING_GOOD;
                 break;
-            case orderStatus.PENDING_CONFIRM:
-                conditions.status = orderStatus.PENDING_CONFIRM;
+            case orderStatusEnum.PENDING_CONFIRM:
+                conditions.status = orderStatusEnum.PENDING_CONFIRM;
                 break;
-            case orderStatus.DELIVERING:
-                conditions.status = orderStatus.DELIVERING;
+            case orderStatusEnum.DELIVERING:
+                conditions.status = orderStatusEnum.DELIVERING;
                 break;
-            case orderStatus.DELIVERED:
-                conditions.status = orderStatus.DELIVERED;
+            case orderStatusEnum.DELIVERED:
+                conditions.status = orderStatusEnum.DELIVERED;
                 break;
-            case orderStatus.CANCEL:
-                conditions.status = orderStatus.CANCEL;
+            case orderStatusEnum.CANCEL:
+                conditions.status = orderStatusEnum.CANCEL;
                 break;
             default:
                 break;
@@ -61,26 +64,48 @@ class OrderService extends CoreService {
 
         const scopes = ["overview", "getShop", "getOrderDetail", "getUser"];
         switch (key) {
-            case orderStatus.PENDING_GOOD:
-                conditions.status = orderStatus.PENDING_GOOD;
+            case orderStatusEnum.PENDING_GOOD:
+                conditions.status = orderStatusEnum.PENDING_GOOD;
                 break;
-            case orderStatus.PENDING_CONFIRM:
-                conditions.status = orderStatus.PENDING_CONFIRM;
+            case orderStatusEnum.PENDING_CONFIRM:
+                conditions.status = orderStatusEnum.PENDING_CONFIRM;
                 break;
-            case orderStatus.DELIVERING:
-                conditions.status = orderStatus.DELIVERING;
+            case orderStatusEnum.DELIVERING:
+                conditions.status = orderStatusEnum.DELIVERING;
                 break;
-            case orderStatus.DELIVERED:
-                conditions.status = orderStatus.DELIVERED;
+            case orderStatusEnum.DELIVERED:
+                conditions.status = orderStatusEnum.DELIVERED;
                 break;
-            case orderStatus.CANCEL:
-                conditions.status = orderStatus.CANCEL;
+            case orderStatusEnum.CANCEL:
+                conditions.status = orderStatusEnum.CANCEL;
                 break;
             default:
                 break;
         }
 
         return this.repository.getManyAndCountAll(prefix, scopes, conditions);
+    }
+
+    async getOrderDetail(filterDto) {
+        const { id, userId, ...prefix } = filterDto;
+        const { id: shopId } = await this.shopRepository.getOne({ userId }, ["getIdOnly"]);
+        const conditions = {
+            id,
+            shopId,
+        };
+        const scopes = ["overview", "getShop", "getOrderDetail", "getUser"];
+
+        const response = await this.repository.getOne(conditions, scopes);
+
+        if (!response) {
+            throw new LogicError("You are not author of this order");
+        }
+
+        response.dataValues.products = {
+            count: response.dataValues.products.length,
+            rows: pagination(prefix, response.dataValues.products),
+        };
+        return response;
     }
 
     /**
@@ -183,7 +208,7 @@ class OrderService extends CoreService {
         ];
     }
 
-    async patchOrderStatus(payload) {
+    async patchorderStatusEnum(payload) {
         const { userId, id, status } = payload;
         const scopes = [{
             method: ["getShop", "getIdForeign"],
@@ -200,11 +225,11 @@ class OrderService extends CoreService {
             throw new AuthorizeError("You are not shop owner");
         }
 
-        if (status !== orderStatus.PENDING_CONFIRM
-         && status !== orderStatus.PENDING_GOOD
-         && status !== orderStatus.DELIVERING
-         && status !== orderStatus.CANCEL
-         && status !== orderStatus.DELIVERED
+        if (status !== orderStatusEnum.PENDING_CONFIRM
+         && status !== orderStatusEnum.PENDING_GOOD
+         && status !== orderStatusEnum.DELIVERING
+         && status !== orderStatusEnum.CANCEL
+         && status !== orderStatusEnum.DELIVERED
         ) {
             throw new LogicError("Status update is not valid");
         }
@@ -212,10 +237,10 @@ class OrderService extends CoreService {
         order.status = status;
         order.updatedAt = new Date().toISOString();
 
-        if (status === orderStatus.DELIVERED) {
+        if (status === orderStatusEnum.DELIVERED) {
             order.receivedAt = new Date().toISOString();
         }
-        if (status === orderStatus.CANCEL) {
+        if (status === orderStatusEnum.CANCEL) {
             order.deletedAt = new Date().toISOString();
         }
 
