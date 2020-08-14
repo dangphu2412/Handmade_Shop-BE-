@@ -52,6 +52,7 @@ class ProductService extends CoreService {
                 }
                 break;
             case "best-seller":
+                products = this.repository.getManyAndCountAll(prefix, scopes, conditions);
                 break;
             case "search":
                 {
@@ -62,7 +63,7 @@ class ProductService extends CoreService {
                         method: ["searchByName", value],
                     };
                     scopes.push(searchByName);
-                    products = this.repository.getManyAndCountAll(query, scopes, conditions);
+                    products = this.repository.getManyAndCountAll(prefix, scopes, conditions);
                 }
                 break;
             default:
