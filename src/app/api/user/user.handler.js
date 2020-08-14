@@ -24,6 +24,7 @@ class UserHandler {
     patchStatusUser() {
         return [
             this.authen.call("verify"),
+            this.validator.patchParams(),
             this.authorize.WithScope(ROLE.ADMIN, METHOD.GET, MODULE.USER),
             this.controller.call("patchStatusUser"),
         ];

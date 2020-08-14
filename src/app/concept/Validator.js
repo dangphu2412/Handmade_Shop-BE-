@@ -57,6 +57,17 @@ class Validator {
         };
     }
 
+    patchParams() {
+        const schema = checkSchema({
+            id: this.isInt(["params"], "Id"),
+            status: this.isExist(["query"], "Status"),
+        });
+        return [
+            schema,
+            this.catchValidateErrors,
+        ];
+    }
+
     catchValidateErrors(request, response, next) {
         try {
             if (validationResult(request).isEmpty()) {

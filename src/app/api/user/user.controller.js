@@ -17,7 +17,7 @@ class UserController extends CoreController {
             const data = await this.service.patchStatusUser(payload);
             return response.status(httpStatus.OK).json({
                 status: httpStatus.OK,
-                message: "Get success",
+                message: "Update success",
                 data,
             });
         } catch (error) {

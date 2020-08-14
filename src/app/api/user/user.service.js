@@ -13,6 +13,8 @@ class UserService extends CoreService {
     async patchStatusUser(payload) {
         const { id, status, adminId } = payload;
 
+        console.log(typeof id)
+        console.log(typeof adminId)
         if (adminId === id) {
             throw new AuthorizeError("You can't delete yourself ADMIN !!!");
         }
