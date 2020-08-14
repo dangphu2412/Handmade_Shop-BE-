@@ -196,6 +196,7 @@ class OrderService extends CoreService {
         }
 
         if (status !== orderStatus.PENDING_CONFIRM
+         && status !== orderStatus.PENDING_GOOD
          && status !== orderStatus.DELIVERING
          && status !== orderStatus.CANCEL
          && status !== orderStatus.DELIVERED
