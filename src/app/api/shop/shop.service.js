@@ -84,7 +84,6 @@ class ShopService extends CoreService {
                 }
                 break;
             default:
-                productScopes.push("productInventory");
                 response = await this.productRepository.getManyAndCountAll(
                     prefix, productScopes, prodConditions,
                 );
