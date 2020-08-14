@@ -20,6 +20,14 @@ class UserHandler {
             this.controller.call("getMany"),
         ];
     }
+
+    patchStatusUser() {
+        return [
+            this.authen.call("verify"),
+            this.authorize.WithScope(ROLE.ADMIN, METHOD.GET, MODULE.USER),
+            this.controller.call("patchStatusUser"),
+        ];
+    }
 }
 
 export default new UserHandler();

@@ -75,7 +75,11 @@ export default class SeedingProduct {
           },
           {
             type: "image",
-            src: "https://i.ibb.co/9cj28M4/blank-profile-pic.jpg",
+            src: product.thumbnail ? product.thumbnail : prefixThumb,
+          },
+          {
+            type: "image",
+            src: product.thumbnail ? product.thumbnail : prefixThumb,
           },
         ],
         status: true,

@@ -5,6 +5,8 @@ const router = express.Router();
 
 router.get("/users", UserHandler["getAllUsers"]());
 
+router.patch("/users/:id", UserHandler["patchStatusUser"]());
+
 export default router;
 
 /**

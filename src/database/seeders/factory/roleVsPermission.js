@@ -420,6 +420,10 @@ export default class SeedRoleAndPermission {
             module: MODULE.USER,
           },
           {
+            method: METHOD.GET,
+            module: MODULE.SHOP,
+          },
+          {
             method: METHOD.POST,
             module: MODULE.CATEGORY,
           },
@@ -442,6 +446,14 @@ export default class SeedRoleAndPermission {
           {
             method: METHOD.POST,
             module: MODULE.TRANSPORT,
+          },
+          {
+            method: METHOD.PUT,
+            module: MODULE.SHOP,
+          },
+          {
+            method: METHOD.PUT,
+            module: MODULE.USER,
           },
           {
             method: METHOD.PUT,

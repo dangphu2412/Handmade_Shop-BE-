@@ -13,6 +13,14 @@ class ShopHandler {
         this.validator = ShopValidator;
     }
 
+    getShops() {
+        return [
+            this.authen.call("verify"),
+            this.authorize.WithScope(ROLE.ADMIN, METHOD.GET, MODULE.SHOP),
+            this.controller.call("getMany"),
+        ];
+    }
+
     getOwnerShop() {
         return [
             this.authen.call("verify"),
@@ -41,6 +49,14 @@ class ShopHandler {
             this.authen.call("verify"),
             this.authorize.WithScope(ROLE.USER, METHOD.POST, MODULE.SHOP),
             this.controller.call("createShop"),
+        ];
+    }
+
+    patchStatusShop() {
+        return [
+            this.authen.call("verify"),
+            this.authorize.WithScope(ROLE.ADMIN, METHOD.GET, MODULE.SHOP),
+            this.controller.call("patchStatusShop"),
         ];
     }
 }

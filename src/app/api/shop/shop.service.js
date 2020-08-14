@@ -193,6 +193,11 @@ class ShopService extends CoreService {
             throw error;
         }
     }
+
+    patchShopStatus(payload) {
+        const { id, status } = payload;
+        return this.repository.softDeleteOrActiveOne(id, status);
+    }
 }
 
 export default new ShopService();

@@ -28,7 +28,7 @@ export const CloudinaryConfig = {
     static_file_support: false,
 };
 
-if (!ServerConfig.FRONT_HOST || !ServerConfig.HOST || !ServerConfig.PORT) {
+if (!ServerConfig.HOST || !ServerConfig.PORT) {
     console.error("You are missing server config in env! Please check constants/secrect.js");
     process.exit(1);
 }

@@ -3,6 +3,8 @@ import ShopHandler from "./shop.handler";
 
 const router = express.Router();
 
+router.get("/shops", ShopHandler["getShops"]());
+
 router.get("/users/shop", ShopHandler["getOwnerShop"]());
 
 router.get("/users/shop/products", ShopHandler["fetchOwnerProducts"]());
@@ -10,6 +12,8 @@ router.get("/users/shop/products", ShopHandler["fetchOwnerProducts"]());
 router.get("/shop/:slug/products", ShopHandler["fetchProductsByShopSlug"]());
 
 router.post("/users/shop", ShopHandler["createShop"]());
+
+router.patch("/shops/:id", ShopHandler["patchStatusShop"]());
 
 export default router;
 

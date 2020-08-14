@@ -113,7 +113,13 @@ class OrderService extends CoreService {
                 orderId, products, transaction,
             );
 
-        await this.oderDetailRepository.customQuery().bulkCreate(orderAvailable, transaction);
+        const orders = orderAvailable.map((order) => {
+            const { id, ...data } = order;
+            return data;
+        });
+
+        await this.oderDetailRepository.customQuery().bulkCreate(orders, transaction);
+        await this.updateSoldProducts(orderAvailable, transaction);
 
         return orderFailed;
     }
@@ -160,11 +166,10 @@ class OrderService extends CoreService {
                 };
             }
 
-            delete detail.id;
-
             pendingCreateDetails.push({
                 orderId,
                 productId: available.id,
+                sold: available.sold,
                 ...detail,
             });
 
@@ -215,6 +220,17 @@ class OrderService extends CoreService {
         }
 
         await order.save();
+    }
+
+    updateSoldProducts(orders, transaction) {
+        const products = orders.map((order) => {
+            const data = {
+                id: order.id,
+                sold: order.sold + order.amount,
+            };
+            return this.productRepository.updateOne(data, data.id, transaction);
+        });
+        return Promise.all(products);
     }
 }
 
