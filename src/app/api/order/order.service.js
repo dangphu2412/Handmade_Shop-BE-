@@ -53,12 +53,34 @@ class OrderService extends CoreService {
     }
 
     async getUserOrders(query, userId) {
+        const filter = new FilterDto(query);
+        const { key, value, ...prefix } = filter;
         const conditions = {
             userId,
         };
 
         const scopes = ["overview", "getShop", "getOrderDetail", "getUser"];
-        return this.repository.getMany(query, scopes, conditions);
+        switch (key) {
+            case orderStatus.PENDING_GOOD:
+                conditions.status = orderStatus.PENDING_GOOD;
+                break;
+            case orderStatus.PENDING_CONFIRM:
+                conditions.status = orderStatus.PENDING_CONFIRM;
+                break;
+            case orderStatus.DELIVERING:
+                conditions.status = orderStatus.DELIVERING;
+                break;
+            case orderStatus.DELIVERED:
+                conditions.status = orderStatus.DELIVERED;
+                break;
+            case orderStatus.CANCEL:
+                conditions.status = orderStatus.CANCEL;
+                break;
+            default:
+                break;
+        }
+
+        return this.repository.getMany(prefix, scopes, conditions);
     }
 
     /**

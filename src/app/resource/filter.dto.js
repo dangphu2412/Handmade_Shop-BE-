@@ -4,6 +4,7 @@ export default class FilterDto {
   constructor(input) {
     this.key = input.key || "";
     this.value = input.value || "";
+    this.filter = input.filter || "";
     this.page = input.page || FILTER.PAGE;
     this.amount = input.amount || FILTER.AMOUNT;
     this.order = input.order || FILTER.ORDER;

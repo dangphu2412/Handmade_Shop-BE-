@@ -9,6 +9,8 @@ import CreateShopDto from "./dto/create-shop-dto";
 import database, { Models } from "../../../database/models";
 import { pagination } from "../../../utils/array";
 import { ROLE } from "../../../constants/role";
+import FilterDto from "../../resource/filter.dto";
+import filterEnum from "../../../constants/enum/filter-search.enum";
 
 const { Role } = Models;
 
@@ -35,41 +37,57 @@ class ShopService extends CoreService {
         return this.repository.getOne(conditions);
     }
 
-    async fetchOwnerProducts({ key, value, ...query }, userId) {
+    async fetchOwnerProducts(query, userId) {
+        const {
+            key, value, filter, ...prefix
+        } = new FilterDto(query);
+
         let response;
         const conditions = { userId };
-        let productScopes = ["category", "productInventory"];
-        const scopes = [{ method: ["products", productScopes] }];
+        const { id: shopId } = await this.repository.getOne(conditions, ["getIdOnly"]);
+        const prodConditions = {
+            shopId,
+        };
+        const productScopes = ["category"];
+
         switch (key) {
-            case "sold-out":
-                {
-                    productScopes = ["category", "productSoldOut"];
-                    scopes[0].method[1] = productScopes;
-                    const shop = await this.repository.getOne(conditions, scopes);
-                    shop.dataValues.total = shop.products.length;
-                    shop.dataValues.products = pagination(query, shop.dataValues.products);
-                    response = shop;
-                }
+            case filterEnum.SOLD_OUT:
+                productScopes.push("productSoldOut");
+                response = await this.productRepository.getManyAndCountAll(
+                    prefix, productScopes, prodConditions,
+                );
                 break;
-            case "inventory":
-                response = await this.repository.getOne(conditions, scopes);
+            case filterEnum.INVENTORY:
+                productScopes.push("productInventory");
+                response = await this.productRepository.getManyAndCountAll(
+                    prefix, productScopes, prodConditions,
+                );
                 break;
-            case "search":
+            case filterEnum.SEARCH:
                 {
                     if (!value) {
                         throw new LogicError("Can't let value empty when search");
                     }
-                    const searchByName = ["searchByName", value];
-                    productScopes = ["category", { method: searchByName }];
-                    scopes[0].method[1] = productScopes;
-                    const shop = this.repository.getOne(conditions, scopes);
-                    shop.dataValues.total = shop.products.length;
-                    shop.dataValues.products = pagination(query, shop.dataValues.products);
-                    response = shop;
+                    if (filter === filterEnum.SOLD_OUT) {
+                        productScopes.push("productSoldOut");
+                    }
+                    if (filter === filterEnum.INVENTORY) {
+                        productScopes.push("productInventory");
+                    }
+                    const searchMethod = {
+                        method: ["searchByName", value],
+                    };
+                    productScopes.push(searchMethod);
+                    response = await this.productRepository.getManyAndCountAll(
+                        prefix, productScopes, prodConditions,
+                    );
                 }
                 break;
             default:
-                response = this.repository.getOne(conditions, scopes);
+                productScopes.push("productInventory");
+                response = await this.productRepository.getManyAndCountAll(
+                    prefix, productScopes, prodConditions,
+                );
                 break;
         }
         return response;
