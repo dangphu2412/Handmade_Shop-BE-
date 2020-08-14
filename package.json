@@ -19,7 +19,7 @@
   "scripts": {
     "lint": "eslint --fix --ext .js .",
     "dev": "nodemon --exec babel-node ./src/bin/www.js",
-    "start": "node ./dist/bin/www.js",
+    "start": "npm run build && node ./dist/bin/www.js",
     "build": "babel ./src --out-dir dist --copy-files",
     "model": "sequelize-cli model:generate --name",
     "seed": "sequelize-cli seed:generate --name",
