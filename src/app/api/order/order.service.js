@@ -153,8 +153,8 @@ class OrderService extends CoreService {
                 orderId, products, transaction,
             );
 
-        const orders = orderAvailable.map((order) => {
-            const { id, ...data } = order;
+        const orders = orderAvailable.map((validOrder) => {
+            const { id, ...data } = validOrder;
             return data;
         });
 

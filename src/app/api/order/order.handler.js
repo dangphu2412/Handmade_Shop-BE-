@@ -38,7 +38,7 @@ class OrderpHandler {
         return [
             this.authen.call("verify"),
             // this.validator.checkPostOrders(),
-            this.authorize.WithScope(ROLE.USER, METHOD.POST, MODULE.ORDER),
+            // this.authorize.WithScope(ROLE.USER, METHOD.POST, MODULE.ORDER),
             this.controller.call("createNewOrders"),
         ];
     }
