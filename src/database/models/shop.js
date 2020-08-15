@@ -69,6 +69,7 @@ export default (sequelize, DataTypes) => {
     thumbnail: DataTypes.STRING,
     cardNumber: DataTypes.STRING,
     bankAccount: DataTypes.STRING,
+    status: DataTypes.BOOLEAN,
   }, {
     scopes: {
       getInfo: {

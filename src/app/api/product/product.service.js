@@ -228,7 +228,19 @@ class ProductService extends CoreService {
         const afterPointedCreatedAt = products.map((product) => {
             const { createdAt } = product;
             const point = this.calPointCreatedAt(createdAt, currentTime);
+            product.dataValues.point = point;
+            return product;
         });
+
+        const afterPointedSold = afterPointedCreatedAt.map((product) => {
+            const { sold } = product;
+            const point = this.calPointSold(sold);
+            product.dataValues.point = point;
+            return product;
+        });
+        afterPointedSold.length = 12;
+
+        return afterPointedSold;
     }
 
     calPointCreatedAt(createdAt, currentTime) {
@@ -243,13 +255,29 @@ class ProductService extends CoreService {
         const monthLeep = this.subAbsThenRound(currentMonth, prodDate.getMonth());
         const dayLeep = this.subAbsThenRound(currentDay, prodDate.getDay());
         const hourLeep = this.subAbsThenRound(currentDay, prodDate.getHours());
-        point += ((yearLeep === 0) ? 50 : 0)
-        + ((yearLeep === 0) ? monthLeep : 0)
-        + ((yearLeep === 0 && monthLeep === 1 && (dayLeep === 1 || dayLeep === 0))
-        ? (1 / hourLeep)
-        : (dayLeep > 2) ? (1 / hourLeep) * (1 / monthLeep) : 0);
+
+        if (yearLeep === 0
+        && monthLeep === 0
+        ) {
+            point += 100;
+            if (dayLeep === 0 || dayLeep === 1) {
+                point += 150;
+                if (dayLeep === 0) {
+                    point += (1 / hourLeep) * 100;
+                }
+            }
+            if (dayLeep > 1) {
+                point += 150 - dayLeep;
+            }
+        }
+        if (monthLeep > 0) {
+            point += monthLeep * 2 + (31 - dayLeep) * 0.3 + (24 - hourLeep) * 0.1;
+        }
+
         return point;
     }
+
+    calPointSold(sold) {}
 
     subAbsThenRound(start, end) {
         return Math.round(Math.abs(start - end));
