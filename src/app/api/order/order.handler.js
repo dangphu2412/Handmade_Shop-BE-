@@ -48,7 +48,7 @@ class OrderpHandler {
             this.authen.call("verify"),
             this.authorize.WithScope(ROLE.SHOP_KEEPER, METHOD.PUT, MODULE.ORDER),
             this.controller.call("patchStatusOrder"),
-        ]
+        ];
     }
 }
 

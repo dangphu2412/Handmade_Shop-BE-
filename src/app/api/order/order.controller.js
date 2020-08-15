@@ -66,7 +66,6 @@ class OrderController extends CoreController {
         }
     }
 
-
     async createNewOrders(request, response) {
         try {
             const { userId } = this.getCredentialInfo(request);
@@ -96,7 +95,7 @@ class OrderController extends CoreController {
 
             const payload = new PatchStatusOrderDto(userId, params, query);
 
-            await this.service.patchOrderStatus(payload);
+            await this.service.patchStatusOrder(payload);
 
             return response.status(httpStatus.OK).json({
                 status: httpStatus.OK,

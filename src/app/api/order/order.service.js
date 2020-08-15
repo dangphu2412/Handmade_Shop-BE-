@@ -223,7 +223,7 @@ class OrderService extends CoreService {
         ];
     }
 
-    async patchorderStatusEnum(payload) {
+    async patchStatusOrder(payload) {
         const { userId, id, status } = payload;
         const scopes = [{
             method: ["getShop", "getIdForeign"],
