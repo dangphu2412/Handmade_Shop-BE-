@@ -24,6 +24,7 @@ export default (app) => {
         return undefined;
 		}));
 
+    console.log("Initializing swagger ....");
     app.use("/api/v1/", initRoutes);
     app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerConfig));
 

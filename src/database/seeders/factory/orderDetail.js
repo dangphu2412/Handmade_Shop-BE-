@@ -15,7 +15,7 @@ export default class SeedingOrderDetail {
         for (let j = 0; j < 100; j += 1) {
           const cost = Random.randomNumber(50000, 100000);
           result.push({
-            orderId: Random.randomNumber(1, 709),
+            orderId: Random.randomNumber(1, 850),
             productId: Random.randomNumber(1, 300),
             amount: Random.randomNumber(1, 5),
             weight: Random.randomNumber(20, 50),

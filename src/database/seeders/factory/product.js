@@ -54,13 +54,14 @@ export default class SeedingProduct {
       }
       const sold = Random.randomNumber(10, 50);
       const amount = Random.randomNumber(50, 100);
+      const price = parseInt(product.price.split("₫")[1]) * 1000;
       return {
         name: product.name,
         slug: slugTransfer(product.name + Random.randomDate(new Date(2020, 0, 1), new Date())),
         shopId: Random.randomNumber(1, 30),
         categoryId,
         description: `${product.name} thật đẹp, nó mang lại sự quyến rũ`,
-        price: parseInt(product.price.split("₫")[1], 10),
+        price,
         reduce: (product.reduce) ? parseInt(product.reduce, 10) : 0,
         percent: (product.percent) ? parseInt(product.percent.split("%")[0], 10) : 0,
         restAmount: amount - sold,

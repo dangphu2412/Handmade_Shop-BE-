@@ -235,7 +235,7 @@ class ProductService extends CoreService {
         const afterPointedSold = afterPointedCreatedAt.map((product) => {
             const { sold } = product;
             const point = this.calPointSold(sold, soldMax);
-            product.dataValues.point = point;
+            product.dataValues.point += point;
             return product;
         });
 
@@ -256,7 +256,7 @@ class ProductService extends CoreService {
         const currentHour = currentTime.getHours();
 
         const prodDate = new Date(Date.parse(createdAt));
-        const yearLeep = (currentYear - prodDate.getFullYear === 0) ? 50 : 0;
+        const yearLeep = this.subAbsThenRound(currentYear, prodDate.getFullYear());
         const monthLeep = this.subAbsThenRound(currentMonth, prodDate.getMonth());
         const dayLeep = this.subAbsThenRound(currentDay, prodDate.getDay());
         const hourLeep = this.subAbsThenRound(currentDay, prodDate.getHours());
@@ -278,10 +278,9 @@ class ProductService extends CoreService {
         if (monthLeep > 0) {
             point += monthLeep * 2 + (31 - dayLeep) * 0.3 + (24 - hourLeep) * 0.1;
         }
-        if (yearLeep < currentYear) {
+        if (yearLeep > 0) {
             point = 0;
         }
-
         return point;
     }
 

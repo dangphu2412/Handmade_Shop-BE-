@@ -3,6 +3,8 @@ import { CloudinaryConfig } from "../constants/secret";
 
 cloudinary.v2.config(CloudinaryConfig);
 
+console.log("Initializing cloundinary ....");
+
 export const imgTransformation = {
     format: "jpg",
     quality: 75,
