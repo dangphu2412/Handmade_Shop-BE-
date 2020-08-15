@@ -6,7 +6,7 @@ export default class Service {
     }
 
     getMany(query) {
-        return this.repository.getMany(query);
+        return this.repository.getManyAndCountAll(query);
     }
 
     async getByPk(id) {

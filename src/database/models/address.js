@@ -13,7 +13,7 @@ export default (sequelize, DataTypes) => {
         as: "district",
         foreignKey: "districtId",
       });
-      Address.addScope("getDistrict", (scopes) => ({
+      Address.addScope("getDistrict", (scopes = ["getCity"]) => ({
           include: [{
             model: models.District.scope(scopes),
             as: "district",

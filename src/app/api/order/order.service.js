@@ -108,7 +108,7 @@ class OrderService extends CoreService {
                 break;
         }
 
-        const scopes = ["overview", "getShop", "getOrderDetail", "getUser"];
+        const scopes = ["overview", "getShop", "getOrderDetail", "getUser", "getAddress"];
 
         const response = await this.repository.getOne(conditions, scopes);
 

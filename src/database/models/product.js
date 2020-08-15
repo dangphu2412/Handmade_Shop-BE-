@@ -24,6 +24,10 @@ export default (sequelize, DataTypes) => {
         as: "gallery",
         foreignKey: "productId",
       });
+      Product.hasMany(models.OrderDetail, {
+        as: "orderDetails",
+        foreignKey: "productId",
+      });
       // With scopes
       Product.addScope("category", (scopes = "defaultScope") => ({
           include: [
@@ -58,6 +62,14 @@ export default (sequelize, DataTypes) => {
             {
               model: models.Shop.scope(scopes),
               as: "shop",
+            },
+          ],
+        }));
+      Product.addScope("getOrderDetails", (scopes = "defaultScope") => ({
+          include: [
+            {
+              model: models.OrderDetail.scope(scopes),
+              as: "orderDetails",
             },
           ],
         }));

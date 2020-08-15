@@ -54,6 +54,7 @@ class ProductService extends CoreService {
                 }
                 break;
             case productEnum.BEST_SELLER:
+                scopes.push("getOrderDetails");
                 products = await this.getBestSellerProducts(scopes, conditions);
                 break;
             case productEnum.SEARCH:
@@ -217,14 +218,41 @@ class ProductService extends CoreService {
 
     async getBestSellerProducts(scopes, conditions) {
         const currentTime = new Date(Date.now());
-        const currentYear = currentTime.getFullYear();
-        const currentMonth = currentTime.getMonth();
-        const currentDay = currentTime.getDay();
+
         const products = await this.repository.getMany(
             { page: 1, amount: null },
             scopes,
             conditions,
         );
+
+        const afterPointedCreatedAt = products.map((product) => {
+            const { createdAt } = product;
+            const point = this.calPointCreatedAt(createdAt, currentTime);
+        });
+    }
+
+    calPointCreatedAt(createdAt, currentTime) {
+        let point = 0;
+        const currentYear = currentTime.getFullYear();
+        const currentMonth = currentTime.getMonth();
+        const currentDay = currentTime.getDay();
+        const currentHour = currentTime.getHour();
+
+        const prodDate = new Date(Date.parse(createdAt));
+        const yearLeep = (currentYear - prodDate.getFullYear === 0) ? 50 : 0;
+        const monthLeep = this.subAbsThenRound(currentMonth, prodDate.getMonth());
+        const dayLeep = this.subAbsThenRound(currentDay, prodDate.getDay());
+        const hourLeep = this.subAbsThenRound(currentDay, prodDate.getHours());
+        point += ((yearLeep === 0) ? 50 : 0)
+        + ((yearLeep === 0) ? monthLeep : 0)
+        + ((yearLeep === 0 && monthLeep === 1 && (dayLeep === 1 || dayLeep === 0))
+        ? (1 / hourLeep)
+        : (dayLeep > 2) ? (1 / hourLeep) * (1 / monthLeep) : 0);
+        return point;
+    }
+
+    subAbsThenRound(start, end) {
+        return Math.round(Math.abs(start - end));
     }
 }
 

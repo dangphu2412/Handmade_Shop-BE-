@@ -45,6 +45,12 @@ export default (sequelize, DataTypes) => {
           foreignKey: "userId",
         }],
       }));
+      Order.addScope("getAddress", (scopes = ["getDistrict"]) => ({
+        include: [{
+          model: models.Address.scope(scopes),
+          as: "address",
+        }],
+      }));
     }
   }
   Order.init({
