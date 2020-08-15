@@ -54,7 +54,6 @@ class ProductService extends CoreService {
                 }
                 break;
             case productEnum.BEST_SELLER:
-                scopes.push("getOrderDetails");
                 products = await this.getBestSellerProducts(scopes, conditions);
                 break;
             case productEnum.SEARCH:
@@ -218,7 +217,7 @@ class ProductService extends CoreService {
 
     async getBestSellerProducts(scopes, conditions) {
         const currentTime = new Date(Date.now());
-
+        let soldMax = 0;
         const products = await this.repository.getMany(
             { page: 1, amount: null },
             scopes,
@@ -226,21 +225,27 @@ class ProductService extends CoreService {
         );
 
         const afterPointedCreatedAt = products.map((product) => {
-            const { createdAt } = product;
+            const { createdAt, sold } = product;
             const point = this.calPointCreatedAt(createdAt, currentTime);
             product.dataValues.point = point;
+            soldMax = soldMax < sold ? sold : soldMax;
             return product;
         });
 
         const afterPointedSold = afterPointedCreatedAt.map((product) => {
             const { sold } = product;
-            const point = this.calPointSold(sold);
+            const point = this.calPointSold(sold, soldMax);
             product.dataValues.point = point;
             return product;
         });
-        afterPointedSold.length = 12;
 
-        return afterPointedSold;
+        const sortByPoint = afterPointedSold.sort(
+            (a, b) => b.dataValues.point - a.dataValues.point,
+        );
+
+        sortByPoint.length = 12;
+
+        return sortByPoint;
     }
 
     calPointCreatedAt(createdAt, currentTime) {
@@ -248,7 +253,7 @@ class ProductService extends CoreService {
         const currentYear = currentTime.getFullYear();
         const currentMonth = currentTime.getMonth();
         const currentDay = currentTime.getDay();
-        const currentHour = currentTime.getHour();
+        const currentHour = currentTime.getHours();
 
         const prodDate = new Date(Date.parse(createdAt));
         const yearLeep = (currentYear - prodDate.getFullYear === 0) ? 50 : 0;
@@ -263,7 +268,7 @@ class ProductService extends CoreService {
             if (dayLeep === 0 || dayLeep === 1) {
                 point += 150;
                 if (dayLeep === 0) {
-                    point += (1 / hourLeep) * 100;
+                    point += (1 / Math.abs(hourLeep - currentHour)) * 100;
                 }
             }
             if (dayLeep > 1) {
@@ -273,11 +278,17 @@ class ProductService extends CoreService {
         if (monthLeep > 0) {
             point += monthLeep * 2 + (31 - dayLeep) * 0.3 + (24 - hourLeep) * 0.1;
         }
+        if (yearLeep < currentYear) {
+            point = 0;
+        }
 
         return point;
     }
 
-    calPointSold(sold) {}
+    calPointSold(sold, soldMax) {
+        if (sold === soldMax) return 100;
+        return (1 / (soldMax - sold)) * 100;
+    }
 
     subAbsThenRound(start, end) {
         return Math.round(Math.abs(start - end));
