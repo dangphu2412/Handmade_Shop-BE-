@@ -15,6 +15,20 @@ export default class Controller {
         }
     }
 
+        async getManyAndCountAll(request, response) {
+        try {
+            const { query } = request;
+            const data = await this.service.getManyAndCountAll(query);
+            return response.status(httpStatus.OK).json({
+                status: httpStatus.OK,
+                message: "Get success",
+                data,
+            });
+        } catch (error) {
+            return this.ErrorHandler(response, error);
+        }
+    }
+
     async getByIds(request, response) {
         try {
             const { params } = request;

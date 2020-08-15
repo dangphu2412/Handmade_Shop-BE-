@@ -17,7 +17,7 @@ class UserHandler {
         return [
             this.authen.call("verify"),
             this.authorize.WithScope(ROLE.ADMIN, METHOD.GET, MODULE.USER),
-            this.controller.call("getMany"),
+            this.controller.call("getManyAndCountAll"),
         ];
     }
 

@@ -6,6 +6,10 @@ export default class Service {
     }
 
     getMany(query) {
+        return this.repository.getMany(query);
+    }
+
+    getManyAndCountAll(query) {
         return this.repository.getManyAndCountAll(query);
     }
 

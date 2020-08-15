@@ -17,7 +17,7 @@ class ShopHandler {
         return [
             this.authen.call("verify"),
             this.authorize.WithScope(ROLE.ADMIN, METHOD.GET, MODULE.SHOP),
-            this.controller.call("getMany"),
+            this.controller.call("getManyAndCountAll"),
         ];
     }
 
