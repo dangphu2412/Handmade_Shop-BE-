@@ -359,6 +359,10 @@ export default class SeedRoleAndPermission {
             method: METHOD.POST,
             module: MODULE.ORDER,
           },
+          {
+            method: METHOD.PUT,
+            module: MODULE.ORDER,
+          },
         ],
       },
       transaction,

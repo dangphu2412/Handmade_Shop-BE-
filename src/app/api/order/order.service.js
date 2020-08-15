@@ -223,21 +223,19 @@ class OrderService extends CoreService {
         ];
     }
 
-    async patchStatusOrder(payload) {
+    async patchStatusOrder(payload, role) {
+        const { rolename } = role;
         const { userId, id, status } = payload;
-        const scopes = [{
+        const scopes = [
+            "withTimeStamp",
+            {
             method: ["getShop", "getIdForeign"],
-        }];
+            },
+        ];
         const order = await this.repository.getByPk(id, scopes);
 
         if (!order) {
             throw new NotFoundError("This order is not exist");
-        }
-
-        const isOrderShopkeeper = order.shop && order.shop.userId === userId;
-
-        if (!isOrderShopkeeper) {
-            throw new AuthorizeError("You are not shop owner");
         }
 
         if (status !== orderStatusEnum.PENDING_CONFIRM
@@ -252,11 +250,28 @@ class OrderService extends CoreService {
         order.status = status;
         order.updatedAt = new Date().toISOString();
 
-        if (status === orderStatusEnum.DELIVERED) {
-            order.receivedAt = new Date().toISOString();
+        if (rolename === "User") {
+            if (status === orderStatusEnum.DELIVERED) {
+                    order.receivedAt = new Date().toISOString();
+            } else {
+                throw new AuthorizeError("User can only delivered");
+            }
         }
-        if (status === orderStatusEnum.CANCEL) {
-            order.deletedAt = new Date().toISOString();
+
+        if (rolename === "Shop keeper") {
+            const isOrderShopkeeper = order.shop && order.shop.userId === userId;
+
+            if (!isOrderShopkeeper) {
+                throw new AuthorizeError("You are not shop owner");
+            }
+
+            if (status === orderStatusEnum.CANCEL) {
+                order.deletedAt = new Date().toISOString();
+            }
+
+            if (status === orderStatusEnum.DELIVERED) {
+                throw new AuthorizeError("Shop owner can not update delivered");
+            }
         }
 
         await order.save();

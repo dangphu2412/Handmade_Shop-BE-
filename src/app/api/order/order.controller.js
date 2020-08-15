@@ -91,11 +91,12 @@ class OrderController extends CoreController {
     async patchStatusOrder(request, response) {
         try {
             const { userId } = this.getCredentialInfo(request);
+            const { role } = request.auth.credentials;
             const { query, params } = request;
 
             const payload = new PatchStatusOrderDto(userId, params, query);
 
-            await this.service.patchStatusOrder(payload);
+            await this.service.patchStatusOrder(payload, role);
 
             return response.status(httpStatus.OK).json({
                 status: httpStatus.OK,

@@ -50,6 +50,42 @@ class Authentication {
             });
         }
     }
+
+    withOrScope(scopes) {
+        const passScope = (request, response, next) => {
+            request.auth.credentials.scopes = scopes;
+            return next();
+        };
+        return [
+            passScope,
+            this.authorizeWithOr,
+        ];
+    }
+
+    async authorizeWithOr(request, response, next) {
+        const { id, scopes } = request.auth.credentials;
+        const userScope = await User.scope("authorize").findOne({
+            where: { id },
+        });
+        const { role } = userScope;
+        const { permissions, rolename } = role;
+        for (let index = 0; index < scopes.length; index += 1) {
+            const required = scopes[index];
+
+            const { role: roleRequired, method: methodRequired, module: moduleRequired } = required;
+
+            for (let j = 0; j < permissions.length; j += 1) {
+                const permission = permissions[j].get({ plain: true });
+                if (permission.method === methodRequired && permission.module === moduleRequired) {
+                    request.auth.credentials.role = {
+                        rolename,
+                    };
+                    return next();
+                }
+            }
+        }
+        throw new AuthorizeError(`You are not allow to do this action ${rolename}`);
+    }
 }
 
 export default new Authentication();

@@ -63,13 +63,16 @@ export default (sequelize, DataTypes) => {
     totalBillAndShip: DataTypes.INTEGER,
     status: DataTypes.BOOLEAN,
     receivedAt: DataTypes.DATE,
+    deletedAt: DataTypes.DATE,
   }, {
     scopes: {
       overview: {
         attributes: ["id", "totalBillAndShip", "status", "createdAt", "updatedAt"],
       },
+      withTimeStamp: {
+        attributes: ["id", "status", "createdAt", "updatedAt", "receivedAt", "deletedAt"],
+      },
     },
-    paranoid: true,
     sequelize,
     modelName: "Order",
   });

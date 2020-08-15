@@ -46,7 +46,19 @@ class OrderpHandler {
     patchStatus() {
         return [
             this.authen.call("verify"),
-            this.authorize.WithScope(ROLE.SHOP_KEEPER, METHOD.PUT, MODULE.ORDER),
+            // this.authorize.WithScope(ROLE.SHOP_KEEPER, METHOD.PUT, MODULE.ORDER),
+            this.authorize.withOrScope([
+                {
+                    role: ROLE.SHOP_KEEPER,
+                    method: METHOD.PUT,
+                    module: MODULE.ORDER,
+                },
+                {
+                    role: ROLE.USER,
+                    method: METHOD.PUT,
+                    module: MODULE.ORDER,
+                },
+            ]),
             this.controller.call("patchStatusOrder"),
         ];
     }
